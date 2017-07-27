@@ -1,0 +1,5 @@
+CREATE database `ubts_appl_system`;
+
+CREATE USER 'appluser'@'localhost' IDENTIFIED BY 'Ks3coeEQkj3Z4UJMPM68i2C9ih2E26P';
+GRANT ALL ON `ubts_appl_system`.* TO 'appluser'@'localhost';
+FLUSH PRIVILEGES;

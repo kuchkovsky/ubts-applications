@@ -1,0 +1,12 @@
+---
+datasource:
+  url: "jdbc:mysql://localhost:3306/ubts_appl_system"
+  username: appluser
+  password: Ks3coeEQkj3Z4UJMPM68i2C9ih2E26P
+  driverClassName: org.mariadb.jdbc.Driver
+  defaultSchema: ~
+  hibernate:
+    hbm2ddl.method: update
+    show_sql: true
+    format_sql: true
+    dialect: org.hibernate.dialect.MySQL5InnoDBDialect

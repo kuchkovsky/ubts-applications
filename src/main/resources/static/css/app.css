@@ -1,0 +1,92 @@
+.inputdemoErrors .inputErrorsApp {
+    min-height: 48px;
+}
+
+.inputdemoErrors md-input-container > p {
+    font-size: 0.8em;
+    text-align: left;
+    width: 100%;
+}
+
+#application-logo {
+    padding: 10px;
+}
+
+#mainCard {
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.center-div {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -50px;
+    margin-left: -50px;
+    width: 100px;
+    height: 100px;
+}​
+
+._md-sidenav-backdrop {
+    height: 100% !important;
+    position: fixed !important;
+}
+
+md-sidenav .md-button {
+    text-align: left;
+    padding: 5px;
+}
+
+
+.md-datepicker-input-container {
+    width: 200px!important;
+}
+
+.inner-radio {
+    margin-left: 30px;
+}
+
+.center {
+    text-align: center;
+}
+
+#marital-details, #church-ministry-input {
+    margin-top: 40px;
+}
+
+#other-input, #church-participation-input, #job-input {
+    margin-top: 30px;
+}
+
+#eula {
+    margin-top: 40px;
+}
+
+.error {
+    color: red;
+}
+
+.form-error-message {
+    margin-top: 10px;
+}
+
+.ng-hide-add {
+    animation: 0.5s lightSpeedOut ease;
+}
+
+.ng-hide-remove {
+    animation: 0.5s flipInX ease;
+}
+
+.prml-hide.ng-hide-add {
+    animation: 0.5s zoomOut ease;
+}
+
+.big-block.ng-hide-add {
+    animation: 0.5s bounceOut ease;
+}
+
+.big-block.ng-hide-remove {
+    animation: 0.5s bounceInDown ease;
+}
