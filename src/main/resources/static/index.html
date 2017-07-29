@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="ubtsApplSystem" ng-controller="mainCtrl as ctrl">
+<html ng-app="ubtsApplSystem">
 <head>
     <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
@@ -14,7 +14,7 @@
 <md-content flex layout="column" layout-fill>
     <md-toolbar class="md-hue-2">
         <div class="md-toolbar-tools">
-            <md-button ng-click="ctrl.toggleSidebar()" class="md-icon-button" aria-label="Меню">
+            <md-button ng-click="toggleSidebar()" class="md-icon-button" aria-label="Меню">
                 <md-icon md-svg-icon="img/icons/ic_menu_white_24px.svg"></md-icon>
             </md-button>
             <h2 flex md-truncate ng-bind="$state.current.data.pageTitle"></h2>
@@ -22,20 +22,20 @@
     </md-toolbar>
     <md-content flex layout="row">
         <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-disable-backdrop layout="column">
-            <md-button ui-sref="home" ng-click="ctrl.toggleSidebar()">
+            <md-button ui-sref="home" ng-click="toggleSidebar()">
                 <md-icon md-svg-src="img/icons/ic_home_black_24px.svg"></md-icon>
                 Домашня сторінка
             </md-button>
-            <md-button ui-sref="studentApplication" ng-click="ctrl.toggleSidebar()">
+            <md-button ui-sref="studentApplication" ng-click="toggleSidebar()">
                 <md-icon md-svg-src="img/icons/ic_person_add_black_24px.svg"></md-icon>
                 Анкета абітурієнта
             </md-button>
         </md-sidenav>
         <md-content id="main-content-top" flex>
-            <div class="center-div">
-                <md-progress-circular md-mode="indeterminate" ng-show="spinner"></md-progress-circular>
+            <div class="main-content-block" layout-fill ng-show="isSpinnerVisible">
+                <md-progress-circular class="center-screen" md-mode="indeterminate"></md-progress-circular>
             </div>
-            <ui-view></ui-view>
+            <ui-view class="main-content-block" ng-show="!isSpinnerVisible"></ui-view>
         </md-content>
     </md-content>
 </md-content>
@@ -48,5 +48,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.3/angular-ui-router.min.js"></script>
 <script src="js/lf-ng-md-file-input.js"></script>
 <script src="js/app.js"></script>
+<script src="js/student.js"></script>
 </body>
 </html>

@@ -1,31 +1,19 @@
-.inputdemoErrors .inputErrorsApp {
-    min-height: 48px;
-}
-
-.inputdemoErrors md-input-container > p {
-    font-size: 0.8em;
-    text-align: left;
-    width: 100%;
-}
-
 #application-logo {
     padding: 10px;
 }
 
-#mainCard {
+#main-card {
     max-width: 500px;
     margin-left: auto;
     margin-right: auto;
 }
 
-.center-div {
+.center-screen {
+    margin: 0;
     position: absolute;
     top: 50%;
     left: 50%;
-    margin-top: -50px;
-    margin-left: -50px;
-    width: 100px;
-    height: 100px;
+    transform: translate(-50%, -50%);
 }​
 
 ._md-sidenav-backdrop {
@@ -36,11 +24,12 @@
 md-sidenav .md-button {
     text-align: left;
     padding: 5px;
+    margin-left: 5px;
 }
 
 
 .md-datepicker-input-container {
-    width: 200px!important;
+    width: 200px !important;
 }
 
 .inner-radio {
@@ -89,4 +78,32 @@ md-sidenav .md-button {
 
 .big-block.ng-hide-remove {
     animation: 0.5s bounceInDown ease;
+}
+
+.main-content-block.ng-hide-add, #form-progressbar.ng-hide-add {
+    animation: none;
+}
+
+.main-content-block.ng-hide-remove, #form-progressbar.ng-hide-remove {
+    animation: none;
+}
+
+md-sidenav,
+md-sidenav.md-locked-open,
+md-sidenav.md-closed.md-locked-open-add-active {
+    min-width: 200px !important;
+    max-width: 250px !important;
+}
+
+#form-progressbar {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#progress-caption {
+    padding: 10px;
+}
+
+.lf-ng-md-file-input-button-remove {
+    display: none !important;
 }

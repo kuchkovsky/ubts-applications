@@ -1,4 +1,4 @@
-<md-card id="mainCard">
+<md-card id="main-card" ng-controller="studentApplicationCtrl as ctrl">
     <img id="application-logo" ng-src="{{ctrl.form.logo}}" class="md-card-image">
     <md-card-content layout="row" layout-align="space-between">
         <form name="applicationForm" ng-submit="applicationForm.$valid && ctrl.submit()">
@@ -652,12 +652,16 @@
             </div>
             <div id="files">
                 <h3 class="md-headline center">Файли</h3>
-                <h3 class="md-body-1">Ви можете завантажити лише файли таких форматів: JPG, JPEG, PNG, PDF</h3>
+                <h3 class="md-body-1">
+                    Ви можете завантажити лише файли таких форматів: JPG, JPEG, PNG та PDF.
+                    Максимальний розмір одного файлу - 5МБ
+                </h3>
                 <div>
                     <div>
                         <h3 class="md-subhead">Ваше портретне фото:</h3>
-                        <lf-ng-md-file-input name="photo" lf-files="ctrl.files.photo" ng-model="ctrl.files.photo"
-                                             lf-required lf-mimetype="image/*"
+                        <lf-ng-md-file-input name="photo" ng-model="ctrl.files.photo"
+                                             lf-mimetype="image/jpeg,image/pjpeg,image/png,application/pdf"
+                                             lf-files="ctrl.files.photo" lf-required
                                              lf-filesize="5MB"></lf-ng-md-file-input>
                         <div ng-messages="applicationForm.photo.$error" class="md-caption error">
                             <div ng-message="required">Обов'язкове поле.</div>
@@ -669,63 +673,77 @@
                         <h3 class="md-subhead">Фото паспорта (перша, друга сторінки та сторінка з
                             пропискою):</h3>
                         <lf-ng-md-file-input name="passport1" ng-model="ctrl.files.passport1"
+                                             lf-mimetype="image/jpeg,image/pjpeg,image/png,application/pdf"
                                              lf-files="ctrl.files.passport1" lf-required
                                              lf-filesize="5MB" progress></lf-ng-md-file-input>
                         <div ng-messages="applicationForm.passport1.$error" class="md-caption error">
                             <div ng-message="required">Обов'язкове поле.</div>
                             <div ng-message="filesize">Максимальний розмір файлу - 5МБ.</div>
+                            <div ng-message="mimetype">Дозволено лише файли JPG, JPEG, PNG та PDF.</div>
                         </div>
                         <lf-ng-md-file-input name="passport2" ng-model="ctrl.files.passport2"
+                                             lf-mimetype="image/jpeg,image/pjpeg,image/png,application/pdf"
                                              lf-files="ctrl.files.passport2" lf-required
                                              lf-filesize="5MB" progress></lf-ng-md-file-input>
                         <div ng-messages="applicationForm.passport2.$error" class="md-caption error">
                             <div ng-message="required">Обов'язкове поле.</div>
                             <div ng-message="filesize">Максимальний розмір файлу - 5МБ.</div>
+                            <div ng-message="mimetype">Дозволено лише файли JPG, JPEG, PNG та PDF.</div>
                         </div>
                         <lf-ng-md-file-input name="passport3" ng-model="ctrl.files.passport3"
+                                             lf-mimetype="image/jpeg,image/pjpeg,image/png,application/pdf"
                                              lf-files="ctrl.files.passport3" lf-required
                                              lf-filesize="5MB" progress></lf-ng-md-file-input>
                         <div ng-messages="applicationForm.passport3.$error" class="md-caption error">
                             <div ng-message="required">Обов'язкове поле.</div>
                             <div ng-message="filesize">Максимальний розмір файлу - 5МБ.</div>
+                            <div ng-message="mimetype">Дозволено лише файли JPG, JPEG, PNG та PDF.</div>
                         </div>
                     </div>
                     <div>
                         <h3 class="md-subhead">Фото ідентифікаційного номера:</h3>
                         <lf-ng-md-file-input name="idNumber" ng-model="ctrl.files.idNumber"
+                                             lf-mimetype="image/jpeg,image/pjpeg,image/png,application/pdf"
                                              lf-files="ctrl.files.idNumber" lf-required
                                              lf-filesize="5MB" progress></lf-ng-md-file-input>
                         <div ng-messages="applicationForm.idNumber.$error" class="md-caption error">
                             <div ng-message="required">Обов'язкове поле.</div>
                             <div ng-message="filesize">Максимальний розмір файлу - 5МБ.</div>
+                            <div ng-message="mimetype">Дозволено лише файли JPG, JPEG, PNG та PDF.</div>
                         </div>
                     </div>
                     <div>
                         <h3 class="md-subhead">Фото диплому (в разі відстутності - фото атестату про повну
                             загальну середню освіту) та додаток до нього:</h3>
                         <lf-ng-md-file-input name="diploma1" ng-model="ctrl.files.diploma1"
+                                             lf-mimetype="image/jpeg,image/pjpeg,image/png,application/pdf"
                                              lf-files="ctrl.files.diploma1" lf-required
                                              lf-filesize="5MB" progress></lf-ng-md-file-input>
                         <div ng-messages="applicationForm.diploma1.$error" class="md-caption error">
                             <div ng-message="required">Обов'язкове поле.</div>
                             <div ng-message="filesize">Максимальний розмір файлу - 5МБ.</div>
+                            <div ng-message="mimetype">Дозволено лише файли JPG, JPEG, PNG та PDF.</div>
                         </div>
                         <lf-ng-md-file-input name="diploma2" ng-model="ctrl.files.diploma2"
+                                             lf-mimetype="image/jpeg,image/pjpeg,image/png,application/pdf"
                                              lf-files="ctrl.files.diploma2" lf-required
                                              lf-filesize="5MB" progress></lf-ng-md-file-input>
                         <div ng-messages="applicationForm.diploma2.$error" class="md-caption error">
                             <div ng-message="required">Обов'язкове поле.</div>
                             <div ng-message="filesize">Максимальний розмір файлу - 5МБ.</div>
+                            <div ng-message="mimetype">Дозволено лише файли JPG, JPEG, PNG та PDF.</div>
                         </div>
                     </div>
                     <div>
                         <h3 class="md-subhead">Фото медичної довідки форми 086-у:</h3>
                         <lf-ng-md-file-input name="medicalReference" ng-model="ctrl.files.medicalReference"
+                                             lf-mimetype="image/jpeg,image/pjpeg,image/png,application/pdf"
                                              lf-files="ctrl.files.medicalReference"
                                              lf-required lf-filesize="5MB" progress></lf-ng-md-file-input>
                         <div ng-messages="applicationForm.medicalReference.$error" class="md-caption error">
                             <div ng-message="required">Обов'язкове поле.</div>
                             <div ng-message="filesize">Максимальний розмір файлу - 5МБ.</div>
+                            <div ng-message="mimetype">Дозволено лише файли JPG, JPEG, PNG та PDF.</div>
                         </div>
                     </div>
                 </div>
@@ -745,9 +763,15 @@
                 </md-input-container>
             </div>
             <div id="submit">
-                <md-button ng-disabled="applicationForm.$invalid" class="md-raised md-primary" type="submit">
+                <md-button ng-disabled="applicationForm.$invalid || ctrl.submitLock" class="md-raised md-primary"
+                           type="submit">
                     Зареєструватися
                 </md-button>
+                <div id="form-progressbar" ng-show="ctrl.form.progressBar.isVisible">
+                    <div id="progress-caption" class="md-caption center">Надсилання даних...</div>
+                    <md-progress-linear md-mode="determinate" value="{{ctrl.form.progressBar.counter}}">
+                    </md-progress-linear>
+                </div>
                 <div ng-show="applicationForm.$invalid" class="md-caption form-error-message center error">
                     Необхідно заповнити всі обов'язкові поля та прийняти умови Семінарії!
                 </div>
