@@ -41,7 +41,7 @@ public class Student extends Person implements Serializable {
     private String howCameToGod;
 
     @JsonIgnore
-    @Column(name = "are_files_uploaded")
+    @Column(name = "has_files_uploaded")
     private Boolean filesUploaded;
 
     public Student() {}
@@ -100,7 +100,7 @@ public class Student extends Person implements Serializable {
         this.howCameToGod = howCameToGod;
     }
 
-    public Boolean getFilesUploaded() {
+    public Boolean hasFilesUploaded() {
         return filesUploaded;
     }
 

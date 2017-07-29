@@ -1,7 +1,6 @@
 package ua.org.ubts.applicationssystem.service.impl;
 
 import org.apache.log4j.Logger;
-import org.apache.logging.log4j.core.appender.FileManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.org.ubts.applicationssystem.entity.Education;
@@ -109,7 +108,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     private void deleteStudentFiles(Student student) {
-        if (student != null && Boolean.TRUE.equals(student.getFilesUploaded())) {
+        if (student != null && Boolean.TRUE.equals(student.hasFilesUploaded())) {
             try {
                 UserFilesManager.deleteStudentFiles(student);
             } catch (IOException e) {
