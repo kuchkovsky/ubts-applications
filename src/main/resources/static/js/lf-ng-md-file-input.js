@@ -149,7 +149,7 @@
                         '<div flex class="lf-ng-md-file-input-caption-text" ng-hide="!lfFiles.length">',
                             '<span ng-if="isCustomCaption">{{strCaption}}</span>',
                             '<span ng-if="!isCustomCaption">',
-                                '{{ lfFiles.length == 1 ? (lfFiles[0].lfFileName.length > 15 ? lfFiles[0].lfFileName.substring(0, 12) + "..." : lfFiles[0].lfFileName) : lfFiles.length+" files selected" }}',
+                                '{{ lfFiles.length == 1 ? windowInnerWidth < 500 ? (lfFiles[0].lfFileName.length > 20 ? lfFiles[0].lfFileName.substring(0, 17) + "..." : lfFiles[0].lfFileName) : (lfFiles[0].lfFileName.length > 40 ? lfFiles[0].lfFileName.substring(0, 37) + "..." : lfFiles[0].lfFileName) : lfFiles.length+" files selected" }}',
                             '</span>',
                         '</div>',
                         '<md-progress-linear md-mode="determinate" value="{{floatProgress}}" ng-show="intLoading && isProgress"></md-progress-linear>',
@@ -342,7 +342,7 @@
         }
     });
 
-    lfNgMdFileinput.directive('lfNgMdFileInput',['$q','$compile','$timeout', function($q,$compile,$timeout){
+    lfNgMdFileinput.directive('lfNgMdFileInput',['$q','$compile','$timeout', '$window', function($q,$compile,$timeout, $window){
         return {
             restrict: 'E',
             templateUrl: 'lfNgMdFileinput.html',
@@ -473,6 +473,8 @@
                         scope.lfFiles.push(obj);
                     };
                 };
+
+                scope.windowInnerWidth = $window.innerWidth;
 
                 scope.strCaption = '';
 
