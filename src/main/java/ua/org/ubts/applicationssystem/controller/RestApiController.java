@@ -8,9 +8,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import ua.org.ubts.applicationssystem.entity.Student;
+import ua.org.ubts.applicationssystem.model.StudentFilesUploadModel;
 import ua.org.ubts.applicationssystem.service.StudentService;
 import ua.org.ubts.applicationssystem.util.ResponseMessage;
+import ua.org.ubts.applicationssystem.util.UserFilesManager;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -26,7 +29,7 @@ public class RestApiController {
     @Autowired
     StudentService studentService;
 
-    @RequestMapping(value = "/students", method = RequestMethod.GET)
+    @GetMapping("/students")
     public ResponseEntity<List<Student>> getAllStudents() {
         List<Student> students = studentService.findAll();
         if (students.isEmpty()) {
@@ -35,7 +38,7 @@ public class RestApiController {
         return new ResponseEntity<>(students, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/students/{id}", method = RequestMethod.GET)
+    @GetMapping("/students/{id}")
     public ResponseEntity<?> getStudent(@PathVariable("id") Long id) {
         Student student = studentService.findById(id);
         if (student == null) {
@@ -44,9 +47,8 @@ public class RestApiController {
         return new ResponseEntity<>(student, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/students", method = RequestMethod.POST)
+    @PostMapping("/students")
     public ResponseEntity<ResponseMessage> addStudent(@RequestBody Student student, UriComponentsBuilder ucBuilder) {
-        System.out.println(student);
         if (studentService.isExist(student)) {
             String errorMessage = "Unable to create. A Student with name " + student.getFullSlavicName()
                     + " already exist";
@@ -60,7 +62,7 @@ public class RestApiController {
         return new ResponseEntity<>(new ResponseMessage("OK"), headers, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/students/{id}", method = RequestMethod.DELETE)
+    @DeleteMapping("/students/{id}")
     public ResponseEntity<ResponseMessage> deleteStudent(@PathVariable("id") Long id) {
         Student student = studentService.findById(id);
         if (student == null) {
@@ -73,11 +75,48 @@ public class RestApiController {
         return new ResponseEntity<>(new ResponseMessage("OK"), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/students/", method = RequestMethod.DELETE)
+    @DeleteMapping("/students")
     public ResponseEntity<ResponseMessage> deleteAllStudents() {
         studentService.deleteAll();
         logger.info("All students deleted from DB");
         return new ResponseEntity<>(new ResponseMessage("OK"), HttpStatus.OK);
+    }
+
+    @PostMapping("/student/files")
+    public ResponseEntity<ResponseMessage> uploadStudentFiles(@ModelAttribute StudentFilesUploadModel model) {
+        Student student = studentService.findByName(model.getFirstName(), model.getMiddleName(), model.getLastName());
+        if (student == null) {
+            return new ResponseEntity<>(new ResponseMessage("Student not found in database"), HttpStatus.NOT_FOUND);
+        }
+        if (Boolean.TRUE.equals(student.hasFilesUploaded())) {
+            return new ResponseEntity<>(new ResponseMessage("Student files already uploaded"), HttpStatus.CONFLICT);
+        }
+        if (!model.areMimeTypesCorrect()) {
+            return new ResponseEntity<>(new ResponseMessage("Unsupported media type"),
+                    HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+        }
+        logger.debug("Files upload for " + model.getLastName() + " " + model.getFirstName() + " "
+                + model.getMiddleName());
+        try {
+            UserFilesManager.saveStudentFiles(model);
+            student.setFilesUploaded(true);
+            studentService.save(student);
+        } catch (IOException e) {
+            logger.error(e);
+            return new ResponseEntity<>(new ResponseMessage("Files not saved"), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(new ResponseMessage("Successfully uploaded"), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/student/files/exist", method = RequestMethod.HEAD)
+    public ResponseEntity checkIfStudentFilesExist(@RequestParam("first_name") String firstName,
+                                                   @RequestParam("middle_name") String middleName,
+                                                   @RequestParam("last_name") String lastName) {
+        Student student = studentService.findByName(firstName, middleName, lastName);
+        if (student != null && Boolean.TRUE.equals(student.hasFilesUploaded())) {
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
 
 }
