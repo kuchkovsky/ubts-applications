@@ -2,6 +2,9 @@ package ua.org.ubts.applicationssystem.model;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class StudentFilesUploadModel {
 
     private String firstName;
@@ -131,6 +134,31 @@ public class StudentFilesUploadModel {
 
     public void setMedicalReference(MultipartFile medicalReference) {
         this.medicalReference = medicalReference;
+    }
+
+    public boolean areMimeTypesCorrect() {
+        List<MultipartFile> files = new ArrayList<>();
+        files.add(photo);
+        files.add(passport1);
+        files.add(passport2);
+        files.add(passport3);
+        files.add(idNumber);
+        files.add(diploma1);
+        files.add(diploma2);
+        files.add(medicalReference);
+        for (MultipartFile file : files) {
+            String mimeType = file.getContentType();
+            switch (mimeType) {
+                case "image/jpeg":
+                case "image/pjpeg":
+                case "image/png":
+                case "application/pdf":
+                    break;
+                default:
+                    return false;
+            }
+        }
+        return true;
     }
 
 }
