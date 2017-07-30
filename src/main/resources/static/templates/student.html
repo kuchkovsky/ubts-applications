@@ -9,12 +9,12 @@
                     ідентифікаційний номер, ваше портретне фото, диплом (в разі відсутності - атестат про повну
                     загальну середню освіту) та додаток до нього, а також медичну довідку форми 086-у.
                 </p>
-                <p ng-show="ctrl.student.program.name != ctrl.radios.program.prml" class="md-body-1 prml-hide">
+                <p ng-show="ctrl.student.program.name !== ctrl.radios.program.prml" class="md-body-1 prml-hide">
                     *Для переходу на анкету ПРМЛ, оберіть нижче у списку "Програма розвитку молодих лідерів".
                     Це партнерська програма між УБТС та регіональними біблійними коледжами.
                     Студенти ПРМЛ є одночасно студентами і семінарії і коледжів.
                 </p>
-                <p ng-show="ctrl.student.program.name == ctrl.radios.program.prml" class="md-body-1">
+                <p ng-show="ctrl.student.program.name === ctrl.radios.program.prml" class="md-body-1">
                     *ПРМЛ - це партнерська програма між УБТС та регіональними біблійними коледжами. Студенти
                     ПРМЛ є одночасно студентами і семінарії і коледжів.
                 </p>
@@ -22,7 +22,7 @@
             <div id="program">
                 <h3 class="md-title">За якою програмою бажаєте навчатися?</h3>
                 <md-radio-group ng-model="ctrl.student.program.name">
-                    <div ng-show="ctrl.student.program.name != ctrl.radios.program.prml" class="prml-hide">
+                    <div ng-show="ctrl.student.program.name !== ctrl.radios.program.prml" class="prml-hide">
                         <md-radio-button class="md-primary" ng-value="ctrl.radios.program.bps">
                             {{ctrl.radios.program.bps}}
                         </md-radio-button>
@@ -36,7 +36,7 @@
                             {{ctrl.radios.program.bcsJs}}
                         </md-radio-button>
                         <div class="inner-radio"
-                             ng-show="ctrl.student.program.name == ctrl.radios.program.bcsJs">
+                             ng-show="ctrl.student.program.name === ctrl.radios.program.bcsJs">
                             <md-radio-group ng-model="ctrl.radios.programInfo.bcsJsTerm">
                                 <md-radio-button ng-value="ctrl.radios.programInfo.bcsJs.lviv2y">
                                     {{ctrl.radios.programInfo.bcsJs.lviv2y}}
@@ -55,7 +55,7 @@
                         <md-radio-button class="md-primary" ng-value="ctrl.radios.program.bmMm">
                             {{ctrl.radios.program.bmMm}}
                         </md-radio-button>
-                        <div class="inner-radio" ng-show="ctrl.student.program.name == ctrl.radios.program.bmMm">
+                        <div class="inner-radio" ng-show="ctrl.student.program.name === ctrl.radios.program.bmMm">
                             <md-radio-group ng-model="ctrl.radios.programInfo.bmTerm">
                                 <md-radio-button ng-value="ctrl.radios.programInfo.bm.twoYears">
                                     {{ctrl.radios.programInfo.bm.twoYears}}
@@ -73,7 +73,7 @@
                                      ng-value="ctrl.radios.program.prml">
                         {{ctrl.radios.program.prml}}
                     </md-radio-button>
-                    <div class="inner-radio" ng-show="ctrl.student.program.name == ctrl.radios.program.prml">
+                    <div class="inner-radio" ng-show="ctrl.student.program.name === ctrl.radios.program.prml">
                         <md-radio-group ng-model="ctrl.radios.programInfo.prmlRegion">
                             <md-radio-button ng-value="ctrl.radios.programInfo.prml.lviv">
                                 {{ctrl.radios.programInfo.prml.lviv}}
@@ -228,10 +228,10 @@
                     </md-radio-button>
                 </md-radio-group>
                 <div id="marital-details" class="big-block"
-                     ng-show="ctrl.student.maritalData.status == ctrl.radios.maritalStatus.married">
+                     ng-show="ctrl.student.maritalData.status === ctrl.radios.maritalStatus.married">
                     <md-input-container class="md-block">
                         <label>П.І.Б. дружини/чоловіка</label>
-                        <input ng-required="ctrl.student.maritalData.status == ctrl.radios.maritalStatus.married"
+                        <input ng-required="ctrl.student.maritalData.status === ctrl.radios.maritalStatus.married"
                                name="maritalStatus" ng-model="ctrl.student.maritalData.spouseName">
                         <div ng-messages="applicationForm.maritalStatus.$error">
                             <div ng-message="required">Обов'язкове поле.</div>
@@ -244,7 +244,7 @@
                                 md-placeholder="Дата реєстрації шлюбу"
                                 md-min-date="ctrl.minDate"
                                 md-max-date="ctrl.maxDate"
-                                ng-required="ctrl.student.maritalData.status == ctrl.radios.maritalStatus.married">
+                                ng-required="ctrl.student.maritalData.status === ctrl.radios.maritalStatus.married">
                         </md-datepicker>
                         <div ng-messages="applicationForm.marriageDate.$error">
                             <div ng-message="required">Обов'язкове поле.</div>
@@ -262,14 +262,14 @@
                     <div id="church-ministry-input" ng-show="ctrl.form.student.maritalData.isSpouseChurchMember">
                         <md-input-container class="md-block">
                             <label>Яке служіння звершує церкві?</label>
-                            <textarea name="spouseChurchService"
-                                      ng-model="ctrl.form.student.maritalData.spouseChurchService"
-                                      ng-required="ctrl.student.maritalData.status ==
+                            <textarea name="spouseChurchMinistry"
+                                      ng-model="ctrl.form.student.maritalData.spouseChurchMinistry"
+                                      ng-required="ctrl.student.maritalData.status ===
                                                   ctrl.radios.maritalStatus.married
                                                   && ctrl.form.student.maritalData.isSpouseChurchMember"
                                       md-maxlength="300"></textarea>
-                            <div ng-messages="applicationForm.spouseChurchService.$error"
-                                 ng-show="applicationForm.spouseChurchService.$dirty">
+                            <div ng-messages="applicationForm.spouseChurchMinistry.$error"
+                                 ng-show="applicationForm.spouseChurchMinistry.$dirty">
                                 <div ng-message="required">Обов'язкове поле.</div>
                                 <div ng-message="md-maxlength">Довжина поля перевищує максимально допустиму!</div>
                             </div>
@@ -466,10 +466,10 @@
                                 {{ctrl.radios.ministryType.other}}
                             </md-radio-button>
                         </md-radio-group>
-                        <md-input-container ng-show="ctrl.form.student.churchMinistry.type == ctrl.radios.ministryType.other"
+                        <md-input-container ng-show="ctrl.form.student.churchMinistry.type === ctrl.radios.ministryType.other"
                                             class="md-block" id="other-input">
                             <label>Назва служіння</label>
-                            <input ng-required="ctrl.form.student.churchMinistry.type == ctrl.radios.ministryType.other"
+                            <input ng-required="ctrl.form.student.churchMinistry.type === ctrl.radios.ministryType.other"
                                    name="ministryType" ng-model="ctrl.form.student.otherMinistryType">
                             <div ng-messages="applicationForm.ministryType.$error">
                                 <div ng-message="required">Обов'язкове поле.</div>
@@ -544,7 +544,7 @@
                 </p>
                 <h3 class="md-subhead">Яку суму Ви плануєте жертвувати за сесію (один тиждень)?</h3>
                 <md-radio-group class="md-primary" ng-model="ctrl.student.donationAmount">
-                    <md-radio-button ng-if="ctrl.student.program.name == ctrl.radios.program.prml"
+                    <md-radio-button ng-if="ctrl.student.program.name === ctrl.radios.program.prml"
                                      ng-init="ctrl.student.donationAmount = ctrl.radios.donationAmount.uah500"
                                      ng-value="ctrl.radios.donationAmount.uah500">
                         {{ctrl.radios.donationAmount.uah500}}
@@ -555,7 +555,7 @@
                     <md-radio-button ng-value="ctrl.radios.donationAmount.uah700">
                         {{ctrl.radios.donationAmount.uah700}}
                     </md-radio-button>
-                    <md-radio-button ng-if="ctrl.student.program.name != ctrl.radios.program.prml"
+                    <md-radio-button ng-if="ctrl.student.program.name !== ctrl.radios.program.prml"
                                      ng-value="ctrl.radios.donationAmount.uah800">
                         {{ctrl.radios.donationAmount.uah800}}
                     </md-radio-button>
