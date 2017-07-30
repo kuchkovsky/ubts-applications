@@ -17,7 +17,7 @@ public class Residence implements Serializable {
     @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "country")
@@ -49,25 +49,17 @@ public class Residence implements Serializable {
     @Column(name = "apartment", length = 16)
     private String apartment;
 
+    @JsonIgnore
+    @OneToOne(mappedBy = "residence")
+    private Student student;
+
     public Residence() {}
 
-    public Residence(Country country, String region, String cityVillage, String index, String district, String street,
-                     String house, String apartment) {
-        this.country = country;
-        this.region = region;
-        this.cityVillage = cityVillage;
-        this.index = index;
-        this.district = district;
-        this.street = street;
-        this.house = house;
-        this.apartment = apartment;
-    }
-
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -133,6 +125,14 @@ public class Residence implements Serializable {
 
     public void setApartment(String apartment) {
         this.apartment = apartment;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
     }
 
     @Override

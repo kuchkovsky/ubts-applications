@@ -6,5 +6,4 @@ import ua.org.ubts.applicationssystem.entity.ChurchData;
 
 @Repository
 public interface ChurchDataRepository extends JpaRepository<ChurchData, Integer> {
-
 }

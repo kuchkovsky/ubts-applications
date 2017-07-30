@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 import ua.org.ubts.applicationssystem.entity.Program;
 
 @Repository
-public interface ProgramRepository extends JpaRepository<Program, Long> {
+public interface ProgramRepository extends JpaRepository<Program, Integer> {
 
     Program findByNameAndInfo(String name, String info);
 

@@ -57,23 +57,11 @@ public class ChurchData implements Serializable {
     @Column(name = "phone", length = 32)
     private String phone;
 
-    public ChurchData() {}
+    @JsonIgnore
+    @OneToOne(mappedBy = "churchData")
+    private Student student;
 
-    public ChurchData(String name, String pastorName, String union, String denomination, String membersNumber,
-                      String region, String cityVillage, String index, String district, String streetAndHouseNumber,
-                      String phone) {
-        this.name = name;
-        this.pastorName = pastorName;
-        this.union = union;
-        this.denomination = denomination;
-        this.membersNumber = membersNumber;
-        this.region = region;
-        this.cityVillage = cityVillage;
-        this.index = index;
-        this.district = district;
-        this.streetAndHouseNumber = streetAndHouseNumber;
-        this.phone = phone;
-    }
+    public ChurchData() {}
 
     public Integer getId() {
         return id;
@@ -169,6 +157,14 @@ public class ChurchData implements Serializable {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
     }
 
     @Override

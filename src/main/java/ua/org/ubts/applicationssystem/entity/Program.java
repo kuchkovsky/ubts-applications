@@ -17,7 +17,7 @@ public class Program implements Serializable {
     @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @NotEmpty
     @Column(name = "name", nullable = false)
@@ -38,11 +38,11 @@ public class Program implements Serializable {
         this.info = info;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -73,7 +73,8 @@ public class Program implements Serializable {
     @Override
     public String toString() {
         return "Program{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", info='" + info + '\'' +
                 '}';
     }

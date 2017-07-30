@@ -46,12 +46,6 @@ public class Student extends Person implements Serializable {
 
     public Student() {}
 
-    public Student(String firstName, String middleName, String lastName, String birthDate, String phone1, String phone2,
-                   String email, Program program) {
-        super(firstName, middleName, lastName, birthDate, phone1, phone2, email);
-        this.program = program;
-    }
-
     public Program getProgram() {
         return program;
     }
@@ -110,25 +104,15 @@ public class Student extends Person implements Serializable {
 
     @Override
     public String toString() {
-        String string = "Student{" +
-                "firstName='" + getFirstName() + '\'' +
-                ", middleName='" + getMiddleName() + '\'' +
-                ", lastName='" + getLastName() + '\'' +
-                ", birthDate=" + getBirthDate() +
-                ", phone1='" + getPhone1() + '\'' +
-                ", phone2='" + getPhone2() + '\'' +
-                ", email='" + getEmail() + '\'' +
-                ", program='" + program + '\'' +
+        return "Student{" +
+                "program=" + program +
                 ", donationAmount='" + donationAmount + '\'' +
-                '}' + "\n" + getResidence().toString() + "\n";
-        if (getChurchData() != null) {
-            string += getChurchData().toString() + "\n";
-        }
-        if (getChurchMinistry() != null) {
-            string += getChurchMinistry().toString() + "\n";
-        }
-        string += healthData + "\n";
-        return string;
+                ", financeComments='" + financeComments + '\'' +
+                ", healthData=" + healthData +
+                ", reasonsToStudy='" + reasonsToStudy + '\'' +
+                ", howCameToGod='" + howCameToGod + '\'' +
+                ", filesUploaded=" + filesUploaded +
+                "} extends " + super.toString();
     }
 
 }

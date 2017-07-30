@@ -6,5 +6,4 @@ import ua.org.ubts.applicationssystem.entity.MaritalData;
 
 @Repository
 public interface MaritalDataRepository extends JpaRepository<MaritalData, Integer> {
-
 }

@@ -29,8 +29,8 @@ public class MaritalDataSerializer extends StdSerializer<MaritalData> {
         if (StringUtils.isNotEmpty(maritalData.getMarriageDate())) {
             jsonGenerator.writeStringField("marriageDate", maritalData.getMarriageDate());
         }
-        if (StringUtils.isNotEmpty(maritalData.getSpouseChurchService())) {
-            jsonGenerator.writeStringField("spouseChurchService", maritalData.getSpouseChurchService());
+        if (StringUtils.isNotEmpty(maritalData.getSpouseChurchMinistry())) {
+            jsonGenerator.writeStringField("spouseChurchMinistry", maritalData.getSpouseChurchMinistry());
         }
         if (maritalData.getChildrenNumber() != null) {
             jsonGenerator.writeNumberField("childrenNumber", maritalData.getChildrenNumber());

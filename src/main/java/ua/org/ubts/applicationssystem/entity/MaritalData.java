@@ -31,8 +31,8 @@ public class MaritalData implements Serializable {
     @Column(name = "is_spouse_church_member")
     private Boolean spouseChurchMember;
 
-    @Column(name = "spouse_church_service", columnDefinition="TEXT")
-    private String spouseChurchService;
+    @Column(name = "spouse_church_ministry", columnDefinition="TEXT")
+    private String spouseChurchMinistry;
 
     @Column(name = "children_number")
     private Integer childrenNumber;
@@ -40,18 +40,11 @@ public class MaritalData implements Serializable {
     @Column(name = "is_spouse_approve_seminary")
     private Boolean spouseApproveSeminary;
 
-    public MaritalData() {}
+    @JsonIgnore
+    @OneToOne(mappedBy = "maritalData")
+    private Student student;
 
-    public MaritalData(MaritalStatus status, String spouseName, String marriageDate, boolean spouseChurchMember,
-                       String spouseChurchService, int childrenNumber, boolean spouseApproveSeminary) {
-        this.status = status;
-        this.spouseName = spouseName;
-        this.marriageDate = marriageDate;
-        this.spouseChurchMember = spouseChurchMember;
-        this.spouseChurchService = spouseChurchService;
-        this.childrenNumber = childrenNumber;
-        this.spouseApproveSeminary = spouseApproveSeminary;
-    }
+    public MaritalData() {}
 
     public Integer getId() {
         return id;
@@ -95,10 +88,10 @@ public class MaritalData implements Serializable {
         this.spouseChurchMember = spouseChurchMember;
     }
 
-    public String getSpouseChurchService() { return spouseChurchService; }
+    public String getSpouseChurchMinistry() { return spouseChurchMinistry; }
 
-    public void setSpouseChurchService(String spouseChurchService) {
-        this.spouseChurchService = spouseChurchService;
+    public void setSpouseChurchMinistry(String spouseChurchMinistry) {
+        this.spouseChurchMinistry = spouseChurchMinistry;
     }
 
     public Integer getChildrenNumber() {
@@ -119,6 +112,14 @@ public class MaritalData implements Serializable {
         this.spouseApproveSeminary = spouseApproveSeminary;
     }
 
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
+    }
+
     @Override
     public String toString() {
         return "MaritalData{" +
@@ -127,7 +128,7 @@ public class MaritalData implements Serializable {
                 ", spouseName='" + spouseName + '\'' +
                 ", marriageDate='" + marriageDate + '\'' +
                 ", spouseChurchMember=" + spouseChurchMember +
-                ", spouseChurchService='" + spouseChurchService + '\'' +
+                ", spouseChurchMinistry='" + spouseChurchMinistry + '\'' +
                 ", childrenNumber=" + childrenNumber +
                 ", spouseApproveSeminary=" + spouseApproveSeminary +
                 '}';

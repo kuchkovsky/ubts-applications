@@ -37,16 +37,11 @@ public class ChurchMinistry implements Serializable {
     @Column(name = "church_participation", nullable = false, columnDefinition="TEXT")
     private String churchParticipation;
 
-    public ChurchMinistry() {}
+    @JsonIgnore
+    @OneToOne(mappedBy = "churchMinistry")
+    private Student student;
 
-    public ChurchMinistry(String repentanceDate, String baptismDate, ChurchMinistryType type, String ordinationDate,
-                          String churchParticipation) {
-        this.repentanceDate = repentanceDate;
-        this.baptismDate = baptismDate;
-        this.type = type;
-        this.ordinationDate = ordinationDate;
-        this.churchParticipation = churchParticipation;
-    }
+    public ChurchMinistry() {}
 
     public Integer getId() {
         return id;
@@ -94,6 +89,14 @@ public class ChurchMinistry implements Serializable {
 
     public void setChurchParticipation(String churchParticipation) {
         this.churchParticipation = churchParticipation;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
     }
 
     @Override

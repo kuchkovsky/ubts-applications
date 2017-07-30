@@ -29,14 +29,11 @@ public class HealthData implements Serializable {
     @Column(name = "has_study_problems", nullable = false)
     private Boolean hasStudyProblems;
 
-    public HealthData() {}
+    @JsonIgnore
+    @OneToOne(mappedBy = "healthData")
+    private Student student;
 
-    public HealthData(Boolean drugAddicted, String healthStatus, Boolean takingMedicine, Boolean hasStudyProblems) {
-        this.drugAddicted = drugAddicted;
-        this.healthStatus = healthStatus;
-        this.takingMedicine = takingMedicine;
-        this.hasStudyProblems = hasStudyProblems;
-    }
+    public HealthData() {}
 
     public Integer getId() {
         return id;
@@ -80,6 +77,14 @@ public class HealthData implements Serializable {
 
     public void setHasStudyProblems(Boolean hasStudyProblems) {
         this.hasStudyProblems = hasStudyProblems;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
     }
 
     @Override

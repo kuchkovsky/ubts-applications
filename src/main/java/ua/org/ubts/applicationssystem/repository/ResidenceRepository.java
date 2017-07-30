@@ -5,6 +5,5 @@ import org.springframework.stereotype.Repository;
 import ua.org.ubts.applicationssystem.entity.Residence;
 
 @Repository
-public interface ResidenceRepository extends JpaRepository<Residence, Long> {
-
+public interface ResidenceRepository extends JpaRepository<Residence, Integer> {
 }

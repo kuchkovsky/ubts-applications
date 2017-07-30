@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "church_ministry_type")
@@ -18,6 +19,10 @@ public class ChurchMinistryType implements Serializable {
     @NotEmpty
     @Column(name = "name", nullable = false, length = 128)
     private String name;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "type")
+    private List<ChurchMinistry> churchMinistryList;
 
     public ChurchMinistryType() {}
 
@@ -39,6 +44,14 @@ public class ChurchMinistryType implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<ChurchMinistry> getChurchMinistryList() {
+        return churchMinistryList;
+    }
+
+    public void setChurchMinistryList(List<ChurchMinistry> churchMinistryList) {
+        this.churchMinistryList = churchMinistryList;
     }
 
     @Override

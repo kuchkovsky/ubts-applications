@@ -17,7 +17,7 @@ public class ProgramServiceImpl implements ProgramService {
     ProgramRepository programRepository;
 
     @Override
-    public Program findById(Long id) {
+    public Program findById(Integer id) {
         return programRepository.findOne(id);
     }
 
@@ -37,7 +37,7 @@ public class ProgramServiceImpl implements ProgramService {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(Integer id) {
         programRepository.delete(id);
     }
 

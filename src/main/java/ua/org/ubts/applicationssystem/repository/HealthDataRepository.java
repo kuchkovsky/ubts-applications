@@ -6,5 +6,4 @@ import ua.org.ubts.applicationssystem.entity.HealthData;
 
 @Repository
 public interface HealthDataRepository extends JpaRepository<HealthData, Integer> {
-
 }

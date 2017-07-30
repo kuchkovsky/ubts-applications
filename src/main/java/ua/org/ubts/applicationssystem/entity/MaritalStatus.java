@@ -46,12 +46,19 @@ public class MaritalStatus implements Serializable {
         this.name = name;
     }
 
+    public List<MaritalData> getMaritalDataList() {
+        return maritalDataList;
+    }
+
+    public void setMaritalDataList(List<MaritalData> maritalDataList) {
+        this.maritalDataList = maritalDataList;
+    }
+
     @Override
     public String toString() {
         return "MaritalStatus{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", maritalDataList=" + maritalDataList +
                 '}';
     }
 

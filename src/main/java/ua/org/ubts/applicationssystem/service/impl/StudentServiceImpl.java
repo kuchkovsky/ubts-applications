@@ -49,7 +49,7 @@ public class StudentServiceImpl implements StudentService {
     private HealthDataService healthDataService;
 
     @Override
-    public Student findById(Long id) {
+    public Student findById(Integer id) {
         return studentRepository.findOne(id);
     }
 
@@ -84,7 +84,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(Integer id) {
         deleteStudentFiles(findById(id));
         studentRepository.delete(id);
     }

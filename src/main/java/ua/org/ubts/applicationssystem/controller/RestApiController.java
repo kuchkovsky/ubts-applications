@@ -39,7 +39,7 @@ public class RestApiController {
     }
 
     @GetMapping("/students/{id}")
-    public ResponseEntity<?> getStudent(@PathVariable("id") Long id) {
+    public ResponseEntity<?> getStudent(@PathVariable("id") Integer id) {
         Student student = studentService.findById(id);
         if (student == null) {
             return new ResponseEntity<>(new ResponseMessage("User not found"), HttpStatus.NOT_FOUND);
@@ -63,7 +63,7 @@ public class RestApiController {
     }
 
     @DeleteMapping("/students/{id}")
-    public ResponseEntity<ResponseMessage> deleteStudent(@PathVariable("id") Long id) {
+    public ResponseEntity<ResponseMessage> deleteStudent(@PathVariable("id") Integer id) {
         Student student = studentService.findById(id);
         if (student == null) {
             String errorMessage = "Unable to delete. User with id " + id + " not found";

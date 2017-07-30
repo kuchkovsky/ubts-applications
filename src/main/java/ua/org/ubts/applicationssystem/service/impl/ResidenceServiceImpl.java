@@ -22,7 +22,7 @@ public class ResidenceServiceImpl implements ResidenceService {
     private CountryService countryService;
 
     @Override
-    public Residence findById(Long id) {
+    public Residence findById(Integer id) {
         return residenceRepository.findOne(id);
     }
 
@@ -36,7 +36,7 @@ public class ResidenceServiceImpl implements ResidenceService {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(Integer id) {
         residenceRepository.delete(id);
     }
 

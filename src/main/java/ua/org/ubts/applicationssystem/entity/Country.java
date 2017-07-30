@@ -20,6 +20,10 @@ public class Country implements Serializable {
     @Column(name = "name", nullable = false, length = 128)
     private String name;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "country")
+    private List<Residence> residences;
+
     public Country() {}
 
     public Country(String name) {
@@ -42,9 +46,13 @@ public class Country implements Serializable {
         this.name = name;
     }
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "country")
-    private List<Residence> residences;
+    public List<Residence> getResidences() {
+        return residences;
+    }
+
+    public void setResidences(List<Residence> residences) {
+        this.residences = residences;
+    }
 
     @Override
     public String toString() {
