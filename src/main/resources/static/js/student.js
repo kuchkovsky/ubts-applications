@@ -20,6 +20,7 @@
                 }).then(function(response) {
                     console.log('Response: ' + response.status);
                     console.log('Error: user files already uploaded');
+                    progressBar.isVisible = false;
                     callback(409);
                 }, function(response) {
                     console.log('Response: ' + response.status);
@@ -35,8 +36,6 @@
                     formData.append('diploma1', files.diploma1[0].lfFile);
                     formData.append('diploma2', files.diploma2[0].lfFile);
                     formData.append('medicalReference',files.medicalReference[0].lfFile);
-                    progressBar.counter = 0;
-                    progressBar.isVisible = true;
                     console.log('Posting files...');
                     $http.post('/api/student/files', formData, {
                         transformRequest: angular.identity,
@@ -58,6 +57,10 @@
                     });
                 });
             }
+            progressBar.counter = 0;
+            progressBar.isVisible = true;
+            var application = angular.element(document.getElementById('main-content-top'));
+            application.scrollTop(application[0].scrollHeight, 500);
             console.log('Posting data: ' + JSON.stringify(student));
             $http.post('/api/students', student).then(function (response) {
                 console.log('Response: ' + response.status);
@@ -68,6 +71,7 @@
                 if (response.status === 409) {
                     sendFiles(response.status)
                 } else {
+                    progressBar.isVisible = false;
                     callback(response.status);
                 }
             });
@@ -78,8 +82,8 @@
     app.controller('studentApplicationCtrl', function($http, $mdDialog, postService) {
         var self = this;
         this.prmlApplication = function(state)  {
-            var top = angular.element(document.getElementById('main-content-top'));
-            top.scrollTop(0, 800);
+            var application = angular.element(document.getElementById('main-content-top'));
+            application.scrollTop(0, 800);
             state.current.data.pageTitle = 'Анкета абітурієнта ПРМЛ';
             self.form.logo = "img/prml.png";
         };
@@ -251,9 +255,9 @@
                 this.student.maritalData.marriageDate
                     = moment(this.form.student.maritalData.marriageDate).format('YYYY-MM-DD');
                 if (this.form.student.maritalData.isSpouseChurchMember) {
-                    this.student.maritalData.spouseChurchService = this.form.student.maritalData.spouseChurchService
+                    this.student.maritalData.spouseChurchMinistry = this.form.student.maritalData.spouseChurchMinistry
                 } else {
-                    delete this.student.maritalData.spouseChurchService;
+                    delete this.student.maritalData.spouseChurchMinistry;
                 }
             } else {
                 this.student.maritalData = { status: this.student.maritalData.status };
