@@ -19,7 +19,7 @@ public class MaritalData implements Serializable {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "status")
+    @JoinColumn(name = "status_id")
     private MaritalStatus status;
 
     @Column(name = "spouse_name")

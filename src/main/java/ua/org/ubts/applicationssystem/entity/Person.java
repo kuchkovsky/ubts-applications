@@ -49,23 +49,23 @@ public class Person implements Serializable {
     private String job;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "residence")
+    @JoinColumn(name = "residence_id")
     private Residence residence;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "education")
+    @JoinColumn(name = "education_id")
     private Education education;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "marital_data")
+    @JoinColumn(name = "marital_data_id")
     private MaritalData maritalData;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "church_data")
+    @JoinColumn(name = "church_data_id")
     private ChurchData churchData;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "church_ministry")
+    @JoinColumn(name = "church_ministry_id")
     private ChurchMinistry churchMinistry;
 
     public Person() {}

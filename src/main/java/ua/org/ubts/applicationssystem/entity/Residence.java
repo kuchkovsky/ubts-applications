@@ -20,7 +20,7 @@ public class Residence implements Serializable {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "country")
+    @JoinColumn(name = "country_id")
     private Country country;
 
     @NotEmpty

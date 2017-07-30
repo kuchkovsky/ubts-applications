@@ -27,7 +27,7 @@ public class ChurchMinistry implements Serializable {
     private String baptismDate;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "type")
+    @JoinColumn(name = "type_id")
     private ChurchMinistryType type;
 
     @Column(name = "ordination_date", length = 12)

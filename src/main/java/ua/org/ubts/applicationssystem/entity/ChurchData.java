@@ -32,7 +32,7 @@ public class ChurchData implements Serializable {
     private String denomination;
 
     @NotEmpty
-    @Column(name = "membersNumber", nullable = false, length = 32)
+    @Column(name = "members_number", nullable = false, length = 32)
     private String membersNumber;
 
     @NotEmpty

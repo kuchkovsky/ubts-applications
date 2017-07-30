@@ -18,7 +18,7 @@ import java.io.Serializable;
 public class Student extends Person implements Serializable {
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "program")
+    @JoinColumn(name = "program_id")
     private Program program;
 
     @NotEmpty
@@ -29,7 +29,7 @@ public class Student extends Person implements Serializable {
     private String financeComments;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "health_data")
+    @JoinColumn(name = "health_data_id")
     private HealthData healthData;
 
     @NotEmpty
