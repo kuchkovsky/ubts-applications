@@ -28,9 +28,9 @@ import java.util.Map;
 public class RestApiController {
 
     private static final Logger logger = Logger.getLogger(RestApiController.class);
-    private static Connection con;
-    private static Statement stmt;
-    private static ResultSet rs;
+    private Connection con;
+    private Statement stmt;
+    private ResultSet rs;
 
     @Autowired
     StudentService studentService;
