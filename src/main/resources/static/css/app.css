@@ -107,3 +107,7 @@ md-sidenav.md-closed.md-locked-open-add-active {
 .lf-ng-md-file-input-button-remove {
     display: none !important;
 }
+
+.md-toolbar-tools h2 {
+    color: white;
+}
