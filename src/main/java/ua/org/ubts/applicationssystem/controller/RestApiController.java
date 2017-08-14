@@ -210,7 +210,8 @@ public class RestApiController {
                 student.setLastName(rs.getString("last_name"));
                 student.setFirstName(rs.getString("first_name"));
                 student.setMiddleName(rs.getString("middle_name"));
-                student.setBirthDate(rs.getString("birthdate"));
+                String[] birthdate = rs.getString("birthdate").split("\\.");
+                student.setBirthDate(birthdate[2] + "-" + birthdate[1] + "-" + birthdate [0]);
 
                 Residence residence = new Residence();
                 residence.setStreet(rs.getString("street"));
@@ -320,7 +321,8 @@ public class RestApiController {
                 maritalData.setStatus(new MaritalStatus(maritalStatusMap.get(maritalStatus)));
                 if (maritalStatus == 2) {
                     maritalData.setSpouseName(rs.getString("spouse_name"));
-                    maritalData.setMarriageDate(rs.getString("marriage_date"));
+                    String[] marriageDate = rs.getString("marriage_date").split("\\.");
+                    maritalData.setMarriageDate(marriageDate[2] + "-" + marriageDate[1] + "-" + marriageDate [0]);
                     maritalData.setChildrenNumber(rs.getInt("children"));
                     maritalData.setSpouseApproveSeminary(rs.getBoolean("spouse_seminary_approve"));
                     boolean isSpouseChurchMember = rs.getBoolean("spouse_church_member");
