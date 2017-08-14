@@ -1,6 +1,7 @@
 package ua.org.ubts.applicationssystem.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -47,6 +48,7 @@ public class ChurchData implements Serializable {
     @Column(name = "index_", nullable = false, length = 16)
     private String index;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @Column(name = "district", length = 128)
     private String district;
 
