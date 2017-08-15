@@ -21,7 +21,7 @@
         </div>
     </md-toolbar>
     <md-content flex layout="row">
-        <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-disable-backdrop layout="column">
+        <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" layout="column">
             <md-button ui-sref="home" ng-click="toggleSidebar()">
                 <md-icon md-svg-src="img/icons/ic_home_black_24px.svg"></md-icon>
                 Домашня сторінка
@@ -30,12 +30,16 @@
                 <md-icon md-svg-src="img/icons/ic_person_add_black_24px.svg"></md-icon>
                 Анкета абітурієнта
             </md-button>
+            <md-button ui-sref="studentList" ng-click="toggleSidebar()">
+                <md-icon md-svg-src="img/icons/ic_view_list_black_24px.svg"></md-icon>
+                Список абітурієнтів
+            </md-button>
         </md-sidenav>
         <md-content id="main-content-top" flex>
-            <div class="main-content-block" layout-fill ng-show="isSpinnerVisible">
+            <div class="main-content-block" layout-fill ng-show="isMainSpinnerVisible">
                 <md-progress-circular class="center-screen" md-mode="indeterminate"></md-progress-circular>
             </div>
-            <ui-view class="main-content-block" ng-show="!isSpinnerVisible"></ui-view>
+            <ui-view class="main-content-block" ng-show="!isMainSpinnerVisible"></ui-view>
         </md-content>
     </md-content>
 </md-content>
@@ -48,6 +52,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.3/angular-ui-router.min.js"></script>
 <script src="js/lf-ng-md-file-input.js"></script>
 <script src="js/app.js"></script>
-<script src="js/student.js"></script>
+<script src="js/student-application.js"></script>
+<script src="js/student-list.js"></script>
+<script src="js/student-view.js"></script>
 </body>
 </html>

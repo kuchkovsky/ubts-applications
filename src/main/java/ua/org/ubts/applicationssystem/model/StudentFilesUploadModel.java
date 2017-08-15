@@ -31,23 +31,6 @@ public class StudentFilesUploadModel {
 
     public StudentFilesUploadModel() {}
 
-    public StudentFilesUploadModel(String firstName, String middleName, String lastName, MultipartFile photo,
-                                   MultipartFile passport1, MultipartFile passport2, MultipartFile passport3,
-                                   MultipartFile idNumber, MultipartFile diploma1, MultipartFile diploma2,
-                                   MultipartFile medicalReference) {
-        this.firstName = firstName;
-        this.middleName = middleName;
-        this.lastName = lastName;
-        this.photo = photo;
-        this.passport1 = passport1;
-        this.passport2 = passport2;
-        this.passport3 = passport3;
-        this.idNumber = idNumber;
-        this.diploma1 = diploma1;
-        this.diploma2 = diploma2;
-        this.medicalReference = medicalReference;
-    }
-
     public String getFirstName() {
         return firstName;
     }

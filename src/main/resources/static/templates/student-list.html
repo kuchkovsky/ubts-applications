@@ -1,0 +1,31 @@
+<md-card class="main-card" ng-controller="studentListCtrl as ctrl">
+    <md-card-header>
+        <div layout="row" flex id="search">
+            <md-input-container class="md-block" flex="80">
+                <label>Ім'я студента</label>
+                <input name="query" ng-model="ctrl.form.query" ng-keyup="$event.keyCode == 13 && ctrl.search()">
+            </md-input-container>
+            <md-button class="md-raised md-primary" flex="20" ng-click="ctrl.search()">
+                Шукати
+            </md-button>
+        </div>
+    </md-card-header>
+    <md-card-content layout="row" layout-align="space-between">
+        <md-list flex>
+            <md-progress-circular class="center-screen spinner" md-mode="indeterminate"
+                                  ng-show="ctrl.isSpinnerVisible"></md-progress-circular>
+            <md-list-item class="md-2-line" ng-repeat="s in ctrl.form.students" ui-sref="studentView({studentId: s.id})">
+                <img ng-src="img/icons/ic_account_circle_black_48px.svg" class="md-avatar" alt="Avatar">
+                <div class="md-list-item-text">
+                    <div layout="row">
+                        <h3>{{$index + 1}}.</h3>
+                        <div>
+                            <h3>{{s.name}}</h3>
+                            <p>{{!s.program.info ? s.program.name : s.program.name + ' - ' + s.program.info}}</p>
+                        </div>
+                    </div>
+                </div>
+            </md-list-item>
+    </md-card-content>
+    </md-list>
+</md-card>

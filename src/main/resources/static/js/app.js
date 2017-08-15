@@ -48,8 +48,20 @@
             })
             .state('studentApplication', {
                 url: '/signup/student',
-                templateUrl : 'templates/student.html',
+                templateUrl : 'templates/student-application.html',
                 data : { pageTitle: 'Анкета абітурієнта УБТС' },
+                resolve: resolveDelay
+            })
+            .state('studentList', {
+                url: '/list/students',
+                templateUrl : 'templates/student-list.html',
+                data : { pageTitle: 'Список абітурієнтів УБТС' },
+                resolve: resolveDelay
+            })
+            .state('studentView', {
+                url: "/view/student/{studentId}",
+                templateUrl: 'templates/student-view.html',
+                data: {pageTitle: 'Інформація про абітурієнта УБТС'},
                 resolve: resolveDelay
             });
     });
@@ -61,10 +73,10 @@
 
     app.run(function($transitions, $rootScope) {
         $transitions.onStart({ }, function(trans) {
-            $rootScope.isSpinnerVisible = true;
+            $rootScope.isMainSpinnerVisible = true;
         });
         $transitions.onFinish({ }, function(trans) {
-            $rootScope.isSpinnerVisible = false;
+            $rootScope.isMainSpinnerVisible = false;
         });
     });
 

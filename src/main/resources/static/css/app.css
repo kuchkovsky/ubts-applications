@@ -2,7 +2,7 @@
     padding: 10px;
 }
 
-#main-card {
+.main-card {
     max-width: 500px;
     margin-left: auto;
     margin-right: auto;
@@ -80,11 +80,11 @@ md-sidenav .md-button {
     animation: 0.5s bounceInDown ease;
 }
 
-.main-content-block.ng-hide-add, #form-progressbar.ng-hide-add {
+.main-content-block.ng-hide-add, .spinner.ng-hide-add, #form-progressbar.ng-hide-add {
     animation: none;
 }
 
-.main-content-block.ng-hide-remove, #form-progressbar.ng-hide-remove {
+.main-content-block.ng-hide-remove, .spinner.ng-hide-remove, #form-progressbar.ng-hide-remove {
     animation: none;
 }
 
@@ -110,4 +110,16 @@ md-sidenav.md-closed.md-locked-open-add-active {
 
 .md-toolbar-tools h2 {
     color: white;
+}
+
+.md-list-item-text > div > h3 {
+    padding-right: 10px !important;
+}
+
+#search {
+    height: 30px;
+}
+
+#search button {
+    margin-top: 10px;
 }

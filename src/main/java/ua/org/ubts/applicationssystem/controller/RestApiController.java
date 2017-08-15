@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+import ua.org.ubts.applicationssystem.dto.StudentListItem;
 import ua.org.ubts.applicationssystem.entity.*;
 import ua.org.ubts.applicationssystem.model.StudentFilesUploadModel;
 import ua.org.ubts.applicationssystem.service.StudentService;
@@ -15,6 +16,7 @@ import ua.org.ubts.applicationssystem.util.UserFilesManager;
 
 import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +44,19 @@ public class RestApiController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(students, HttpStatus.OK);
+    }
+
+    @GetMapping("/students/list")
+    public ResponseEntity<List<StudentListItem>> getStudentList() {
+        List<Student> students = studentService.findAll();
+        if (students.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        List<StudentListItem> studentList = new ArrayList<>();
+        students.forEach(student -> {
+            studentList.add(new StudentListItem(student.getId(), student.getFullSlavicName(), student.getProgram()));
+        });
+        return new ResponseEntity<List<StudentListItem>>(studentList, HttpStatus.OK);
     }
 
     @GetMapping("/students/{id}")
