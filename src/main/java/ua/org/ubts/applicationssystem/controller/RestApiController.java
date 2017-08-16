@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import ua.org.ubts.applicationssystem.dto.StudentListItem;
@@ -37,6 +38,7 @@ public class RestApiController {
     @Autowired
     StudentService studentService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/students")
     public ResponseEntity<List<Student>> getAllStudents() {
         List<Student> students = studentService.findAll();
@@ -46,6 +48,7 @@ public class RestApiController {
         return new ResponseEntity<>(students, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/students/list")
     public ResponseEntity<List<StudentListItem>> getStudentList() {
         List<Student> students = studentService.findAll();
@@ -59,6 +62,7 @@ public class RestApiController {
         return new ResponseEntity<List<StudentListItem>>(studentList, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/students/{id}")
     public ResponseEntity<?> getStudent(@PathVariable("id") Integer id) {
         Student student = studentService.findById(id);
@@ -83,6 +87,7 @@ public class RestApiController {
         return new ResponseEntity<>(new ResponseMessage("OK"), headers, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/students/{id}")
     public ResponseEntity<ResponseMessage> deleteStudent(@PathVariable("id") Integer id) {
         Student student = studentService.findById(id);
@@ -96,6 +101,7 @@ public class RestApiController {
         return new ResponseEntity<>(new ResponseMessage("OK"), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/students")
     public ResponseEntity<ResponseMessage> deleteAllStudents() {
         studentService.deleteAll();

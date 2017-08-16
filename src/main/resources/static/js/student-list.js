@@ -27,7 +27,8 @@
             self.form.students = [];
             var query = self.form.query.toLowerCase();
             self.students.forEach(function (student) {
-                if (query === '' || student.name.toLowerCase().indexOf(query) !== -1) {
+                if (query === '' || student.name.toLowerCase().indexOf(query) !== -1
+                    || student.program.name.toLowerCase().indexOf(query) !== -1) {
                     self.form.students.push(student);
                 }
             });

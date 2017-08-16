@@ -123,3 +123,7 @@ md-sidenav.md-closed.md-locked-open-add-active {
 #search button {
     margin-top: 10px;
 }
+
+#login-form {
+    width: 100%;
+}
