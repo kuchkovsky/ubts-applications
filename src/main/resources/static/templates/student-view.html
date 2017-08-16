@@ -1,8 +1,98 @@
 <md-card class="main-card" ng-controller="studentViewCtrl as ctrl">
     <md-card-header>
     </md-card-header>
-    <md-card-content layout="row" layout-align="space-between">
-        <h1 class="md-display-3 center">Student id = {{ctrl.studentId}}</h1>
+    <md-card-content layout="column" layout-align="space-between">
+        <h1 class="md-display-1 center">{{firstName + " " + middleName + " " + lastName}}</h1>
+        <p>{{program.name + ". " + program.info}}</p>
+        <h3 class="md-headline center">Особисті дані</h3>
+        <p><b>Прізвище:</b> {{lastName}}</p>
+        <p><b>Ім'я:</b> {{firstName}}</p>
+        <p><b>По батькові:</b> {{middleName}}</p>
+        <p><b>Дата народження:</b> {{birthDate | date : "dd.MM.yyyy"}}</p>
+        <p><b>Телефон 1:</b> {{phone1}}</p>
+        <p ng-if="phone2"><b>Телефон 2:</b> {{phon  e2}}</p>
+        <p><b>Email:</b> {{email}}</p>
+        <p><b>Дані про світську освіту:</b> {{education}}</p>
+        <p ng-if="!job"><b>Працює:</b> Ні</p>
+        <p ng-if="maritalData.status != 'Одружений/заміжня'"><b>Сімейний стан:</b> {{maritalData.status}}</p>
+        <p ng-if="!isChurchMember"><b>Чи є членом церкви на даний час:</b> Ні</p>
+        <h3 class="md-headline center">Адреса фактичного місця проживання</h3>
+        <p><b>Країна:</b> {{residence.country}}</p>
+        <p><b>Область:</b> {{residence.region}}</p>
+        <p><b>Місто-село:</b> {{residence.cityVillage}}</p>
+        <p><b>Індекс:</b> {{residence.index}}</p>
+        <p ng-if="residence.district"><b>Район:</b> {{residence.district}}</p>
+        <p><b>Вулиця:</b> {{residence.street}}</p>
+        <p><b>Номер будинку:</b> {{residence.house}}</p>
+        <p ng-if="residence.apartment"><b>Номер квартири:</b> {{residence.apartment}}</p>
+        <div ng-if="maritalData.status === 'Одружений/заміжня'">
+            <h3 class="md-headline center">Сімейний стан</h3>
+            <p>{{maritalData.status}}</p>
+            <p><b>П.І.Б. дружини/чоловіка:</b> {{maritalData.spouseName}}</p>
+            <p><b>Дата реєстрації шлюбу:</b> {{maritalData.marriageDate | date : "dd.MM.yyyy"}}</p>
+            <p><b>Чи є дружина/чоловік членом церкви: </b>
+                <label ng-if="maritalData.isSpouseChurchMember">Так</label>
+                <label ng-if="!maritalData.isSpouseChurchMember">Ні</label></p>
+            <p ng-if="maritalData.isSpouseChurchMember"><b>Яке служіння звершує церкві:</b>
+                {{maritalData.spouseChurchMinistry}}</p>
+            <p><b>Кількість дітей:</b> {{maritalData.childrenNumber}}</p>
+            <p><b>Чи підтримує дружина/чоловік бажання навчатися в семінарії: </b>
+                <label ng-if="maritalData.isSpouseApproveSeminary">Так</label>
+                <label ng-if="!maritalData.isSpouseApproveSeminary">Ні</label></p>
+        </div>
+        <div ng-if="isChurchMember">
+            <h3 class="md-headline center">Інформація про церкву та служіння</h3>
+            <p><b>Чи є членом церкви на даний час: </b>
+                <label ng-if="isChurchMember">Так</label>
+                <label ng-if="!isChurchMember">Ні</label></p>
+            <h3 class="md-subhead center">Дані про церкву, членом якої є абітурієнт</h3>
+            <p><b>Повна назва церкви:</b> {{churchData.name}}</p>
+            <p><b>П.І.Б. пастора:</b> {{churchData.pastorName}}</p>
+            <p><b>Союз чи об'єднання, в яке входить церква:</b> {{churchData.union}}</p>
+            <p><b>Деномінація:</b> {{churchData.denomination}}</p>
+            <p><b>Кількість членів:</b> {{churchData.membersNumber}}</p>
+            <h3 class="md-subhead center">Адреса церкви</h3>
+            <p><b>Область:</b> {{churchData.region}}</p>
+            <p><b>Місто/село:</b> {{churchData.cityVillage}}</p>
+            <p><b>Індекс:</b> {{churchData.index}}</p>
+            <p ng-if="churchData.district"><b>Район:</b> {{churchData.district}}</p>
+            <p><b>Вулиця, номер будинку:</b> {{churchData.streetAndHouseNumber}}</p>
+            <p ng-if="churchData.phone"><b>Телефон:</b> {{churchData.phone}}</p>
+            <h3 class="md-subhead center">Інформація про служіння</h3>
+            <p><b>Дата покаяння:</b> {{churchMinistry.repentanceDate}}</p>
+            <p><b>Дата хрещення:</b> {{churchMinistry.baptismDate}}</p>
+            <p><b>Яке служіння звершує:</b> {{churchMinistry.type}}</p>
+            <p><b>Рукопокладений служитель: </b>
+                <label ng-if="churchMinistry.ordinationDate">Так</label>
+                <label ng-if="!churchMinistry.ordinationDate">Ні</label></p>
+            <p ng-if="churchMinistry.ordinationDate"><b>Дата рукопокладання:</b> {{churchMinistry.ordinationDate}}</p>
+            <p><b>Участь у житті помісної церкви:</b> {{churchMinistry.churchParticipation}}</p>
+            <div ng-if="job">
+                <h3 class="md-headline center">Трудова діяльність</h3>
+                <p><b>Працює:</b> Так</p>
+                <p ng-if="job"><b>Назва посади:</b> {{job}}</p>
+            </div>
+            <h3 class="md-headline center">Фінансові питання</h3>
+            <p><b>Сума, яку абітурієнт планує жертвувати за сесію (один тиждень):</b> {{donationAmount}}</p>
+            <p ng-if="financeComments"><b>Коментарі:</b> {{financeComments}}</p>
+            <h3 class="md-headline center">Стан здоров'я</h3>
+            <p><b>Була залежність від наркотиків, алкоголю, тютюну, азартних
+                чи комп'ютерних ігор, окультна залежність: </b>
+                <label ng-if="healthData.isDrugAddicted">Так</label>
+                <label ng-if="!healthData.isDrugAddicted">Ні</label></p>
+            <p><b>Як оцінює свій загальний стан здоров'я:</b> {{healthData.healthStatus}}</p>
+            <p><b>Приймає постійно ліки в зв'яку з хронічними захворюваннями: </b>
+                <label ng-if="healthData.isTakingMedicine">Так</label>
+                <label ng-if="!healthData.isTakingMedicine">Ні</label></p>
+            <p><b>Чи може стан здоров'я обмежувати чи заважати навчальному процесу: </b>
+                <label ng-if="healthData.hasStudyProblems">Так</label>
+                <label ng-if="!healthData.hasStudyProblems">Ні</label></p>
+            <h3 class="md-headline center">Додаткові запитання</h3>
+            <p><b>Причини, які спонукали до навчання у семінарії. Очікування від навчання:</b>
+                <br>{{reasonsToStudy}}</p>
+            <p><b>Як прийшов до Бога; етапи духовного становлення та стосунки з Богом на даний момент:</b>
+                <br>{{howCameToGod}}</p>
+        </div>
     </md-card-content>
     </md-list>
 </md-card>
