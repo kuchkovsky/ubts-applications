@@ -22,12 +22,13 @@
 
         this.search = function () {
             if (!self.form.query) {
+                self.form.students = self.students.slice();
                 return;
             }
             self.form.students = [];
             var query = self.form.query.toLowerCase();
             self.students.forEach(function (student) {
-                if (query === '' || student.name.toLowerCase().indexOf(query) !== -1
+                if (student.name.toLowerCase().indexOf(query) !== -1
                     || student.program.name.toLowerCase().indexOf(query) !== -1) {
                     self.form.students.push(student);
                 }
