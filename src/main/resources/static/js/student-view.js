@@ -6,9 +6,7 @@
 
     app.controller('studentViewCtrl', function ($scope, $http, $stateParams) {
         this.studentId = $stateParams.studentId;
-        $scope.test = "test";
         $http.get("/api/students/" + $stateParams.studentId).then(function (response) {
-            $scope.test = response.data;
             $scope.firstName=response.data.firstName;
             $scope.middleName=response.data.middleName;
             $scope.lastName=response.data.lastName;
