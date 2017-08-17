@@ -63,12 +63,30 @@
                 templateUrl: 'templates/student-view.html',
                 data: {pageTitle: 'Інформація про абітурієнта УБТС'},
                 resolve: resolveDelay
+            })
+            .state('login', {
+                url: "/login",
+                templateUrl: 'templates/login.html',
+                data: {pageTitle: 'Вхід в систему УБТС'},
+                resolve: resolveDelay
             });
     });
 
-    app.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $state, $stateParams) {
+    app.run(['$rootScope', '$state', '$stateParams', '$http', '$location',
+        function ($rootScope, $state, $stateParams, $http, $location) {
             $rootScope.$state = $state;
             $rootScope.$stateParams = $stateParams;
+            $rootScope.logout = function () {
+                $http.post('auth/logout', {}).finally(function() {
+                    $rootScope.authenticated = false;
+                    $location.path("/");
+                });
+            };
+            $http({method: 'GET', url: 'auth/refresh'}).then(function(response) {
+                if (response.data.access_token !== null) {
+                    $rootScope.authenticated = true;
+                }
+            });
     }]);
 
     app.run(function($transitions, $rootScope) {

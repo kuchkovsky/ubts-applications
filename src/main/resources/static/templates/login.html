@@ -1,0 +1,25 @@
+<md-card class="main-card" ng-controller="loginCtrl as ctrl">
+    <img id="application-logo" ng-src="img/ubts.png" class="md-card-image">
+    <md-card-content layout="row" layout-align="space-between">
+        <form id="login-form" name="loginForm" ng-submit="loginForm.$valid && ctrl.login()">
+            <md-input-container class="md-block">
+                <label>Логін</label>
+                <input required name="username" ng-model="ctrl.credentials.username">
+                <div ng-messages="applicationForm.username.$error">
+                    <div ng-message="required">Обов'язкове поле.</div>
+                </div>
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label>Пароль</label>
+                <input type="password" required name="password" ng-model="ctrl.credentials.password">
+                <div ng-messages="applicationForm.password.$error">
+                    <div ng-message="required">Обов'язкове поле.</div>
+                </div>
+            </md-input-container>
+            <md-button ng-disabled="loginForm.$invalid" class="md-raised md-primary"
+                       type="submit">
+                Увійти
+            </md-button>
+        </form>
+    </md-card-content>
+</md-card>

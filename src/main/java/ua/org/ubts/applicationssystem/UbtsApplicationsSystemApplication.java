@@ -12,4 +12,5 @@ public class UbtsApplicationsSystemApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(UbtsApplicationsSystemApplication.class, args);
 	}
+
 }
