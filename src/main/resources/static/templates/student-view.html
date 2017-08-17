@@ -3,7 +3,7 @@
     </md-card-header>
     <md-card-content layout="column" layout-align="space-between">
         <h1 class="md-display-1 center">{{ctrl.data.firstName + " " + ctrl.data.middleName + " " + ctrl.data.lastName}}</h1>
-        <p>{{ctrl.data.program.name + ". " + ctrl.data.program.info}}</p>
+        <p><b>Програма:</b> {{ctrl.data.program.name + ". " + ctrl.data.program.info}}</p>
         <h3 class="md-headline center">Особисті дані</h3>
         <p><b>Прізвище:</b> {{ctrl.data.lastName}}</p>
         <p><b>Ім'я:</b> {{ctrl.data.firstName}}</p>
@@ -27,7 +27,7 @@
         <p ng-if="ctrl.data.residence.apartment"><b>Номер квартири:</b> {{ctrl.data.residence.apartment}}</p>
         <div ng-if="ctrl.data.maritalData.status === 'Одружений/заміжня'">
             <h3 class="md-headline center">Сімейний стан</h3>
-            <p>{{ctrl.data.maritalData.status}}</p>
+            <p><b>Статус:</b>{{ctrl.data.maritalData.status}}</p>
             <p><b>П.І.Б. дружини/чоловіка:</b> {{ctrl.data.maritalData.spouseName}}</p>
             <p><b>Дата реєстрації шлюбу:</b> {{ctrl.data.maritalData.marriageDate | date : "dd.MM.yyyy"}}</p>
             <p><b>Чи є дружина/чоловік членом церкви: </b>
@@ -45,20 +45,20 @@
             <p><b>Чи є членом церкви на даний час: </b>
                 <label>{{ctrl.data.isChurchMember ? "Так" : "Ні"}}</label>
             </p>
-            <h3 class="md-subhead center">Дані про церкву, членом якої є абітурієнт</h3>
+            <h3 class="md-subhead center"><i>Дані про церкву, членом якої є абітурієнт</i></h3>
             <p><b>Повна назва церкви:</b> {{ctrl.data.churchData.name}}</p>
             <p><b>П.І.Б. пастора:</b> {{ctrl.data.churchData.pastorName}}</p>
             <p><b>Союз чи об'єднання, в яке входить церква:</b> {{ctrl.data.churchData.union}}</p>
             <p><b>Деномінація:</b> {{ctrl.data.churchData.denomination}}</p>
             <p><b>Кількість членів:</b> {{ctrl.data.churchData.membersNumber}}</p>
-            <h3 class="md-subhead center">Адреса церкви</h3>
+            <h3 class="md-subhead center"><i>Адреса церкви</i></h3>
             <p><b>Область:</b> {{ctrl.data.churchData.region}}</p>
             <p><b>Місто/село:</b> {{ctrl.data.churchData.cityVillage}}</p>
             <p><b>Індекс:</b> {{ctrl.data.churchData.index}}</p>
             <p ng-if="ctrl.data.churchData.district"><b>Район:</b> {{ctrl.data.churchData.district}}</p>
             <p><b>Вулиця, номер будинку:</b> {{ctrl.data.churchData.streetAndHouseNumber}}</p>
             <p ng-if="ctrl.data.churchData.phone"><b>Телефон:</b> {{ctrl.data.churchData.phone}}</p>
-            <h3 class="md-subhead center">Інформація про служіння</h3>
+            <h3 class="md-subhead center"><i>Інформація про служіння</i></h3>
             <p><b>Дата покаяння:</b> {{ctrl.data.churchMinistry.repentanceDate}}</p>
             <p><b>Дата хрещення:</b> {{ctrl.data.churchMinistry.baptismDate}}</p>
             <p><b>Яке служіння звершує:</b> {{ctrl.data.churchMinistry.type}}</p>
