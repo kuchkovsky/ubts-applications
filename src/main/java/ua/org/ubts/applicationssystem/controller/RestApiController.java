@@ -11,11 +11,13 @@ import org.springframework.web.util.UriComponentsBuilder;
 import ua.org.ubts.applicationssystem.dto.StudentListItem;
 import ua.org.ubts.applicationssystem.entity.*;
 import ua.org.ubts.applicationssystem.model.StudentFilesUploadModel;
+import ua.org.ubts.applicationssystem.service.ProgramService;
 import ua.org.ubts.applicationssystem.service.StudentService;
 import ua.org.ubts.applicationssystem.util.ResponseMessage;
 import ua.org.ubts.applicationssystem.util.UserFilesManager;
 
-import java.io.IOException;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,9 +38,12 @@ public class RestApiController {
     private ResultSet rs;
 
     @Autowired
-    StudentService studentService;
+    private StudentService studentService;
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @Autowired
+    private ProgramService programService;
+
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/students")
     public ResponseEntity<List<Student>> getAllStudents() {
         List<Student> students = studentService.findAll();
@@ -48,7 +53,7 @@ public class RestApiController {
         return new ResponseEntity<>(students, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/students/list")
     public ResponseEntity<List<StudentListItem>> getStudentList() {
         List<Student> students = studentService.findAll();
@@ -62,7 +67,7 @@ public class RestApiController {
         return new ResponseEntity<List<StudentListItem>>(studentList, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/students/{id}")
     public ResponseEntity<?> getStudent(@PathVariable("id") Integer id) {
         Student student = studentService.findById(id);
@@ -109,7 +114,17 @@ public class RestApiController {
         return new ResponseEntity<>(new ResponseMessage("OK"), HttpStatus.OK);
     }
 
-    @PostMapping("/student/files")
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/programs")
+    public ResponseEntity<List<Program>> getPrograms() {
+        List<Program> programs = programService.findAll();
+        if (programs.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(programs, HttpStatus.OK);
+    }
+
+    @PostMapping("/students/files")
     public ResponseEntity<ResponseMessage> uploadStudentFiles(@ModelAttribute StudentFilesUploadModel model) {
         Student student = studentService.findByName(model.getFirstName(), model.getMiddleName(), model.getLastName());
         if (student == null) {
@@ -135,7 +150,7 @@ public class RestApiController {
         return new ResponseEntity<>(new ResponseMessage("Successfully uploaded"), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/student/files/exist", method = RequestMethod.HEAD)
+    @RequestMapping(value = "/students/files/exist", method = RequestMethod.HEAD)
     public ResponseEntity checkIfStudentFilesExist(@RequestParam("first_name") String firstName,
                                                    @RequestParam("middle_name") String middleName,
                                                    @RequestParam("last_name") String lastName) {
@@ -144,6 +159,30 @@ public class RestApiController {
             return new ResponseEntity(HttpStatus.OK);
         }
         return new ResponseEntity(HttpStatus.NOT_FOUND);
+    }
+
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/students/files/{id}")
+    public void getUserFiles(@PathVariable("id") Integer id, HttpServletResponse response) {
+        Student student = studentService.findById(id);
+        if (student == null) {
+            try {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            } catch (IOException e) {
+                logger.error(e);
+            }
+            return;
+        }
+        try {
+            ByteArrayOutputStream outputStream = UserFilesManager.getStudentFiles(student);
+            String filename = UserFilesManager.getStudentDirectory(student) + ".zip";
+            response.setHeader("Content-Disposition","attachment; filename=\"" + filename + "\"");
+            response.setContentType("application/zip");
+            response.getOutputStream().write(outputStream.toByteArray());
+            response.flushBuffer();
+        } catch (IOException e) {
+            logger.error(e);
+        }
     }
 
     @GetMapping("/import/BaOdDgUxNvLbAnLmKeAa")

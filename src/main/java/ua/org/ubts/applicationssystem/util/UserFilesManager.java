@@ -6,11 +6,13 @@ import org.springframework.web.multipart.MultipartFile;
 import ua.org.ubts.applicationssystem.entity.Student;
 import ua.org.ubts.applicationssystem.model.StudentFilesUploadModel;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.stream.Stream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 public class UserFilesManager {
 
@@ -67,13 +69,35 @@ public class UserFilesManager {
                 + "_" + model.getMiddleName().toLowerCase().substring(0, 1);
     }
 
-    private static String getStudentDirectory(Student student) {
+    public static String getStudentDirectory(Student student) {
         return student.getLastName().toLowerCase() + "_" + student.getFirstName().toLowerCase().substring(0, 1)
                 + "_" + student.getMiddleName().toLowerCase().substring(0, 1);
     }
 
     private static String getFileExtension(MultipartFile file) {
         return file.getOriginalFilename().split("\\.")[1].toLowerCase();
+    }
+
+    public static ByteArrayOutputStream getStudentFiles(Student student) {
+        String dir = APP_FOLDER + "students" + File.separator + getStudentDirectory(student);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try (Stream<Path> paths = Files.walk(Paths.get(dir))) {
+            ZipOutputStream zos = new ZipOutputStream(baos);
+            paths.filter(Files::isRegularFile).forEach(path -> {
+                try {
+                    zos.putNextEntry(new ZipEntry(path.getFileName().toString()));
+                    byte[] bytes = Files.readAllBytes(path);
+                    zos.write(bytes, 0, bytes.length);
+                    zos.closeEntry();
+                } catch (IOException e) {
+                    logger.error(e);
+                }
+            });
+            zos.close();
+        } catch (Exception e) {
+            logger.error(e);
+        }
+        return baos;
     }
 
 }
