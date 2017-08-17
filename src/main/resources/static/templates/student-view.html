@@ -1,99 +1,129 @@
-<md-card class="main-card" ng-controller="studentViewCtrl as ctrl">
+<md-card id="student-view" class="wide-card" ng-controller="studentViewCtrl as ctrl">
     <md-card-header>
+        <section id="heading">
+            <h1 class="md-display-1 center">
+                {{ctrl.student.firstName + " " + ctrl.student.middleName + " " + ctrl.student.lastName}}
+            </h1>
+        </section>
     </md-card-header>
     <md-card-content layout="column" layout-align="space-between">
-        <h1 class="md-display-1 center">{{ctrl.data.firstName + " " + ctrl.data.middleName + " " + ctrl.data.lastName}}</h1>
-        <p><b>Програма:</b> {{ctrl.data.program.name + ". " + ctrl.data.program.info}}</p>
-        <h3 class="md-headline center">Особисті дані</h3>
-        <p><b>Прізвище:</b> {{ctrl.data.lastName}}</p>
-        <p><b>Ім'я:</b> {{ctrl.data.firstName}}</p>
-        <p><b>По батькові:</b> {{ctrl.data.middleName}}</p>
-        <p><b>Дата народження:</b> {{ctrl.data.birthDate | date : "dd.MM.yyyy"}}</p>
-        <p><b>Телефон 1:</b> {{ctrl.data.phone1}}</p>
-        <p ng-if="ctrl.data.phone2"><b>Телефон 2:</b> {{ctrl.data.phone2}}</p>
-        <p><b>Email:</b> {{ctrl.data.email}}</p>
-        <p><b>Дані про світську освіту:</b> {{ctrl.data.education}}</p>
-        <p ng-if="!ctrl.data.job"><b>Працює:</b> Ні</p>
-        <p ng-if="ctrl.data.maritalData.status != 'Одружений/заміжня'"><b>Сімейний стан:</b> {{ctrl.data.maritalData.status}}</p>
-        <p ng-if="!ctrl.data.isChurchMember"><b>Чи є членом церкви на даний час:</b> Ні</p>
-        <h3 class="md-headline center">Адреса фактичного місця проживання</h3>
-        <p><b>Країна:</b> {{ctrl.data.residence.country}}</p>
-        <p><b>Область:</b> {{ctrl.data.residence.region}}</p>
-        <p><b>Місто-село:</b> {{ctrl.data.residence.cityVillage}}</p>
-        <p><b>Індекс:</b> {{ctrl.data.residence.index}}</p>
-        <p ng-if="ctrl.data.residence.district"><b>Район:</b> {{ctrl.data.residence.district}}</p>
-        <p><b>Вулиця:</b> {{ctrl.data.residence.street}}</p>
-        <p><b>Номер будинку:</b> {{ctrl.data.residence.house}}</p>
-        <p ng-if="ctrl.data.residence.apartment"><b>Номер квартири:</b> {{ctrl.data.residence.apartment}}</p>
-        <div ng-if="ctrl.data.maritalData.status === 'Одружений/заміжня'">
+        <section id="program">
+            <p><b>Програма: </b>{{ctrl.student.program.name + ". " + ctrl.student.program.info}}</p>
+        </section>
+        <section id="personal-data">
+            <h3 class="md-headline center">Особисті дані</h3>
+            <p><b>Прізвище: </b>{{ctrl.student.lastName}}</p>
+            <p><b>Ім'я: </b>{{ctrl.student.firstName}}</p>
+            <p><b>По батькові: </b>{{ctrl.student.middleName}}</p>
+            <p><b>Дата народження: </b>{{ctrl.student.birthDate | date : "dd.MM.yyyy"}}</p>
+            <p><b>Телефон 1: </b>{{ctrl.student.phone1}}</p>
+            <p ng-if="ctrl.student.phone2"><b>Телефон 2: </b>{{ctrl.student.phone2}}</p>
+            <p><b>Email: </b>{{ctrl.student.email}}</p>
+        </section>
+        <section id="residence">
+            <h3 class="md-headline center">Адреса фактичного місця проживання</h3>
+            <p><b>Країна: </b>{{ctrl.student.residence.country}}</p>
+            <p><b>Область: </b>{{ctrl.student.residence.region}}</p>
+            <p><b>Місто-село: </b>{{ctrl.student.residence.cityVillage}}</p>
+            <p><b>Індекс: </b>{{ctrl.student.residence.index}}</p>
+            <p ng-if="ctrl.student.residence.district"><b>Район: </b>{{ctrl.student.residence.district}}</p>
+            <p><b>Вулиця: </b>{{ctrl.student.residence.street}}</p>
+            <p><b>Номер будинку: </b>{{ctrl.student.residence.house}}</p>
+            <p ng-if="ctrl.student.residence.apartment"><b>Номер квартири: </b>{{ctrl.student.residence.apartment}}</p>
+        </section>
+        <section id="education">
+            <h3 class="md-headline center">Дані про світську освіту</h3>
+            <p><b>Рівень освіти: </b>{{ctrl.student.education}}</p>
+        </section>
+        <section id="marital-data">
             <h3 class="md-headline center">Сімейний стан</h3>
-            <p><b>Статус:</b>{{ctrl.data.maritalData.status}}</p>
-            <p><b>П.І.Б. дружини/чоловіка:</b> {{ctrl.data.maritalData.spouseName}}</p>
-            <p><b>Дата реєстрації шлюбу:</b> {{ctrl.data.maritalData.marriageDate | date : "dd.MM.yyyy"}}</p>
-            <p><b>Чи є дружина/чоловік членом церкви: </b>
-                <label>{{ctrl.data.maritalData.isSpouseChurchMember ? "Так" : "Ні"}}</label>
-            </p>
-            <p ng-if="ctrl.data.maritalData.isSpouseChurchMember"><b>Яке служіння звершує церкві:</b>
-                {{ctrl.data.maritalData.spouseChurchMinistry}}</p>
-            <p><b>Кількість дітей:</b> {{ctrl.data.maritalData.childrenNumber}}</p>
-            <p><b>Чи підтримує дружина/чоловік бажання навчатися в семінарії: </b>
-                <label>{{ctrl.data.maritalData.isSpouseApproveSeminary ? "Так" : "Ні"}}</label>
-            </p>
-        </div>
-        <div ng-if="ctrl.data.isChurchMember">
-            <h3 class="md-headline center">Інформація про церкву та служіння</h3>
-            <p><b>Чи є членом церкви на даний час: </b>
-                <label>{{ctrl.data.isChurchMember ? "Так" : "Ні"}}</label>
-            </p>
-            <h3 class="md-subhead center"><i>Дані про церкву, членом якої є абітурієнт</i></h3>
-            <p><b>Повна назва церкви:</b> {{ctrl.data.churchData.name}}</p>
-            <p><b>П.І.Б. пастора:</b> {{ctrl.data.churchData.pastorName}}</p>
-            <p><b>Союз чи об'єднання, в яке входить церква:</b> {{ctrl.data.churchData.union}}</p>
-            <p><b>Деномінація:</b> {{ctrl.data.churchData.denomination}}</p>
-            <p><b>Кількість членів:</b> {{ctrl.data.churchData.membersNumber}}</p>
-            <h3 class="md-subhead center"><i>Адреса церкви</i></h3>
-            <p><b>Область:</b> {{ctrl.data.churchData.region}}</p>
-            <p><b>Місто/село:</b> {{ctrl.data.churchData.cityVillage}}</p>
-            <p><b>Індекс:</b> {{ctrl.data.churchData.index}}</p>
-            <p ng-if="ctrl.data.churchData.district"><b>Район:</b> {{ctrl.data.churchData.district}}</p>
-            <p><b>Вулиця, номер будинку:</b> {{ctrl.data.churchData.streetAndHouseNumber}}</p>
-            <p ng-if="ctrl.data.churchData.phone"><b>Телефон:</b> {{ctrl.data.churchData.phone}}</p>
-            <h3 class="md-subhead center"><i>Інформація про служіння</i></h3>
-            <p><b>Дата покаяння:</b> {{ctrl.data.churchMinistry.repentanceDate}}</p>
-            <p><b>Дата хрещення:</b> {{ctrl.data.churchMinistry.baptismDate}}</p>
-            <p><b>Яке служіння звершує:</b> {{ctrl.data.churchMinistry.type}}</p>
-            <p><b>Рукопокладений служитель: </b>
-                <label>{{ctrl.data.churchMinistry.ordinationDate ? "Так" : "Ні"}}</label>
-            </p>
-            <p ng-if="ctrl.data.churchMinistry.ordinationDate"><b>Дата рукопокладання:</b>
-                {{ctrl.data.churchMinistry.ordinationDate}}</p>
-            <p><b>Участь у житті помісної церкви:</b> {{ctrl.data.churchMinistry.churchParticipation}}</p>
-            <div ng-if="ctrl.data.job">
-                <h3 class="md-headline center">Трудова діяльність</h3>
-                <p><b>Працює:</b> Так</p>
-                <p ng-if="ctrl.data.job"><b>Назва посади:</b> {{ctrl.data.job}}</p>
+            <p><b>Статус: </b>{{ctrl.student.maritalData.status}}</p>
+            <div ng-if="ctrl.student.maritalData.status === 'Одружений/заміжня'">
+                <p><b>П.І.Б. дружини/чоловіка: </b>{{ctrl.student.maritalData.spouseName}}</p>
+                <p><b>Дата реєстрації шлюбу: </b>{{ctrl.student.maritalData.marriageDate | date : "dd.MM.yyyy"}}</p>
+                <p><b>Чи є дружина/чоловік членом церкви: </b>
+                    <label>{{ctrl.student.maritalData.isSpouseChurchMember ? "Так" : "Ні"}}</label>
+                </p>
+                <p ng-if="ctrl.student.maritalData.isSpouseChurchMember">
+                    <b>Яке служіння звершує церкві: </b>{{ctrl.student.maritalData.spouseChurchMinistry}}
+                </p>
+                <p><b>Кількість дітей: </b>{{ctrl.student.maritalData.childrenNumber}}</p>
+                <p><b>Чи підтримує дружина/чоловік бажання навчатися в семінарії: </b>
+                    <label>{{ctrl.student.maritalData.isSpouseApproveSeminary ? "Так" : "Ні"}}</label>
+                </p>
             </div>
+        </section>
+        <section id="church-info">
+            <h3 class="md-headline center">Інформація про церкву та служіння</h3>
+            <p><b>Статус: </b>{{ctrl.student.isChurchMember ? 'Є членом церкви' : 'Не є членом церкви'}}</p>
+            <div ng-if="ctrl.student.isChurchMember">
+                <section id="church-data">
+                    <h3 class="md-subhead center">Дані про церкву, членом якої є абітурієнт</h3>
+                    <p><b>Повна назва церкви: </b>{{ctrl.student.churchData.name}}</p>
+                    <p><b>П.І.Б. пастора: </b>{{ctrl.student.churchData.pastorName}}</p>
+                    <p><b>Союз чи об'єднання, в яке входить церква: </b>{{ctrl.student.churchData.union}}</p>
+                    <p><b>Деномінація: </b>{{ctrl.student.churchData.denomination}}</p>
+                    <p><b>Кількість членів: </b>{{ctrl.student.churchData.membersNumber}}</p>
+                </section>
+                <section id="church-address">
+                    <h3 class="md-subhead center">Адреса церкви</h3>
+                    <p><b>Область: </b>{{ctrl.student.churchData.region}}</p>
+                    <p><b>Місто/село: </b>{{ctrl.student.churchData.cityVillage}}</p>
+                    <p><b>Індекс: </b>{{ctrl.student.churchData.index}}</p>
+                    <p ng-if="ctrl.student.churchData.district"><b>Район: </b>{{ctrl.student.churchData.district}}</p>
+                    <p><b>Вулиця, номер будинку: </b>{{ctrl.student.churchData.streetAndHouseNumber}}</p>
+                    <p ng-if="ctrl.student.churchData.phone"><b>Телефон: </b>{{ctrl.student.churchData.phone}}</p>
+                </section>
+                <section id="ministry-info">
+                    <h3 class="md-subhead center">Інформація про служіння</h3>
+                    <p><b>Рік покаяння: </b>{{ctrl.student.churchMinistry.repentanceDate}}</p>
+                    <p><b>Рік хрещення: </b>{{ctrl.student.churchMinistry.baptismDate}}</p>
+                    <p><b>Яке служіння звершує: </b>{{ctrl.student.churchMinistry.type}}</p>
+                    <p><b>Рукопокладений служитель: </b>
+                        <label>{{ctrl.student.churchMinistry.ordinationDate ? "Так" : "Ні"}}</label>
+                    </p>
+                    <p ng-if="ctrl.student.churchMinistry.ordinationDate">
+                        <b>Дата рукопокладання: </b>{{ctrl.student.churchMinistry.ordinationDate}}
+                    </p>
+                    <p><b>Участь у житті помісної церкви: </b>{{ctrl.student.churchMinistry.churchParticipation}}</p>
+                </section>
+            </div>
+        </section>
+        <section id="job">
+            <h3 class="md-headline center">Трудова діяльність</h3>
+            <p><b>Статус: </b>{{ctrl.student.job ? 'Працює' : 'Не працює'}}</p>
+            <p ng-if="ctrl.student.job"><b>Назва посади: </b>{{ctrl.student.job}}</p>
+        </section>
+        <section id="finance-questions">
             <h3 class="md-headline center">Фінансові питання</h3>
-            <p><b>Сума, яку абітурієнт планує жертвувати за сесію (один тиждень):</b> {{ctrl.data.donationAmount}}</p>
-            <p ng-if="ctrl.data.financeComments"><b>Коментарі:</b> {{ctrl.data.financeComments}}</p>
+            <p><b>Сума, яку абітурієнт планує жертвувати за сесію (один тиждень): </b>{{ctrl.student.donationAmount}}</p>
+            <p ng-if="ctrl.student.financeComments"><b>Коментарі: </b>{{ctrl.student.financeComments}}</p>
+        </section>
+        <section id="health-status">
             <h3 class="md-headline center">Стан здоров'я</h3>
             <p><b>Була залежність від наркотиків, алкоголю, тютюну, азартних
                 чи комп'ютерних ігор, окультна залежність: </b>
-                <label>{{ctrl.data.healthData.isDrugAddicted ? "Так" : "Ні"}}</label>
+                <label>{{ctrl.student.healthData.isDrugAddicted ? "Так" : "Ні"}}</label>
             </p>
-            <p><b>Як оцінює свій загальний стан здоров'я:</b> {{ctrl.data.healthData.healthStatus}}</p>
+            <p><b>Як оцінює свій загальний стан здоров'я: </b>{{ctrl.student.healthData.healthStatus}}</p>
             <p><b>Приймає постійно ліки в зв'яку з хронічними захворюваннями: </b>
-                <label>{{ctrl.data.healthData.isTakingMedicine ? "Так" : "Ні"}}</label>
+                <label>{{ctrl.student.healthData.isTakingMedicine ? "Так" : "Ні"}}</label>
             </p>
             <p><b>Чи може стан здоров'я обмежувати чи заважати навчальному процесу: </b>
-                <label>{{ctrl.data.healthData.hasStudyProblems ? "Так" : "Ні"}}</label>
+                <label>{{ctrl.student.healthData.hasStudyProblems ? "Так" : "Ні"}}</label>
             </p>
+        </section>
+        <section id="additional-questions">
             <h3 class="md-headline center">Додаткові запитання</h3>
             <p><b>Причини, які спонукали до навчання у семінарії. Очікування від навчання:</b>
-                <br>{{ctrl.data.reasonsToStudy}}</p>
+                <br>
+                {{ctrl.student.reasonsToStudy}}
+            </p>
             <p><b>Як прийшов до Бога; етапи духовного становлення та стосунки з Богом на даний момент:</b>
-                <br>{{ctrl.data.howCameToGod}}</p>
-        </div>
+                <br>
+                {{ctrl.student.howCameToGod}}
+            </p>
+        </section>
     </md-card-content>
     </md-list>
 </md-card>
