@@ -112,8 +112,8 @@ md-sidenav.md-closed.md-locked-open-add-active {
     color: white;
 }
 
-.md-list-item-text > div > h3 {
-    padding-right: 10px !important;
+.list-item-index {
+    padding-right: 5px !important;
 }
 
 #search {

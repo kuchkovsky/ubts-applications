@@ -18,7 +18,7 @@
                 <img ng-src="img/icons/ic_account_circle_black_48px.svg" class="md-avatar" alt="Avatar">
                 <div class="md-list-item-text">
                     <div layout="row">
-                        <h3>{{$index + 1}}.</h3>
+                        <div class="list-item-index"><h3>{{$index + 1}}.</h3></div>
                         <div>
                             <h3>{{s.name}}</h3>
                             <p>{{!s.program.info ? s.program.name : s.program.name + ' - ' + s.program.info}}</p>
