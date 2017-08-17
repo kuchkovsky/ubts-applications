@@ -16,6 +16,9 @@
                     <div ng-message="required">Обов'язкове поле.</div>
                 </div>
             </md-input-container>
+            <div ng-show="ctrl.error" class="md-caption form-error-message center error">
+                Неправильний пароль
+            </div>
             <md-button ng-disabled="loginForm.$invalid" class="md-raised md-primary"
                        type="submit">
                 Увійти

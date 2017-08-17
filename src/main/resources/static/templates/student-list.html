@@ -1,13 +1,10 @@
 <md-card class="main-card" ng-controller="studentListCtrl as ctrl">
     <md-card-header>
         <div layout="row" flex id="search">
-            <md-input-container class="md-block" flex="80">
+            <md-input-container class="md-block" flex>
                 <label>Ім'я абітурієнта або назва факультету</label>
                 <input name="query" ng-model="ctrl.form.query" ng-keyup="ctrl.search()">
             </md-input-container>
-            <md-button class="md-raised md-primary" flex="20" ng-click="ctrl.search()">
-                Шукати
-            </md-button>
         </div>
     </md-card-header>
     <md-card-content layout="row" layout-align="space-between">
