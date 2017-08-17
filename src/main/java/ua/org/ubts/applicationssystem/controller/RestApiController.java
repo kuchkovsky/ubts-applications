@@ -156,7 +156,7 @@ public class RestApiController {
         educationMap.put(4, "Вища");
 
         Map<String, String> programMap = new HashMap<>();
-        programMap.put("bps", "'Бакалавр пасторського служіння");
+        programMap.put("bps", "Бакалавр пасторського служіння");
         programMap.put("bcs-onc", "Бакалавр церковного служіння. Спеціалізація - організація нових церков");
         programMap.put("bcs-otrcs",
                 "Бакалавр церковного служіння. Спеціалізація - організація та розвиток церковних служінь");
