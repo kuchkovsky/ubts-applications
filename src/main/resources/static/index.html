@@ -50,6 +50,20 @@
             <ui-view class="main-content-block" ng-show="!isMainSpinnerVisible"></ui-view>
         </md-content>
     </md-content>
+    <md-fab-speed-dial ng-show="$state.current.name === 'studentView'"
+                       md-direction="up" class="md-fling md-fab-bottom-right">
+        <md-fab-trigger>
+            <md-button class="md-fab" aria-label="Menu">
+                <md-icon md-svg-src="img/icons/ic_menu_white_24px.svg"></md-icon>
+            </md-button>
+        </md-fab-trigger>
+        <md-fab-actions>
+            <md-button class="md-fab mad-raised md-mini" aria-label="Download files"
+                       ng-href="/api/students/files/{{studentId}}">
+                <md-icon md-svg-src="img/icons/ic_file_download_white_24px.svg"></md-icon>
+            </md-button>
+        </md-fab-actions>
+    </md-fab-speed-dial>
 </md-content>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-animate.min.js"></script>

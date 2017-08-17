@@ -2,8 +2,14 @@
     padding: 10px;
 }
 
-.main-card {
+.application-card {
     max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.wide-card {
+    max-width: 842px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -124,6 +130,10 @@ md-sidenav.md-closed.md-locked-open-add-active {
     margin-top: 10px;
 }
 
-#login-form {
+#login-form, #heading {
     width: 100%;
+}
+
+#student-view {
+    padding: 20px;
 }

@@ -8,6 +8,30 @@
     var app = angular.module('ubtsApplSystem',
         ['ngMaterial', 'ngMessages', 'ngAnimate', 'lfNgMdFileInput', 'duScroll', 'ui.router']);
 
+    app.service('downloadService', function ($http) {
+
+        function download(url, onSuccess, onError) {
+            $http.get(url).then(function (response) {
+                onSuccess(response.data);
+            }, function () {
+                onError();
+            });
+        }
+
+        this.getStudentList = function (onSuccess, onError) {
+            download('/api/students/list', onSuccess, onError);
+        };
+
+        this.getStudent = function (id, onSuccess, onError) {
+            download('/api/students/' + id, onSuccess, onError);
+        };
+
+        this.getPrograms = function (onSuccess, onError) {
+            download('/api/programs', onSuccess, onError);
+        };
+
+    });
+
     app.config(function($mdThemingProvider) {
         $mdThemingProvider.definePalette('ubtsBrownOrange', {
             '50': 'fbe9e7',
