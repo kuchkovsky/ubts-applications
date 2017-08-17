@@ -1,8 +1,8 @@
-<md-card class="main-card" ng-controller="studentApplicationCtrl as ctrl">
+<md-card class="application-card" ng-controller="studentApplicationCtrl as ctrl">
     <img id="application-logo" ng-src="{{ctrl.form.logo}}" class="md-card-image">
     <md-card-content layout="row" layout-align="space-between">
         <form name="applicationForm" ng-submit="applicationForm.$valid && ctrl.submit()">
-            <div id="heading">
+            <section id="heading">
                 <p class="md-subhead">
                     Для того, щоб заповнити цю анкету, будь ласка, спочатку підготуйте скан-копії або фото в
                     добрій якості таких документів: паспорт (перша,  друга сторінки та сторінка з пропискою),
@@ -22,8 +22,8 @@
                     **У разі виникнення будь-яких труднощів ви можете звернутись за телефоном
                     <a href="tel:+380989228321">0989228321</a>.
                 </p>
-            </div>
-            <div id="program">
+            </section>
+            <section id="program">
                 <h3 class="md-title">За якою програмою бажаєте навчатися?</h3>
                 <md-radio-group ng-model="ctrl.student.program.name">
                     <div ng-show="ctrl.student.program.name !== ctrl.radios.program.prml" class="prml-hide">
@@ -91,8 +91,8 @@
                         </md-radio-group>
                     </div>
                 </md-radio-group>
-            </div>
-            <div id="personal-data">
+            </section>
+            <section id="personal-data">
                 <h3 class="md-headline center">Особисті дані</h3>
                 <md-input-container class="md-block">
                     <label>Прізвище</label>
@@ -146,6 +146,8 @@
                         <div ng-message="required">Обов'язкове поле.</div>
                     </div>
                 </md-input-container>
+            </section>
+            <section id="residence">
                 <h3 class="md-headline center">Адреса фактичного місця проживання</h3>
                 <md-input-container class="md-block">
                     <label>Країна</label>
@@ -197,8 +199,8 @@
                     <label>Номер квартири</label>
                     <input name="apartment" ng-model="ctrl.student.residence.apartment">
                 </md-input-container>
-            </div>
-            <div id="education">
+            </section>
+            <section id="education">
                 <h3 class="md-headline center">Дані про світську освіту</h3>
                 <md-radio-group class="md-primary" ng-model="ctrl.student.education">
                     <md-radio-button ng-value="ctrl.radios.education.secondaryEducation">
@@ -214,8 +216,8 @@
                         {{ctrl.radios.education.higherEducation}}
                     </md-radio-button>
                 </md-radio-group>
-            </div>
-            <div id="marital-data">
+            </section>
+            <section id="marital-data">
                 <h3 class="md-headline center">Сімейний стан</h3>
                 <md-radio-group class="md-primary" ng-model="ctrl.student.maritalData.status">
                     <md-radio-button ng-value="ctrl.radios.maritalStatus.notMarried">
@@ -254,39 +256,56 @@
                             <div ng-message="required">Обов'язкове поле.</div>
                         </div>
                     </md-input-container>
-                    <h5 class="md-subhead">Чи є ваша дружина/чоловік членом церкви?</h5>
-                    <md-radio-group class="md-primary" ng-model="ctrl.form.student.maritalData.isSpouseChurchMember">
-                        <md-radio-button ng-value="true">
-                            {{ctrl.radios.answers.yes}}
-                        </md-radio-button>
-                        <md-radio-button ng-value="false">
-                            {{ctrl.radios.answers.no}}
-                        </md-radio-button>
-                    </md-radio-group>
-                    <div id="church-ministry-input" ng-show="ctrl.form.student.maritalData.isSpouseChurchMember">
-                        <md-input-container class="md-block">
-                            <label>Яке служіння звершує церкві?</label>
-                            <textarea name="spouseChurchMinistry"
-                                      ng-model="ctrl.form.student.maritalData.spouseChurchMinistry"
-                                      ng-required="ctrl.student.maritalData.status ===
+                    <section>
+                        <h5 class="md-subhead">Чи є ваша дружина/чоловік членом церкви?</h5>
+                        <md-radio-group class="md-primary" ng-model="ctrl.form.student.maritalData.isSpouseChurchMember">
+                            <md-radio-button ng-value="true">
+                                {{ctrl.radios.answers.yes}}
+                            </md-radio-button>
+                            <md-radio-button ng-value="false">
+                                {{ctrl.radios.answers.no}}
+                            </md-radio-button>
+                        </md-radio-group>
+                    </section>
+                    <md-input-container id="church-ministry-input" class="md-block"
+                                        ng-show="ctrl.form.student.maritalData.isSpouseChurchMember">
+                        <label>Яке служіння звершує церкві?</label>
+                        <textarea name="spouseChurchMinistry"
+                                  ng-model="ctrl.form.student.maritalData.spouseChurchMinistry"
+                                  ng-required="ctrl.student.maritalData.status ===
                                                   ctrl.radios.maritalStatus.married
                                                   && ctrl.form.student.maritalData.isSpouseChurchMember"
-                                      md-maxlength="300"></textarea>
-                            <div ng-messages="applicationForm.spouseChurchMinistry.$error"
-                                 ng-show="applicationForm.spouseChurchMinistry.$dirty">
-                                <div ng-message="required">Обов'язкове поле.</div>
-                                <div ng-message="md-maxlength">Довжина поля перевищує максимально допустиму!</div>
-                            </div>
-                        </md-input-container>
-                    </div>
-                    <div layout="row" layout-align="space-between center">
+                                  md-maxlength="3000"></textarea>
+                        <div ng-messages="applicationForm.spouseChurchMinistry.$error"
+                             ng-show="applicationForm.spouseChurchMinistry.$dirty">
+                            <div ng-message="required">Обов'язкове поле.</div>
+                            <div ng-message="md-maxlength">Довжина поля перевищує максимально допустиму!</div>
+                        </div>
+                    </md-input-container>
+                    <section layout="row" layout-align="space-between center">
                         <span>Скільки у вас дітей?</span>
                         <md-select ng-model="ctrl.form.student.maritalData.childrenNumber">
                             <md-option ng-repeat="i in ctrl.optionsArray" ng-value="i"">{{i}}</md-option>
                         </md-select>
-                    </div>
-                    <h5 class="md-subhead">Чи підтримує дружина/чоловік ваше бажання навчатися в семінарії?</h5>
-                    <md-radio-group class="md-primary" ng-model="ctrl.form.student.maritalData.isSpouseApproveSeminary">
+                    </section>
+                    <section>
+                        <h5 class="md-subhead">Чи підтримує дружина/чоловік ваше бажання навчатися в семінарії?</h5>
+                        <md-radio-group class="md-primary" ng-model="ctrl.form.student.maritalData.isSpouseApproveSeminary">
+                            <md-radio-button ng-value="true">
+                                {{ctrl.radios.answers.yes}}
+                            </md-radio-button>
+                            <md-radio-button ng-value="false">
+                                {{ctrl.radios.answers.no}}
+                            </md-radio-button>
+                        </md-radio-group>
+                    </section>
+                </div>
+            </section>
+            <section id="church-info">
+                <h3 class="md-headline center">Інформація про церкву та служіння</h3>
+                <section>
+                    <h3 class="md-subhead">Чи є ви членом церкви на даний час?</h3>
+                    <md-radio-group class="md-primary" ng-model="ctrl.form.student.isChurchMember">
                         <md-radio-button ng-value="true">
                             {{ctrl.radios.answers.yes}}
                         </md-radio-button>
@@ -294,115 +313,109 @@
                             {{ctrl.radios.answers.no}}
                         </md-radio-button>
                     </md-radio-group>
-                </div>
-            </div>
-            <div id="church">
-                <h3 class="md-headline center">Інформація про церкву та служіння</h3>
-                <h3 class="md-subhead">Чи є ви членом церкви на даний час?</h3>
-                <md-radio-group class="md-primary" ng-model="ctrl.form.student.isChurchMember">
-                    <md-radio-button ng-value="true">
-                        {{ctrl.radios.answers.yes}}
-                    </md-radio-button>
-                    <md-radio-button ng-value="false">
-                        {{ctrl.radios.answers.no}}
-                    </md-radio-button>
-                </md-radio-group>
+                </section>
                 <div class="big-block" ng-show="ctrl.form.student.isChurchMember">
-                    <div id="church-data">
-                        <h3 class="md-subhead center">Дані про церкву, членом якої ви є</h3>
-                        <md-input-container class="md-block">
-                            <label>Повна назва церкви</label>
-                            <input ng-required="ctrl.form.student.isChurchMember"
-                                   name="churchName" ng-model="ctrl.form.student.churchData.name">
-                            <div ng-messages="applicationForm.churchName.$error">
-                                <div ng-message="required">Обов'язкове поле.</div>
-                            </div>
-                        </md-input-container>
-                        <md-input-container class="md-block">
-                            <label>П.І.Б. пастора</label>
-                            <input ng-required="ctrl.form.student.isChurchMember"
-                                   name="pastorName" ng-model="ctrl.form.student.churchData.pastorName">
-                            <div ng-messages="applicationForm.pastorName.$error">
-                                <div ng-message="required">Обов'язкове поле.</div>
-                            </div>
-                        </md-input-container>
-                        <md-input-container class="md-block">
-                            <label>Союз чи об'єднання, в яке входить церква</label>
-                            <input ng-required="ctrl.form.student.isChurchMember"
-                                   name="churchUnion" ng-model="ctrl.form.student.churchData.union">
-                            <div ng-messages="applicationForm.churchUnion.$error">
-                                <div ng-message="required">Обов'язкове поле.</div>
-                            </div>
-                        </md-input-container>
-                        <md-input-container class="md-block">
-                            <label>Деномінація</label>
-                            <input ng-required="ctrl.form.student.isChurchMember"
-                                   name="denomination" ng-model="ctrl.form.student.churchData.denomination">
-                            <div ng-messages="applicationForm.denomination.$error">
-                                <div ng-message="required">Обов'язкове поле.</div>
-                            </div>
-                        </md-input-container>
-                        <h3 class="md-subhead">Кількість членів</h3>
-                        <md-radio-group class="md-primary" ng-model="ctrl.form.student.churchData.membersNumber">
-                            <md-radio-button ng-value="ctrl.radios.membersNumber.lessThen10">
-                                {{ctrl.radios.membersNumber.lessThen10}}
-                            </md-radio-button>
-                            <md-radio-button ng-value="ctrl.radios.membersNumber.from10to20">
-                                {{ctrl.radios.membersNumber.from10to20}}
-                            </md-radio-button>
-                            <md-radio-button ng-value="ctrl.radios.membersNumber.from20to100">
-                                {{ctrl.radios.membersNumber.from20to100}}
-                            </md-radio-button>
-                            <md-radio-button ng-value="ctrl.radios.membersNumber.from100to300">
-                                {{ctrl.radios.membersNumber.from100to300}}
-                            </md-radio-button>
-                            <md-radio-button ng-value="ctrl.radios.membersNumber.greaterThen300">
-                                {{ctrl.radios.membersNumber.greaterThen300}}
-                            </md-radio-button>
-                        </md-radio-group>
-                        <h3 class="md-subhead center">Адреса церкви</h3>
-                        <md-input-container class="md-block">
-                            <label>Область</label>
-                            <input ng-required="ctrl.form.student.isChurchMember"
-                                   name="churchRegion" ng-model="ctrl.form.student.churchData.region">
-                            <div ng-messages="applicationForm.churchRegion.$error">
-                                <div ng-message="required">Обов'язкове поле.</div>
-                            </div>
-                        </md-input-container>
-                        <md-input-container class="md-block">
-                            <label>Місто/село</label>
-                            <input ng-required="ctrl.form.student.isChurchMember"
-                                   name="churchCityVillage" ng-model="ctrl.form.student.churchData.cityVillage">
-                            <div ng-messages="applicationForm.churchCityVillage.$error">
-                                <div ng-message="required">Обов'язкове поле.</div>
-                            </div>
-                        </md-input-container>
-                        <md-input-container class="md-block">
-                            <label>Індекс</label>
-                            <input ng-required="ctrl.form.student.isChurchMember"
-                                   name="churchIndex" ng-model="ctrl.form.student.churchData.index">
-                            <div ng-messages="applicationForm.churchIndex.$error">
-                                <div ng-message="required">Обов'язкове поле.</div>
-                            </div>
-                        </md-input-container>
-                        <md-input-container class="md-block">
-                            <label>Район</label>
-                            <input name="churchDistrict" ng-model="ctrl.form.student.churchData.district">
-                        </md-input-container>
-                        <md-input-container class="md-block">
-                            <label>Вулиця, номер будинку</label>
-                            <input ng-required="ctrl.form.student.isChurchMember"
-                                   name="churchStreetAndHouseNumber" ng-model="ctrl.form.student.churchData.streetAndHouseNumber">
-                            <div ng-messages="applicationForm.churchStreetAndHouseNumber.$error">
-                                <div ng-message="required">Обов'язкове поле.</div>
-                            </div>
-                        </md-input-container>
-                        <md-input-container class="md-block">
-                            <label>Телефон</label>
-                            <input name="churchPhone" ng-model="ctrl.form.student.churchData.phone">
-                        </md-input-container>
-                    </div>
-                    <div id="church-ministry">
+                    <section id="church-data">
+                        <section>
+                            <h3 class="md-subhead center">Дані про церкву, членом якої ви є</h3>
+                            <md-input-container class="md-block">
+                                <label>Повна назва церкви</label>
+                                <input ng-required="ctrl.form.student.isChurchMember"
+                                       name="churchName" ng-model="ctrl.form.student.churchData.name">
+                                <div ng-messages="applicationForm.churchName.$error">
+                                    <div ng-message="required">Обов'язкове поле.</div>
+                                </div>
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>П.І.Б. пастора</label>
+                                <input ng-required="ctrl.form.student.isChurchMember"
+                                       name="pastorName" ng-model="ctrl.form.student.churchData.pastorName">
+                                <div ng-messages="applicationForm.pastorName.$error">
+                                    <div ng-message="required">Обов'язкове поле.</div>
+                                </div>
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Союз чи об'єднання, в яке входить церква</label>
+                                <input ng-required="ctrl.form.student.isChurchMember"
+                                       name="churchUnion" ng-model="ctrl.form.student.churchData.union">
+                                <div ng-messages="applicationForm.churchUnion.$error">
+                                    <div ng-message="required">Обов'язкове поле.</div>
+                                </div>
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Деномінація</label>
+                                <input ng-required="ctrl.form.student.isChurchMember"
+                                       name="denomination" ng-model="ctrl.form.student.churchData.denomination">
+                                <div ng-messages="applicationForm.denomination.$error">
+                                    <div ng-message="required">Обов'язкове поле.</div>
+                                </div>
+                            </md-input-container>
+                        </section>
+                        <section>
+                            <h3 class="md-subhead">Кількість членів</h3>
+                            <md-radio-group class="md-primary" ng-model="ctrl.form.student.churchData.membersNumber">
+                                <md-radio-button ng-value="ctrl.radios.membersNumber.lessThen10">
+                                    {{ctrl.radios.membersNumber.lessThen10}}
+                                </md-radio-button>
+                                <md-radio-button ng-value="ctrl.radios.membersNumber.from10to20">
+                                    {{ctrl.radios.membersNumber.from10to20}}
+                                </md-radio-button>
+                                <md-radio-button ng-value="ctrl.radios.membersNumber.from20to100">
+                                    {{ctrl.radios.membersNumber.from20to100}}
+                                </md-radio-button>
+                                <md-radio-button ng-value="ctrl.radios.membersNumber.from100to300">
+                                    {{ctrl.radios.membersNumber.from100to300}}
+                                </md-radio-button>
+                                <md-radio-button ng-value="ctrl.radios.membersNumber.greaterThen300">
+                                    {{ctrl.radios.membersNumber.greaterThen300}}
+                                </md-radio-button>
+                            </md-radio-group>
+                        </section>
+                        <section>
+                            <h3 class="md-subhead center">Адреса церкви</h3>
+                            <md-input-container class="md-block">
+                                <label>Область</label>
+                                <input ng-required="ctrl.form.student.isChurchMember"
+                                       name="churchRegion" ng-model="ctrl.form.student.churchData.region">
+                                <div ng-messages="applicationForm.churchRegion.$error">
+                                    <div ng-message="required">Обов'язкове поле.</div>
+                                </div>
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Місто/село</label>
+                                <input ng-required="ctrl.form.student.isChurchMember"
+                                       name="churchCityVillage" ng-model="ctrl.form.student.churchData.cityVillage">
+                                <div ng-messages="applicationForm.churchCityVillage.$error">
+                                    <div ng-message="required">Обов'язкове поле.</div>
+                                </div>
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Індекс</label>
+                                <input ng-required="ctrl.form.student.isChurchMember"
+                                       name="churchIndex" ng-model="ctrl.form.student.churchData.index">
+                                <div ng-messages="applicationForm.churchIndex.$error">
+                                    <div ng-message="required">Обов'язкове поле.</div>
+                                </div>
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Район</label>
+                                <input name="churchDistrict" ng-model="ctrl.form.student.churchData.district">
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Вулиця, номер будинку</label>
+                                <input ng-required="ctrl.form.student.isChurchMember"
+                                       name="churchStreetAndHouseNumber" ng-model="ctrl.form.student.churchData.streetAndHouseNumber">
+                                <div ng-messages="applicationForm.churchStreetAndHouseNumber.$error">
+                                    <div ng-message="required">Обов'язкове поле.</div>
+                                </div>
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Телефон</label>
+                                <input name="churchPhone" ng-model="ctrl.form.student.churchData.phone">
+                            </md-input-container>
+                        </section>
+                    </section>
+                    <section id="church-ministry">
                         <h3 class="md-subhead center">Інформація про служіння</h3>
                         <md-input-container class="md-block">
                             <div layout="row" layout-align="space-between center">
@@ -508,37 +521,39 @@
                             <textarea name="churchParticipation"
                                       ng-model="ctrl.form.student.churchMinistry.churchParticipation"
                                       ng-required="ctrl.form.student.isChurchMember"
-                                      md-maxlength="300"></textarea>
+                                      md-maxlength="3000"></textarea>
                             <div ng-messages="applicationForm.churchParticipation.$error"
                                  ng-show="applicationForm.churchParticipation.$dirty">
                                 <div ng-message="required">Обов'язкове поле.</div>
                                 <div ng-message="md-maxlength">Довжина поля перевищує максимально допустиму!</div>
                             </div>
                         </md-input-container>
-                    </div>
+                    </section>
                 </div>
-            </div>
-            <div id="job">
+            </section>
+            <section id="job">
                 <h3 class="md-headline center">Трудова діяльність</h3>
-                <h3 class="md-subhead">Ви працюєте?</h3>
-                <md-radio-group class="md-primary" ng-model="ctrl.form.student.isWorking">
-                    <md-radio-button ng-value="true">
-                        {{ctrl.radios.answers.yes}}
-                    </md-radio-button>
-                    <md-radio-button ng-value="false">
-                        {{ctrl.radios.answers.no}}
-                    </md-radio-button>
-                </md-radio-group>
-                <md-input-container id="job-input" ng-show="ctrl.form.student.isWorking" class="md-block">
-                    <label>Назва посади</label>
-                    <input ng-required="ctrl.form.student.isWorking"
-                           name="job" ng-model="ctrl.student.job">
-                    <div ng-messages="applicationForm.job.$error">
-                        <div ng-message="required">Обов'язкове поле.</div>
-                    </div>
-                </md-input-container>
-            </div>
-            <div id="finance">
+                <section>
+                    <h3 class="md-subhead">Ви працюєте?</h3>
+                    <md-radio-group class="md-primary" ng-model="ctrl.form.student.isWorking">
+                        <md-radio-button ng-value="true">
+                            {{ctrl.radios.answers.yes}}
+                        </md-radio-button>
+                        <md-radio-button ng-value="false">
+                            {{ctrl.radios.answers.no}}
+                        </md-radio-button>
+                    </md-radio-group>
+                    <md-input-container id="job-input" ng-show="ctrl.form.student.isWorking" class="md-block">
+                        <label>Назва посади</label>
+                        <input ng-required="ctrl.form.student.isWorking"
+                               name="job" ng-model="ctrl.student.job">
+                        <div ng-messages="applicationForm.job.$error">
+                            <div ng-message="required">Обов'язкове поле.</div>
+                        </div>
+                    </md-input-container>
+                </section>
+            </section>
+            <section id="finance-questions">
                 <h3 class="md-headline center">Фінансові питання</h3>
                 <p class="md-body-1">
                     Навчання в семінарії фінансується за рахунок добровільних пожертвувань церков та
@@ -546,122 +561,136 @@
                     вносила добровільні пожертування за навчання*. Просимо вас молитовно підійти до цього
                     питання та відмітити наступне:
                 </p>
-                <h3 class="md-subhead">Яку суму Ви плануєте жертвувати за сесію (один тиждень)?</h3>
-                <md-radio-group class="md-primary" ng-model="ctrl.student.donationAmount">
-                    <md-radio-button ng-if="ctrl.student.program.name === ctrl.radios.program.prml"
-                                     ng-init="ctrl.student.donationAmount = ctrl.radios.donationAmount.uah500"
-                                     ng-value="ctrl.radios.donationAmount.uah500">
-                        {{ctrl.radios.donationAmount.uah500}}
-                    </md-radio-button>
-                    <md-radio-button ng-value="ctrl.radios.donationAmount.uah600">
-                        {{ctrl.radios.donationAmount.uah600}}
-                    </md-radio-button>
-                    <md-radio-button ng-value="ctrl.radios.donationAmount.uah700">
-                        {{ctrl.radios.donationAmount.uah700}}
-                    </md-radio-button>
-                    <md-radio-button ng-if="ctrl.student.program.name !== ctrl.radios.program.prml"
-                                     ng-value="ctrl.radios.donationAmount.uah800">
-                        {{ctrl.radios.donationAmount.uah800}}
-                    </md-radio-button>
-                </md-radio-group>
-                <p class="md-body-1">
-                    *Вартість однієї сесії складає 600 грн. Кожного навчального року вартість сесії переглядається.
-                </p>
-                <md-input-container class="md-block">
-                    <label>Коментарі</label>
-                    <textarea name="financeComments"
-                              ng-model="ctrl.student.financeComments"
-                              md-maxlength="300"></textarea>
-                    <div ng-messages="applicationForm.financeComments.$error">
-                        <div ng-message="md-maxlength">Довжина поля перевищує максимально допустиму!</div>
-                    </div>
-                </md-input-container>
-            </div>
-            <div id="health-status">
+                <section>
+                    <h3 class="md-subhead">Яку суму Ви плануєте жертвувати за сесію (один тиждень)?</h3>
+                    <md-radio-group class="md-primary" ng-model="ctrl.student.donationAmount">
+                        <md-radio-button ng-if="ctrl.student.program.name === ctrl.radios.program.prml"
+                                         ng-init="ctrl.student.donationAmount = ctrl.radios.donationAmount.uah500"
+                                         ng-value="ctrl.radios.donationAmount.uah500">
+                            {{ctrl.radios.donationAmount.uah500}}
+                        </md-radio-button>
+                        <md-radio-button ng-value="ctrl.radios.donationAmount.uah600">
+                            {{ctrl.radios.donationAmount.uah600}}
+                        </md-radio-button>
+                        <md-radio-button ng-value="ctrl.radios.donationAmount.uah700">
+                            {{ctrl.radios.donationAmount.uah700}}
+                        </md-radio-button>
+                        <md-radio-button ng-if="ctrl.student.program.name !== ctrl.radios.program.prml"
+                                         ng-value="ctrl.radios.donationAmount.uah800">
+                            {{ctrl.radios.donationAmount.uah800}}
+                        </md-radio-button>
+                    </md-radio-group>
+                    <p class="md-body-1">
+                        *Вартість однієї сесії складає 600 грн. Кожного навчального року вартість сесії переглядається.
+                    </p>
+                    <md-input-container class="md-block">
+                        <label>Коментарі</label>
+                        <textarea name="financeComments"
+                                  ng-model="ctrl.student.financeComments"
+                                  md-maxlength="3000"></textarea>
+                        <div ng-messages="applicationForm.financeComments.$error">
+                            <div ng-message="md-maxlength">Довжина поля перевищує максимально допустиму!</div>
+                        </div>
+                    </md-input-container>
+                </section>
+            </section>
+            <section id="health-status">
                 <h3 class="md-headline center">Стан здоров'я</h3>
-                <h3 class="md-subhead">Чи була у вас залежність від наркотиків, алкоголю, тютюну, азартних
-                    чи комп'ютерних ігор, окультна залежність?</h3>
-                <md-radio-group class="md-primary" ng-model="ctrl.student.healthData.isDrugAddicted">
-                    <md-radio-button ng-value="true">
-                        {{ctrl.radios.answers.yes}}
-                    </md-radio-button>
-                    <md-radio-button ng-value="false">
-                        {{ctrl.radios.answers.no}}
-                    </md-radio-button>
-                </md-radio-group>
-                <h3 class="md-subhead">Як ви оцінюєте свій загальний стан здоров'я?</h3>
-                <md-radio-group class="md-primary" ng-model="ctrl.student.healthData.healthStatus">
-                    <md-radio-button ng-value="ctrl.radios.healthStatus.excellent">
-                        {{ctrl.radios.healthStatus.excellent}}
-                    </md-radio-button>
-                    <md-radio-button ng-value="ctrl.radios.healthStatus.good">
-                        {{ctrl.radios.healthStatus.good}}
-                    </md-radio-button>
-                    <md-radio-button ng-value="ctrl.radios.healthStatus.satisfactory">
-                        {{ctrl.radios.healthStatus.satisfactory}}
-                    </md-radio-button>
-                    <md-radio-button ng-value="ctrl.radios.healthStatus.unsatisfactory">
-                        {{ctrl.radios.healthStatus.unsatisfactory}}
-                    </md-radio-button>
-                </md-radio-group>
-                <h3 class="md-subhead">Чи приймаєте ви постійно ліки в зв'яку з хронічними захворюваннями?</h3>
-                <md-radio-group class="md-primary" ng-model="ctrl.student.healthData.isTakingMedicine">
-                    <md-radio-button ng-value="true">
-                        {{ctrl.radios.answers.yes}}
-                    </md-radio-button>
-                    <md-radio-button ng-value="false">
-                        {{ctrl.radios.answers.no}}
-                    </md-radio-button>
-                </md-radio-group>
-                <h3 class="md-subhead">Чи може ваш стан здоров'я обмежувати чи заважати навчальному процесу?</h3>
-                <md-radio-group class="md-primary" ng-model="ctrl.student.healthData.hasStudyProblems">
-                    <md-radio-button ng-value="true">
-                        {{ctrl.radios.answers.yes}}
-                    </md-radio-button>
-                    <md-radio-button ng-value="false">
-                        {{ctrl.radios.answers.no}}
-                    </md-radio-button>
-                </md-radio-group>
-            </div>
-            <div id="additional-questions">
+                <section>
+                    <h3 class="md-subhead">Чи була у вас залежність від наркотиків, алкоголю, тютюну, азартних
+                        чи комп'ютерних ігор, окультна залежність?</h3>
+                    <md-radio-group class="md-primary" ng-model="ctrl.student.healthData.isDrugAddicted">
+                        <md-radio-button ng-value="true">
+                            {{ctrl.radios.answers.yes}}
+                        </md-radio-button>
+                        <md-radio-button ng-value="false">
+                            {{ctrl.radios.answers.no}}
+                        </md-radio-button>
+                    </md-radio-group>
+                </section>
+                <section>
+                    <h3 class="md-subhead">Як ви оцінюєте свій загальний стан здоров'я?</h3>
+                    <md-radio-group class="md-primary" ng-model="ctrl.student.healthData.healthStatus">
+                        <md-radio-button ng-value="ctrl.radios.healthStatus.excellent">
+                            {{ctrl.radios.healthStatus.excellent}}
+                        </md-radio-button>
+                        <md-radio-button ng-value="ctrl.radios.healthStatus.good">
+                            {{ctrl.radios.healthStatus.good}}
+                        </md-radio-button>
+                        <md-radio-button ng-value="ctrl.radios.healthStatus.satisfactory">
+                            {{ctrl.radios.healthStatus.satisfactory}}
+                        </md-radio-button>
+                        <md-radio-button ng-value="ctrl.radios.healthStatus.unsatisfactory">
+                            {{ctrl.radios.healthStatus.unsatisfactory}}
+                        </md-radio-button>
+                    </md-radio-group>
+                </section>
+                <section>
+                    <h3 class="md-subhead">Чи приймаєте ви постійно ліки в зв'яку з хронічними захворюваннями?</h3>
+                    <md-radio-group class="md-primary" ng-model="ctrl.student.healthData.isTakingMedicine">
+                        <md-radio-button ng-value="true">
+                            {{ctrl.radios.answers.yes}}
+                        </md-radio-button>
+                        <md-radio-button ng-value="false">
+                            {{ctrl.radios.answers.no}}
+                        </md-radio-button>
+                    </md-radio-group>
+                </section>
+                <section>
+                    <h3 class="md-subhead">Чи може ваш стан здоров'я обмежувати чи заважати навчальному процесу?</h3>
+                    <md-radio-group class="md-primary" ng-model="ctrl.student.healthData.hasStudyProblems">
+                        <md-radio-button ng-value="true">
+                            {{ctrl.radios.answers.yes}}
+                        </md-radio-button>
+                        <md-radio-button ng-value="false">
+                            {{ctrl.radios.answers.no}}
+                        </md-radio-button>
+                    </md-radio-group>
+                </section>
+            </section>
+            <section id="additional-questions">
                 <h3 class="md-headline center">Додаткові запитання</h3>
                 <h3 class="md-body-1">Своїми словами в довільній формі дайте розгорнуті відповіді на
                     запитання</h3>
-                <h3 class="md-subhead">Які причини спонукали вас до навчання у семінарії? Ваші очікування від
-                    навчання:</h3>
-                <md-input-container class="md-block">
-                    <label>Ваша відповідь</label>
-                    <textarea name="reasonsToStudy"
-                              ng-model="ctrl.student.reasonsToStudy"
-                              md-maxlength="300" required></textarea>
-                    <div ng-messages="applicationForm.reasonsToStudy.$error"
-                         ng-show="applicationForm.reasonsToStudy.$dirty">
-                        <div ng-message="required">Обов'язкове поле.</div>
-                        <div ng-message="md-maxlength">Довжина поля перевищує максимально допустиму!</div>
-                    </div>
-                </md-input-container>
-                <h3 class="md-subhead">Опишіть коротко як ви прийшли до Бога; етапи вашого духовного
-                    становлення та стосунки з Богом на даний момент:</h3>
-                <md-input-container class="md-block">
-                    <label>Ваша відповідь</label>
-                    <textarea name="howCameToGod"
-                              ng-model="ctrl.student.howCameToGod"
-                              md-maxlength="300" required></textarea>
-                    <div ng-messages="applicationForm.howCameToGod.$error"
-                         ng-show="applicationForm.howCameToGod.$dirty">
-                        <div ng-message="required">Обов'язкове поле.</div>
-                        <div ng-message="md-maxlength">Довжина поля перевищує максимально допустиму!</div>
-                    </div>
-                </md-input-container>
-            </div>
-            <div id="files">
+                <section>
+                    <h3 class="md-subhead">Які причини спонукали вас до навчання у семінарії? Ваші очікування від
+                        навчання:</h3>
+                    <md-input-container class="md-block">
+                        <label>Ваша відповідь</label>
+                        <textarea name="reasonsToStudy"
+                                  ng-model="ctrl.student.reasonsToStudy"
+                                  md-maxlength="3000" required></textarea>
+                        <div ng-messages="applicationForm.reasonsToStudy.$error"
+                             ng-show="applicationForm.reasonsToStudy.$dirty">
+                            <div ng-message="required">Обов'язкове поле.</div>
+                            <div ng-message="md-maxlength">Довжина поля перевищує максимально допустиму!</div>
+                        </div>
+                    </md-input-container>
+                </section>
+                <section>
+                    <h3 class="md-subhead">Опишіть коротко як ви прийшли до Бога; етапи вашого духовного
+                        становлення та стосунки з Богом на даний момент:</h3>
+                    <md-input-container class="md-block">
+                        <label>Ваша відповідь</label>
+                        <textarea name="howCameToGod"
+                                  ng-model="ctrl.student.howCameToGod"
+                                  md-maxlength="3000" required></textarea>
+                        <div ng-messages="applicationForm.howCameToGod.$error"
+                             ng-show="applicationForm.howCameToGod.$dirty">
+                            <div ng-message="required">Обов'язкове поле.</div>
+                            <div ng-message="md-maxlength">Довжина поля перевищує максимально допустиму!</div>
+                        </div>
+                    </md-input-container>
+                </section>
+            </section>
+            <section id="files">
                 <h3 class="md-headline center">Файли</h3>
                 <h3 class="md-body-1">
                     Ви можете завантажити лише файли таких форматів: JPG, JPEG, PNG та PDF.
                     Максимальний розмір одного файлу - 5МБ
                 </h3>
                 <div>
-                    <div>
+                    <section>
                         <h3 class="md-subhead">Ваше портретне фото:</h3>
                         <lf-ng-md-file-input name="photo" ng-model="ctrl.files.photo"
                                              lf-mimetype="image/jpeg,image/pjpeg,image/png,application/pdf"
@@ -672,8 +701,8 @@
                             <div ng-message="filesize">Максимальний розмір файлу - 5МБ.</div>
                             <div ng-message="mimetype">Дозволено лише файли JPG, JPEG, PNG та PDF.</div>
                         </div>
-                    </div>
-                    <div>
+                    </section>
+                    <section>
                         <h3 class="md-subhead">Фото паспорта (перша, друга сторінки та сторінка з
                             пропискою):</h3>
                         <lf-ng-md-file-input name="passport1" ng-model="ctrl.files.passport1"
@@ -703,8 +732,8 @@
                             <div ng-message="filesize">Максимальний розмір файлу - 5МБ.</div>
                             <div ng-message="mimetype">Дозволено лише файли JPG, JPEG, PNG та PDF.</div>
                         </div>
-                    </div>
-                    <div>
+                    </section>
+                    <section>
                         <h3 class="md-subhead">Фото ідентифікаційного номера:</h3>
                         <lf-ng-md-file-input name="idNumber" ng-model="ctrl.files.idNumber"
                                              lf-mimetype="image/jpeg,image/pjpeg,image/png,application/pdf"
@@ -715,8 +744,8 @@
                             <div ng-message="filesize">Максимальний розмір файлу - 5МБ.</div>
                             <div ng-message="mimetype">Дозволено лише файли JPG, JPEG, PNG та PDF.</div>
                         </div>
-                    </div>
-                    <div>
+                    </section>
+                    <section>
                         <h3 class="md-subhead">Фото диплому (в разі відстутності - фото атестату про повну
                             загальну середню освіту) та додаток до нього:</h3>
                         <lf-ng-md-file-input name="diploma1" ng-model="ctrl.files.diploma1"
@@ -737,8 +766,8 @@
                             <div ng-message="filesize">Максимальний розмір файлу - 5МБ.</div>
                             <div ng-message="mimetype">Дозволено лише файли JPG, JPEG, PNG та PDF.</div>
                         </div>
-                    </div>
-                    <div>
+                    </section>
+                    <section>
                         <h3 class="md-subhead">Фото медичної довідки форми 086-у:</h3>
                         <lf-ng-md-file-input name="medicalReference" ng-model="ctrl.files.medicalReference"
                                              lf-mimetype="image/jpeg,image/pjpeg,image/png,application/pdf"
@@ -749,10 +778,10 @@
                             <div ng-message="filesize">Максимальний розмір файлу - 5МБ.</div>
                             <div ng-message="mimetype">Дозволено лише файли JPG, JPEG, PNG та PDF.</div>
                         </div>
-                    </div>
+                    </section>
                 </div>
-            </div>
-            <div id="eula">
+            </section>
+            <section id="eula">
                 <md-input-container class="md-block">
                     <md-checkbox name="tos" ng-model="ctrl.tos" required>
                         На всі запитання в даній анкеті я відповідаю чесно та відкрито. Я усвідомлюю, що надання
@@ -765,8 +794,8 @@
                         </div>
                     </div>
                 </md-input-container>
-            </div>
-            <div id="submit">
+            </section>
+            <section id="submit">
                 <md-button ng-disabled="applicationForm.$invalid || ctrl.submitLock" class="md-raised md-primary"
                            type="submit">
                     Зареєструватися
@@ -779,7 +808,7 @@
                 <div ng-show="applicationForm.$invalid" class="md-caption form-error-message center error">
                     Необхідно заповнити всі обов'язкові поля та прийняти умови Семінарії!
                 </div>
-            </div>
+            </section>
         </form>
     </md-card-content>
 </md-card>

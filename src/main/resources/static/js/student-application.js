@@ -11,7 +11,7 @@
             }
             function sendFiles(postJsonStatus) {
                 console.log('Checking existence of user files on server...');
-                $http.head('/api/student/files/exist', {
+                $http.head('/api/students/files/exist', {
                     params: {
                         first_name: student.firstName,
                         middle_name: student.middleName,
@@ -37,7 +37,7 @@
                     formData.append('diploma2', files.diploma2[0].lfFile);
                     formData.append('medicalReference',files.medicalReference[0].lfFile);
                     console.log('Posting files...');
-                    $http.post('/api/student/files', formData, {
+                    $http.post('/api/students/files', formData, {
                         transformRequest: angular.identity,
                         headers: { 'Content-Type': undefined },
                         uploadEventHandlers: {
