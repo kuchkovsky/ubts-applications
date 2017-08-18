@@ -18,6 +18,7 @@ import ua.org.ubts.applicationssystem.util.UserFilesManager;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.URLEncoder;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -178,6 +179,7 @@ public class RestApiController {
         try {
             ByteArrayOutputStream outputStream = UserFilesManager.getStudentFiles(student);
             String filename = UserFilesManager.getStudentDirectory(student) + ".zip";
+            filename = URLEncoder.encode(filename,"UTF-8");
             response.setHeader("Content-Disposition","attachment; filename=\"" + filename + "\"");
             response.setContentType("application/zip");
             response.getOutputStream().write(outputStream.toByteArray());
