@@ -137,12 +137,14 @@ public class RestApiController {
             return new ResponseEntity<>(new ResponseMessage("Unsupported media type"),
                     HttpStatus.UNSUPPORTED_MEDIA_TYPE);
         }
-        logger.debug("Files upload for " + model.getLastName() + " " + model.getFirstName() + " "
+        logger.info("Saving uploaded files... User: " + model.getLastName() + " " + model.getFirstName() + " "
                 + model.getMiddleName());
         try {
             UserFilesManager.saveStudentFiles(model);
             student.setFilesUploaded(true);
             studentService.save(student);
+            logger.info("Files were saved successfully. User: " + model.getLastName() + " " + model.getFirstName() + " "
+                    + model.getMiddleName());
         } catch (IOException e) {
             logger.error(e);
             return new ResponseEntity<>(new ResponseMessage("Files not saved"), HttpStatus.BAD_REQUEST);
