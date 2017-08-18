@@ -4,7 +4,7 @@
 
     var app = angular.module('ubtsApplSystem');
 
-    app.controller('studentViewCtrl', function ($rootScope, $stateParams, downloadService) {
+    app.controller('studentViewCtrl', function ($rootScope, $stateParams, $mdDialog, downloadService) {
         var self = this;
         $rootScope.studentId = $stateParams.studentId;
         $rootScope.isMainSpinnerVisible = true;
