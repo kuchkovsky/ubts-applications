@@ -1,5 +1,6 @@
 package ua.org.ubts.applicationssystem.controller;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -325,20 +326,22 @@ public class RestApiController {
                 String term = rs.getString("term");
                 String js = rs.getString("js");
                 String prmlRegion = rs.getString("prml_region");
-                String info;
-                if (term != null && !term.isEmpty()) {
+                String info = "";
+                Program program;
+                if (StringUtils.isNotEmpty(term)) {
                     info = programInfoMap.get(term);
-                } else if (js != null && !js.isEmpty()) {
+                } else if (StringUtils.isNotEmpty(js)) {
                     info = programInfoMap.get(js);
-                } else if (prmlRegion != null && !prmlRegion.isEmpty()) {
+                } else if (StringUtils.isNotEmpty(prmlRegion)) {
                     info = programInfoMap.get(prmlRegion);
-                } else {
-                    info = "";
                 }
-                Program program = new Program(programMap.get(rs.getString("programm")), info);
+                if (StringUtils.isNotEmpty(info)) {
+                    program = new Program(programMap.get(rs.getString("programm")), info);
+                } else {
+                    program = new Program(programMap.get(rs.getString("programm")), null);
+                }
                 student.setProgram(program);
                 student.setFilesUploaded(true);
-
                 HealthData healthData = new HealthData();
                 healthData.setDrugAddicted(rs.getBoolean("drug_addiction"));
                 healthData.setHealthStatus(healthStatusMap.get(rs.getInt("health_status")));
@@ -396,9 +399,12 @@ public class RestApiController {
                     }
                 }
                 student.setMaritalData(maritalData);
-
-                studentService.save(student);
-                logger.info(student);
+                if(studentService.isExist(student)) {
+                    logger.info(student + " exists");
+                } else {
+                    studentService.save(student);
+                    logger.info(student);
+                }
             }
         } catch (SQLException sqlEx) {
             logger.error(sqlEx);
