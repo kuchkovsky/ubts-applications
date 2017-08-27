@@ -283,11 +283,11 @@ public class RestApiController {
                 residence.setHouse(rs.getString("house"));
                 residence.setCityVillage(rs.getString("city_village"));
                 String district = rs.getString("district");
-                if (district != null) {
+                if (StringUtils.isNotEmpty(district)) {
                     residence.setDistrict(district);
                 }
                 String apartment = rs.getString("apartment");
-                if (apartment != null) {
+                if (StringUtils.isNotEmpty(apartment)) {
                     residence.setApartment(apartment);
                 }
                 residence.setRegion(rs.getString("region"));
@@ -297,13 +297,13 @@ public class RestApiController {
 
                 student.setPhone1(rs.getString("phone1"));
                 String phone2 = rs.getString("phone2");
-                if (phone2 != null) {
+                if (StringUtils.isNotEmpty(phone2)) {
                     student.setPhone2(phone2);
                 }
                 student.setEmail(rs.getString("email"));
                 student.setDonationAmount(rs.getString("donation_amount"));
                 String financeComments = rs.getString("finance_comments");
-                if (financeComments != null) {
+                if (StringUtils.isNotEmpty(financeComments)) {
                     student.setFinanceComments(financeComments);
                 }
                 if (!rs.getBoolean("not_working")) {
@@ -311,11 +311,11 @@ public class RestApiController {
                 }
                 String addComment1 = rs.getString("add_comment_1");
                 String addComment2 = rs.getString("add_comment_2");
-                if (addComment1 == null || addComment1.isEmpty()) {
+                if (StringUtils.isEmpty(addComment1)) {
                     addComment1 = " ";
                 }
                 student.setReasonsToStudy(addComment1);
-                if (addComment2 == null || addComment2.isEmpty()) {
+                if (StringUtils.isEmpty(addComment2)) {
                     addComment2 = " ";
                 }
                 student.setHowCameToGod(addComment2);
@@ -361,12 +361,12 @@ public class RestApiController {
                     churchData.setCityVillage(rs.getString("church_city_village"));
                     churchData.setIndex(rs.getString("church_index"));
                     String churchDistrict = rs.getString("church_district");
-                    if (churchDistrict != null) {
+                    if (StringUtils.isNotEmpty(churchDistrict)) {
                         churchData.setDistrict(churchDistrict);
                     }
                     churchData.setStreetAndHouseNumber(rs.getString("church_house_number"));
                     String churchPhone = rs.getString("church_phone");
-                    if (churchPhone != null) {
+                    if (StringUtils.isNotEmpty(churchPhone)) {
                         churchData.setPhone(churchPhone);
                     }
                     student.setChurchData(churchData);
