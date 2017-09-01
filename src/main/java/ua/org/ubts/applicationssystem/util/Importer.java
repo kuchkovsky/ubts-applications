@@ -1,6 +1,7 @@
 package ua.org.ubts.applicationssystem.util;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import ua.org.ubts.applicationssystem.entity.*;
 import ua.org.ubts.applicationssystem.service.StudentService;
 
@@ -10,7 +11,9 @@ import java.util.Map;
 
 public class Importer {
 
-    public static void importStudents(StudentService studentService) {
+    private static final Logger logger = Logger.getLogger(Importer.class);
+
+    public static synchronized void importStudents(StudentService studentService) {
 
         Map<Integer, String> educationMap = new HashMap<>();
         educationMap.put(1, "Середня");
@@ -215,14 +218,14 @@ public class Importer {
                 }
             }
         } catch (SQLException sqlEx) {
-            //logger.error(sqlEx);
+            logger.error(sqlEx);
         } finally {
             try {
                 con.close();
                 stmt.close();
                 rs.close();
             } catch(SQLException se) {
-                //logger.error(se);
+                logger.error(se);
             }
         }
     }
