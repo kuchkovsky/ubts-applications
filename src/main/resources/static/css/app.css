@@ -137,3 +137,7 @@ md-sidenav.md-closed.md-locked-open-add-active {
 #student-view {
     padding: 20px;
 }
+
+#date-hint {
+    margin-top: -15px;
+}

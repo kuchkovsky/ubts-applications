@@ -72,7 +72,16 @@
                         <md-radio-button class="md-primary" ng-value="ctrl.radios.program.bms">
                             {{ctrl.radios.program.bms}}
                         </md-radio-button>
-                    </div>
+                        <div class="inner-radio" ng-show="ctrl.student.program.name === ctrl.radios.program.bms">
+                            <md-radio-group ng-model="ctrl.radios.programInfo.bmsType">
+                                <md-radio-button ng-value="ctrl.radios.programInfo.bms.choir">
+                                    {{ctrl.radios.programInfo.bms.choir}}
+                                </md-radio-button>
+                                <md-radio-button ng-value="ctrl.radios.programInfo.bms.stage">
+                                    {{ctrl.radios.programInfo.bms.stage}}
+                                </md-radio-button>
+                            </md-radio-group>
+                         </div>
                     <md-radio-button ng-click="ctrl.prmlApplication($state)" class="md-primary"
                                      ng-value="ctrl.radios.program.prml">
                         {{ctrl.radios.program.prml}}
@@ -115,6 +124,9 @@
                         <div ng-message="required">Обов'язкове поле.</div>
                     </div>
                 </md-input-container>
+                <div class="md-caption">
+                    *Для переходу до списку років натисніть на назву поточного місяця в календарі
+                </div>
                 <md-input-container>
                     <md-datepicker
                             ng-model="ctrl.form.student.birthDate"
@@ -419,12 +431,12 @@
                         <h3 class="md-subhead center">Інформація про служіння</h3>
                         <md-input-container class="md-block">
                             <div layout="row" layout-align="space-between center">
-                                <span>Дата покаяння</span>
+                                <span>Рік покаяння</span>
                                 <div layout="column">
                                     <md-select name="repentanceDate"
                                                ng-required="ctrl.form.student.isChurchMember"
                                                ng-model="ctrl.form.student.churchMinistry.repentanceDate">
-                                        <md-option ng-repeat="i in ctrl.years" ng-value="i"">{{i}}</md-option>
+                                        <md-option ng-repeat="i in ctrl.years" ng-value="i">{{i}}</md-option>
                                     </md-select>
                                     <div ng-messages="applicationForm.repentanceDate.$error">
                                         <div ng-message="required">Обов'язкове поле.</div>
@@ -434,12 +446,12 @@
                         </md-input-container>
                         <md-input-container class="md-block">
                             <div layout="row" layout-align="space-between center">
-                                <span>Дата хрещення</span>
+                                <span>Рік хрещення</span>
                                 <div layout="column">
                                     <md-select name="baptismDate"
                                                ng-required="ctrl.form.student.isChurchMember"
                                                ng-model="ctrl.form.student.churchMinistry.baptismDate">
-                                        <md-option ng-repeat="i in ctrl.years" ng-value="i"">{{i}}</md-option>
+                                        <md-option ng-repeat="i in ctrl.years" ng-value="i">{{i}}</md-option>
                                     </md-select>
                                     <div ng-messages="applicationForm.baptismDate.$error">
                                         <div ng-message="required">Обов'язкове поле.</div>
@@ -508,7 +520,7 @@
                                     <md-select name="ordinationDate"
                                                ng-required="ctrl.form.student.isChurchMember && ctrl.form.student.isOrdained"
                                                ng-model="ctrl.form.student.churchMinistry.ordinationDate">
-                                        <md-option ng-repeat="i in ctrl.years" ng-value="i"">{{i}}</md-option>
+                                        <md-option ng-repeat="i in ctrl.years" ng-value="i">{{i}}</md-option>
                                     </md-select>
                                     <div ng-messages="applicationForm.ordinationDate.$error">
                                         <div ng-message="required">Обов'язкове поле.</div>

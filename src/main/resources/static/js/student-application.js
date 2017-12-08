@@ -112,6 +112,10 @@
                     lviv: 'Львівська область',
                     rivne: 'Рівненська область',
                     khmel: 'Хмельницька область'
+                },
+                bms: {
+                    choir: 'Хоровий напрямок',
+                    stage: 'Естрадний напрямок'
                 }
             },
             education: {
@@ -219,6 +223,7 @@
         };
         this.radios.programInfo.bcsJsTerm = this.radios.programInfo.bcsJs.lviv2y;
         this.radios.programInfo.bmTerm = this.radios.programInfo.bm.twoYears;
+        this.radios.programInfo.bmsType = this.radios.programInfo.bms.choir;
         this.radios.programInfo.prmlRegion = this.radios.programInfo.prml.lviv;
         this.minDate = new Date('1900');
         this.maxDate = new Date();
@@ -240,6 +245,9 @@
                     break;
                 case this.radios.program.bmMm:
                     this.student.program.info = this.radios.programInfo.bmTerm;
+                    break;
+                case this.radios.program.bms:
+                    this.student.program.info = this.radios.programInfo.bmsType;
                     break;
                 case this.radios.program.prml:
                     this.student.program.info = this.radios.programInfo.prmlRegion;
