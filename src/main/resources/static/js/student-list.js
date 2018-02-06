@@ -28,9 +28,6 @@
         };
 
         this.isSpinnerVisible = true;
-        this.groupList = true;
-        this.currentNavItem = 'groupList';
-
         downloadService.getStudentList(function (studentList) {
             self.students = studentList;
             self.form.students = self.students.slice();

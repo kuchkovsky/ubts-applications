@@ -7,40 +7,8 @@
             </md-input-container>
         </div>
     </md-card-header>
-    <md-card-content layout="column" layout-align="space-between">
-        <md-nav-bar nav-bar-aria-label="navigation links" md-selected-nav-item="ctrl.currentNavItem">
-            <md-nav-item md-nav-click="ctrl.groupList = true" name="groupList">
-                Список по групах
-            </md-nav-item>
-            <md-nav-item md-nav-click="ctrl.groupList = false" name="generalList">
-                Загальний список
-            </md-nav-item>
-        </md-nav-bar>
-        <md-list ng-show="ctrl.groupList">
-            <md-progress-circular class="center-screen spinner" md-mode="indeterminate"
-                                  ng-show="ctrl.isSpinnerVisible"></md-progress-circular>
-            <md-list-item class="md-2-line" ng-repeat="p in ctrl.programs">
-                <div layout="column" flex>
-                    <h2 class="md-subhead">{{p.name}}</h2>
-                    <md-list-item class="md-2-line"
-                                  ng-repeat="s in ctrl.form.students | filter: { program: { name: p.name } }"
-                                  ui-sref="studentView({studentId: s.id})">
-                        <img ng-src="img/icons/ic_account_circle_black_48px.svg" class="md-avatar" alt="Avatar">
-                        <div class="md-list-item-text">
-                            <div layout="row">
-                                <div class="list-item-index"><h3>{{$index + 1}}.</h3></div>
-                                <div>
-                                    <h3>{{s.name}}</h3>
-                                    <p>{{!s.program.info ? s.program.name : s.program.name + ' - ' + s.program.info}}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </md-list-item>
-                    <p class="no-items">Список пустий</p>
-                </div>
-            </md-list-item>
-        </md-list>
-        <md-list ng-show="!ctrl.groupList">
+    <md-card-content layout="row" layout-align="space-between">
+        <md-list flex>
             <md-progress-circular class="center-screen spinner" md-mode="indeterminate"
                                   ng-show="ctrl.isSpinnerVisible"></md-progress-circular>
             <md-list-item class="md-2-line" ng-repeat="s in ctrl.form.students" ui-sref="studentView({studentId: s.id})">
@@ -55,7 +23,6 @@
                     </div>
                 </div>
             </md-list-item>
-            <p class="no-items">Список пустий</p>
-        </md-list>
     </md-card-content>
+    </md-list>
 </md-card>

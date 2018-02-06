@@ -141,11 +141,3 @@ md-sidenav.md-closed.md-locked-open-add-active {
 #date-hint {
     margin-top: -15px;
 }
-
-p.no-items {
-    text-align: center;
-}
-
-md-list-item + .no-items {
-    display: none;
-}
