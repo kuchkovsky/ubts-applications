@@ -100,4 +100,7 @@ public class UserFilesManager {
         return baos;
     }
 
+    public static String getAppFolder() {
+        return APP_FOLDER;
+    }
 }

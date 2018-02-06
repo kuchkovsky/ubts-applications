@@ -13,6 +13,7 @@ import ua.org.ubts.applicationssystem.entity.*;
 import ua.org.ubts.applicationssystem.model.StudentFilesUploadModel;
 import ua.org.ubts.applicationssystem.service.ProgramService;
 import ua.org.ubts.applicationssystem.service.StudentService;
+import ua.org.ubts.applicationssystem.util.DavManager;
 import ua.org.ubts.applicationssystem.util.Importer;
 import ua.org.ubts.applicationssystem.util.ResponseMessage;
 import ua.org.ubts.applicationssystem.util.UserFilesManager;
@@ -191,4 +192,25 @@ public class RestApiController {
         return new ResponseEntity<>(new ResponseMessage("OK"), HttpStatus.OK);
     }
 
+    @GetMapping("/student/{id}/export/cloud")
+    public ResponseEntity<ResponseMessage> exportToCloud(@PathVariable("id") Integer id) {
+        DavManager davManager = new DavManager("LOGIN","PASSWORD",
+                "https://cloud.ubts.org.ua/remote.php/webdav");
+        Student student = studentService.findById(id);
+        logger.info("Exporting student to cloud: " + student.getFullSlavicName());
+        davManager.exportStudent(student);
+        return new ResponseEntity<>(new ResponseMessage("OK"), HttpStatus.OK);
+    }
+
+    @GetMapping("/student/export/cloud")
+    public ResponseEntity<ResponseMessage> exportAllToCloud() {
+        DavManager davManager = new DavManager("LOGIN", "PASSWORD",
+                "https://cloud.ubts.org.ua/remote.php/webdav");
+        List<Student> studentList = studentService.findAll();
+        for (Student student : studentList) {
+            logger.info("Exporting student to cloud: " + student.getFullSlavicName());
+            davManager.exportStudent(student);
+        }
+        return new ResponseEntity<>(new ResponseMessage("OK"), HttpStatus.OK);
+    }
 }
