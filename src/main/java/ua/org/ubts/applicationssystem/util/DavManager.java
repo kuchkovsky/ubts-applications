@@ -6,13 +6,11 @@ import org.apache.commons.httpclient.util.URIUtil;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import ua.org.ubts.applicationssystem.entity.Student;
-
 import java.io.*;
 
 /**
  * Created by Ckpe4 on 31.01.2018.
  */
-
 
 public class DavManager {
 
@@ -21,67 +19,61 @@ public class DavManager {
     private String login;
     private String password;
     private String davUrl;
+    private Sardine sardine;
 
     public DavManager(String login, String password, String davUrl) {
         this.login = login;
         this.password = password;
         this.davUrl = davUrl;
+        sardine = SardineFactory.begin(login, password);
     }
 
     public void createDirectory(String path){
-        Sardine sardine = SardineFactory.begin(login, password);
         try {
             sardine.createDirectory(URIUtil.encodeQuery(davUrl + path, "UTF-8"));
             logger.info("Directory  created: " + path);
         } catch (Exception e) {
-            logger.info("Failed to create directory: " + path);
+            logger.error("Failed to create directory: " + path);
             logger.error(e);
         }
     }
 
     public boolean exists(String item) {
-        Sardine sardine = SardineFactory.begin(login, password);
         try {
             return sardine.exists(URIUtil.encodeQuery(davUrl + item, "UTF-8"));
         } catch (Exception e) {
-            System.out.println(e);
+            logger.error(e);
         }
         return false;
     }
 
-    public void createDirectoryRecursive(String path){
+    public void createDirectoryRecursive(String path) {
         String[] stringArray = path.split("/");
         String wd = new String();
         for (String str : stringArray) {
             wd += str + "/";
-            try {
-                if (!exists(wd)) {
-                    createDirectory(wd);
-                }
-            } catch (Exception e) {
-                System.out.println(e);
+            if (!exists(wd)) {
+                createDirectory(wd);
             }
         }
     }
 
     public void put(byte[] data, String path) {
-        Sardine sardine = SardineFactory.begin(login, password);
         try {
             sardine.put(URIUtil.encodeQuery(davUrl + path, "UTF-8"), data);
             logger.info("Pushing file on cloud: " + path);
         } catch (Exception e) {
-            logger.info("Failed to push file on cloud: " + path);
+            logger.error("Failed to push file on cloud: " + path);
             logger.error(e);
         }
     }
 
     public void delete(String item) {
-        Sardine sardine = SardineFactory.begin(login, password);
         try {
             sardine.delete(URIUtil.encodeQuery(davUrl + item, "UTF-8"));
             logger.info("Deleted file from cloud: " + item);
         } catch (Exception e) {
-            logger.info("Failed to delete file from cloud: " + item);
+            logger.error("Failed to delete file from cloud: " + item);
             logger.error(e);
         }
     }
@@ -113,7 +105,7 @@ public class DavManager {
                 byte[] data = FileUtils.readFileToByteArray(file);
                 put(data, nextcloudPath + file.getName());
             } catch (IOException e) {
-                logger.info("Failed to push file: " + file.getAbsolutePath());
+                logger.error("Failed to push file: " + file.getAbsolutePath());
                 logger.error(e);
             }
         }
@@ -131,7 +123,5 @@ public class DavManager {
             exportFolder(studentFolder, folder);
         }
     }
-
-
 
 }
