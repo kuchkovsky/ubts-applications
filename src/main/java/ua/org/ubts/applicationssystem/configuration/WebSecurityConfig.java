@@ -65,6 +65,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint( restAuthenticationEntryPoint ).and()
                 .addFilterBefore(jwtAuthenticationTokenFilter(), BasicAuthenticationFilter.class)
                 .authorizeRequests()
+                .antMatchers("/api/students/{id}")
+                .access("hasRole('USER') or hasIpAddress('::1')")
                 .anyRequest()
                 .authenticated().and()
                 .formLogin()
