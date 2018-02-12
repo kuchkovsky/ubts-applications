@@ -2,9 +2,9 @@ package ua.org.ubts.applicationssystem.util;
 
 import com.github.sardine.Sardine;
 import com.github.sardine.SardineFactory;
-import org.apache.commons.httpclient.util.URIUtil;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
+import org.springframework.web.util.UriUtils;
 import ua.org.ubts.applicationssystem.entity.Student;
 import java.io.*;
 
@@ -14,113 +14,85 @@ import java.io.*;
 
 public class DavManager {
 
-    private final Logger logger = Logger.getLogger(DavManager.class);
+    private static final Logger logger = Logger.getLogger(DavManager.class);
 
-    private String login;
-    private String password;
     private String davUrl;
     private Sardine sardine;
 
     public DavManager(String login, String password, String davUrl) {
-        this.login = login;
-        this.password = password;
         this.davUrl = davUrl;
         sardine = SardineFactory.begin(login, password);
     }
 
-    public void createDirectory(String path){
-        try {
-            sardine.createDirectory(URIUtil.encodeQuery(davUrl + path, "UTF-8"));
-            logger.info("Directory  created: " + path);
-        } catch (Exception e) {
-            logger.error("Failed to create directory: " + path);
-            logger.error(e);
-        }
+    public void createDirectory(String path) throws IOException {
+        sardine.createDirectory(davUrl + UriUtils.encodePath(path, "UTF-8"));
+        logger.info("Directory  created: " + path);
     }
 
-    public boolean exists(String item) {
-        try {
-            return sardine.exists(URIUtil.encodeQuery(davUrl + item, "UTF-8"));
-        } catch (Exception e) {
-            logger.error(e);
-        }
-        return false;
+    public boolean exists(String item) throws IOException {
+        return sardine.exists(davUrl + UriUtils.encodePath(item, "UTF-8"));
     }
 
-    public void createDirectoryRecursive(String path) {
+    public void createDirectoryRecursive(String path) throws IOException {
         String[] stringArray = path.split("/");
-        String wd = new String();
+        StringBuilder stringBuilder = new StringBuilder();
         for (String str : stringArray) {
-            wd += str + "/";
-            if (!exists(wd)) {
-                createDirectory(wd);
+            stringBuilder.append(str);
+            stringBuilder.append("/");
+            String dirPath = stringBuilder.toString();
+            if (!exists(dirPath)) {
+                createDirectory(dirPath);
             }
         }
     }
 
-    public void put(byte[] data, String path) {
-        try {
-            sardine.put(URIUtil.encodeQuery(davUrl + path, "UTF-8"), data);
-            logger.info("Pushing file on cloud: " + path);
-        } catch (Exception e) {
-            logger.error("Failed to push file on cloud: " + path);
-            logger.error(e);
-        }
+    public void put(byte[] data, String path) throws IOException {
+        logger.info("Pushing file on cloud: " + path);
+        sardine.put(davUrl + UriUtils.encodePath(path, "UTF-8"), data);
     }
 
-    public void delete(String item) {
-        try {
-            sardine.delete(URIUtil.encodeQuery(davUrl + item, "UTF-8"));
-            logger.info("Deleted file from cloud: " + item);
-        } catch (Exception e) {
-            logger.error("Failed to delete file from cloud: " + item);
-            logger.error(e);
-        }
+    public void delete(String item) throws IOException {
+        sardine.delete(davUrl + UriUtils.encodePath(item, "UTF-8"));
+        logger.info("Deleted file from cloud: " + item);
     }
 
-    public void generatePdf(String url, String nextcloudPath) {
-        try {
-            Process p = Runtime.getRuntime().exec("wkhtmltopdf -q --page-size A3 " + url + " -");
-            InputStream bis = new BufferedInputStream(p.getInputStream());
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            int reads = bis.read();
-            while(reads != -1) {
-                baos.write(reads);
-                reads = bis.read();
-            }
-            p.waitFor();
-            put(baos.toByteArray(), nextcloudPath);
+    public void generatePdf(String url, String nextcloudPath) throws IOException, InterruptedException {
+        Process p = Runtime.getRuntime().exec("wkhtmltopdf -q --page-size A3 " + url + " -");
+        InputStream bis = new BufferedInputStream(p.getInputStream());
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        int reads = bis.read();
+        while(reads != -1) {
+            baos.write(reads);
+            reads = bis.read();
         }
-        catch (Exception err) {
-            err.printStackTrace();
-        }
+        p.waitFor();
+        put(baos.toByteArray(), nextcloudPath);
     }
 
-    public void exportFolder(File folder, String nextcloudPath) {
+    public void exportFolder(File folder, String nextcloudPath) throws IOException {
         logger.info("Exporting files from folder: " + folder.getAbsolutePath());
         File[] listOfFiles = folder.listFiles();
         for (File file : listOfFiles) {
-            try {
-                logger.info("Pushing file: " + file.getAbsolutePath());
-                byte[] data = FileUtils.readFileToByteArray(file);
-                put(data, nextcloudPath + file.getName());
-            } catch (IOException e) {
-                logger.error("Failed to push file: " + file.getAbsolutePath());
-                logger.error(e);
-            }
+            logger.info("Pushing file: " + file.getAbsolutePath());
+            byte[] data = FileUtils.readFileToByteArray(file);
+            put(data, nextcloudPath + file.getName());
         }
     }
 
-    public void exportStudent(Student student) {
-        String folder = "/ApplicationSystem/" + student.getProgram().getName() + "/" + student.getFullSlavicName() + "/";
+    public void exportStudent(Student student) throws IOException, InterruptedException {
+        String folder = "/ApplicationSystem/" + student.getEntryYear() + "/" + student.getProgram().getName() + "/"
+                + student.getFullSlavicName() + "/";
         if (!exists(folder)) {
+            logger.info("Exporting student to cloud: " + student.getFullSlavicName());
             createDirectoryRecursive(folder);
-            generatePdf("http://localhost:8080/#!/view/student/" + student.getId().toString(),
+            generatePdf("http://[::1]:8080/#!/view/student/" + student.getId().toString() + "/print",
                     folder + "Анкета.pdf");
             File studentFolder = new File(UserFilesManager.getAppFolder() + "students" + File.separator
                     + student.getLastName().toLowerCase() + "_" + student.getFirstName().toLowerCase().substring(0, 1)
                     + "_" + student.getMiddleName().toLowerCase().substring(0, 1));
             exportFolder(studentFolder, folder);
+        } else {
+            logger.info("Student folder already exists: " + student.getFullSlavicName() + ". Skipping.");
         }
     }
 
