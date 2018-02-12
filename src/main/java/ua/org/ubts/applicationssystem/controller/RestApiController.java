@@ -13,10 +13,7 @@ import ua.org.ubts.applicationssystem.entity.*;
 import ua.org.ubts.applicationssystem.model.StudentFilesUploadModel;
 import ua.org.ubts.applicationssystem.service.ProgramService;
 import ua.org.ubts.applicationssystem.service.StudentService;
-import ua.org.ubts.applicationssystem.util.DavManager;
-import ua.org.ubts.applicationssystem.util.Importer;
-import ua.org.ubts.applicationssystem.util.ResponseMessage;
-import ua.org.ubts.applicationssystem.util.UserFilesManager;
+import ua.org.ubts.applicationssystem.util.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -51,9 +48,19 @@ public class RestApiController {
     }
 
     @PreAuthorize("hasRole('USER')")
-    @GetMapping("/students/list")
+    @GetMapping("/students/current")
+    public ResponseEntity<List<Student>> getCurrentStudents() {
+        List<Student> students = studentService.findCurrent();
+        if (students.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(students, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/students/list/current")
     public ResponseEntity<List<StudentListItem>> getStudentList() {
-        List<Student> students = studentService.findAll();
+        List<Student> students = studentService.findCurrent();
         if (students.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -61,10 +68,9 @@ public class RestApiController {
         students.forEach(student -> {
             studentList.add(new StudentListItem(student.getId(), student.getFullSlavicName(), student.getProgram()));
         });
-        return new ResponseEntity<List<StudentListItem>>(studentList, HttpStatus.OK);
+        return new ResponseEntity<>(studentList, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('USER')")
     @GetMapping("/students/{id}")
     public ResponseEntity<?> getStudent(@PathVariable("id") Integer id) {
         Student student = studentService.findById(id);
@@ -192,25 +198,44 @@ public class RestApiController {
         return new ResponseEntity<>(new ResponseMessage("OK"), HttpStatus.OK);
     }
 
-    @GetMapping("/student/{id}/export/cloud")
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/student/{id}/export/cloud")
     public ResponseEntity<ResponseMessage> exportToCloud(@PathVariable("id") Integer id) {
-        DavManager davManager = new DavManager("LOGIN","PASSWORD",
-                "https://cloud.ubts.org.ua/remote.php/webdav");
-        Student student = studentService.findById(id);
-        logger.info("Exporting student to cloud: " + student.getFullSlavicName());
-        davManager.exportStudent(student);
-        return new ResponseEntity<>(new ResponseMessage("OK"), HttpStatus.OK);
-    }
-
-    @GetMapping("/student/export/cloud")
-    public ResponseEntity<ResponseMessage> exportAllToCloud() {
-        DavManager davManager = new DavManager("LOGIN", "PASSWORD",
-                "https://cloud.ubts.org.ua/remote.php/webdav");
-        List<Student> studentList = studentService.findAll();
-        for (Student student : studentList) {
-            logger.info("Exporting student to cloud: " + student.getFullSlavicName());
+        try {
+            Student student = studentService.findById(id);
+            if (student == null) {
+                return new ResponseEntity<>(new ResponseMessage("User not found"), HttpStatus.NOT_FOUND);
+            }
+            ConfigManager.DavProperties davProperties = ConfigManager.getDavProperties();
+            DavManager davManager = new DavManager(davProperties.getLogin(), davProperties.getPassword(),
+                    "https://cloud.ubts.org.ua/remote.php/webdav");
             davManager.exportStudent(student);
+        } catch (IOException | InterruptedException e) {
+            logger.error(e);
+            return new ResponseEntity<>(new ResponseMessage("Failed to export user"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(new ResponseMessage("OK"), HttpStatus.OK);
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/student/export/cloud")
+    public ResponseEntity<ResponseMessage> exportAllToCloud() {
+        try {
+            ConfigManager.DavProperties davProperties = ConfigManager.getDavProperties();
+            DavManager davManager = new DavManager(davProperties.getLogin(), davProperties.getPassword(),
+                    "https://cloud.ubts.org.ua/remote.php/webdav");
+            List<Student> studentList = studentService.findAll();
+            if (studentList.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            for (Student student : studentList) {
+                davManager.exportStudent(student);
+            }
+        } catch (IOException | InterruptedException e) {
+            logger.error(e);
+            return new ResponseEntity<>(new ResponseMessage("Failed to export users"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(new ResponseMessage("OK"), HttpStatus.OK);
+    }
+
 }
