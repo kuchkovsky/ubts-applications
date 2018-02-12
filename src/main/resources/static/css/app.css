@@ -149,3 +149,7 @@ p.no-items {
 md-list-item + .no-items {
     display: none;
 }
+
+#export-spinner {
+    padding: 50px;
+}

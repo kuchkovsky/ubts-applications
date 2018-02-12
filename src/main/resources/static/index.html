@@ -12,7 +12,7 @@
 </head>
 <body>
 <md-content flex layout="column" layout-fill>
-    <md-toolbar class="md-hue-2">
+    <md-toolbar class="md-hue-2" ng-hide="$state.current.name === 'studentPrintView'">
         <div class="md-toolbar-tools">
             <md-button ng-click="toggleSidebar()" class="md-icon-button" aria-label="Меню">
                 <md-icon md-svg-icon="img/icons/ic_menu_white_24px.svg"></md-icon>
@@ -50,15 +50,20 @@
             <ui-view class="main-content-block" ng-show="!isMainSpinnerVisible"></ui-view>
         </md-content>
     </md-content>
-    <md-fab-speed-dial ng-show="$state.current.name === 'studentView'"
-                       md-direction="up" class="md-fling md-fab-bottom-right">
+    <md-fab-speed-dial ng-show="$state.current.name === 'studentList' || $state.current.name === 'studentView'"
+                       md-direction="up" class="md-fling md-fab-bottom-right" md-open="fabOpen">
         <md-fab-trigger>
             <md-button class="md-fab" aria-label="Menu">
                 <md-icon md-svg-src="img/icons/ic_menu_white_24px.svg"></md-icon>
             </md-button>
         </md-fab-trigger>
         <md-fab-actions>
-            <md-button class="md-fab mad-raised md-mini" aria-label="Download files"
+            <md-button class="md-fab md-mini" aria-label="Export to cloud"
+                       ng-click="exportToCloud()">
+                <md-icon md-svg-src="img/icons/ic_publish_white_24px.svg"></md-icon>
+            </md-button>
+            <md-button ng-show="fabOpen && $state.current.name === 'studentView'"
+                       class="md-fab md-mini" aria-label="Download files"
                        ng-href="/api/students/files/{{studentId}}">
                 <md-icon md-svg-src="img/icons/ic_file_download_white_24px.svg"></md-icon>
             </md-button>

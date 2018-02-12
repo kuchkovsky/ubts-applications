@@ -19,7 +19,7 @@
         }
 
         this.getStudentList = function (onSuccess, onError) {
-            download('/api/students/list', onSuccess, onError);
+            download('/api/students/list/current', onSuccess, onError);
         };
 
         this.getStudent = function (id, onSuccess, onError) {
@@ -88,6 +88,11 @@
                 data: {pageTitle: 'Інформація про абітурієнта УБТС'},
                 resolve: resolveDelay
             })
+            .state('studentPrintView', {
+                url: "/view/student/{studentId}/print",
+                templateUrl: 'templates/student-view.html',
+                data: {pageTitle: 'Інформація про абітурієнта УБТС'}
+            })
             .state('login', {
                 url: "/login",
                 templateUrl: 'templates/login.html',
@@ -122,9 +127,43 @@
         });
     });
 
-    app.run(function($mdSidenav, $rootScope) {
+    app.run(function($mdSidenav, $rootScope, $state, $http, $mdDialog) {
         $rootScope.toggleSidebar = function () {
             $mdSidenav('left').toggle();
+        };
+        $rootScope.fabOpen = true;
+        $rootScope.exportToCloud = function() {
+            if ($state.current.name === 'studentView') {
+                var url = '/api/student/' + $rootScope.studentId + '/export/cloud';
+            } else {
+                var url = '/api/student/export/cloud';
+            }
+            $rootScope.exportState = {
+                inProgress: true,
+                success: false
+            };
+            function DialogController($scope, $mdDialog, exportState) {
+                $scope.exportState = exportState;
+                $scope.hide = function() {
+                    $mdDialog.hide();
+                };
+            }
+            $mdDialog.show({
+                controller: DialogController,
+                templateUrl: 'templates/export-alert.html',
+                parent: angular.element(document.body),
+                clickOutsideToClose: true,
+                locals: {
+                    exportState: $rootScope.exportState
+                }
+            });
+            $http.post(url).then(function (response) {
+                $rootScope.exportState.inProgress = false;
+                $rootScope.exportState.success = true;
+            }, function () {
+                $rootScope.exportState.inProgress = false;
+                $rootScope.exportState.success = false;
+            });
         };
     });
 
