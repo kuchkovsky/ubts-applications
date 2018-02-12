@@ -239,6 +239,7 @@
             }
             self.submitLock = true;
             this.student.birthDate = moment(this.form.student.birthDate).format('YYYY-MM-DD');
+            this.student.entryYear = moment().year();
             switch (this.student.program.name) {
                 case this.radios.program.bcsJs:
                     this.student.program.info = this.radios.programInfo.bcsJsTerm;

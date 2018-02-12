@@ -21,7 +21,6 @@ public class Student extends Person implements Serializable {
     @JoinColumn(name = "program_id")
     private Program program;
 
-    @NotEmpty
     @Column(name = "entry_year", nullable = false)
     private Integer entryYear;
 
