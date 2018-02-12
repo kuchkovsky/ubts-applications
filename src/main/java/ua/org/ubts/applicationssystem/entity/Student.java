@@ -22,6 +22,10 @@ public class Student extends Person implements Serializable {
     private Program program;
 
     @NotEmpty
+    @Column(name = "entry_year", nullable = false)
+    private Integer entryYear;
+
+    @NotEmpty
     @Column(name = "donation_amount", nullable = false, length = 16)
     private String donationAmount;
 
@@ -52,6 +56,14 @@ public class Student extends Person implements Serializable {
 
     public void setProgram(Program program) {
         this.program = program;
+    }
+
+    public Integer getEntryYear() {
+        return entryYear;
+    }
+
+    public void setEntryYear(Integer entryYear) {
+        this.entryYear = entryYear;
     }
 
     public String getDonationAmount() {

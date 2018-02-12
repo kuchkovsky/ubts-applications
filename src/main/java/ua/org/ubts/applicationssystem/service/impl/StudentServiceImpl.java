@@ -12,6 +12,7 @@ import ua.org.ubts.applicationssystem.util.UserFilesManager;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.time.Year;
 import java.util.List;
 
 /**
@@ -100,6 +101,11 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public List<Student> findAll() {
         return studentRepository.findAll();
+    }
+
+    @Override
+    public List<Student> findCurrent() {
+        return studentRepository.findByEntryYear(Year.now().getValue());
     }
 
     @Override
