@@ -26,21 +26,21 @@
                 <md-icon md-svg-src="img/icons/ic_home_black_24px.svg"></md-icon>
                 Домашня сторінка
             </md-button>
-            <md-button ng-if="!authenticated" ui-sref="login" ng-click="toggleSidebar()">
+            <md-button ng-if="!isAuthenticated" ui-sref="login" ng-click="toggleSidebar()">
                 <md-icon md-svg-src="img/icons/ic_account_box_black_24px.svg"></md-icon>
                 Вхід в систему
             </md-button>
-            <md-button ng-if="authenticated" ng-click="toggleSidebar(); logout()">
-                <md-icon md-svg-src="img/icons/ic_account_box_black_24px.svg"></md-icon>
-                Вихід з системи
-            </md-button>
-            <md-button ng-if="authenticated" ui-sref="studentList" ng-click="toggleSidebar()">
+            <md-button ng-if="isAuthenticated" ui-sref="studentList" ng-click="toggleSidebar()">
                 <md-icon md-svg-src="img/icons/ic_view_list_black_24px.svg"></md-icon>
                 Список абітурієнтів
             </md-button>
             <md-button ui-sref="studentApplication" ng-click="toggleSidebar()">
                 <md-icon md-svg-src="img/icons/ic_person_add_black_24px.svg"></md-icon>
                 Анкета абітурієнта
+            </md-button>
+            <md-button ng-if="isAuthenticated" ng-click="toggleSidebar(); logout()">
+                <md-icon md-svg-src="img/icons/ic_account_box_black_24px.svg"></md-icon>
+                Вихід з системи
             </md-button>
         </md-sidenav>
         <md-content id="main-content-top" flex>

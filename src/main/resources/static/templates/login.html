@@ -4,7 +4,7 @@
         <form id="login-form" name="loginForm" ng-submit="loginForm.$valid && ctrl.login()">
             <md-input-container class="md-block">
                 <label>Логін</label>
-                <input required name="username" ng-model="ctrl.credentials.username">
+                <input required name="login" ng-model="ctrl.credentials.login">
                 <div ng-messages="applicationForm.username.$error">
                     <div ng-message="required">Обов'язкове поле.</div>
                 </div>

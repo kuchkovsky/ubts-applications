@@ -8,6 +8,71 @@
     var app = angular.module('ubtsApplSystem',
         ['ngMaterial', 'ngMessages', 'ngAnimate', 'lfNgMdFileInput', 'duScroll', 'ui.router']);
 
+    app.service('authService', function ($rootScope, $window, $http, $location) {
+
+        this.checkLoginStatus = function () {
+            $rootScope.isAuthenticated = !!$window.localStorage.token;
+        };
+
+        this.login = function (login, password, onSuccess, onFailure) {
+            var data = {};
+            data.login = login;
+            data.password = password;
+            $http({
+                url: '/api/auth/login',
+                method: 'POST',
+                data: data
+            }).then(function (res) {
+                $window.localStorage.token = res.headers('Authorization').replace("Bearer ", "");
+                $rootScope.isAuthenticated = true;
+                onSuccess();
+            }, function () {
+                delete $window.localStorage.token;
+                $rootScope.isAuthenticated = false;
+                onFailure();
+            });
+        };
+
+        this.logout = function () {
+            $rootScope.isAuthenticated = false;
+            delete $window.localStorage.token;
+            $location.path("/login");
+        };
+
+    });
+
+    app.run(function (authService) {
+        if (window.navigator.appVersion.indexOf('wkhtmltopdf') === -1) {
+            authService.checkLoginStatus();
+        }
+    });
+
+    app.factory('authInterceptor', function ($rootScope, $q, $window, $location) {
+        return {
+            request: function (config) {
+                config.headers = config.headers || {};
+                if ($window.localStorage.token) {
+                    config.headers.Authorization = 'Bearer ' + $window.localStorage.token;
+                }
+                return config;
+            },
+            responseError: function (rejection) {
+                if (rejection.status === 401 || rejection.status === 403) {
+                    delete $window.localStorage.token;
+                    $rootScope.isAuthenticated = false;
+                    $location.path("/login");
+                }
+                return $q.reject(rejection);
+            }
+        };
+    });
+
+    app.config(function ($httpProvider) {
+        if (window.navigator.appVersion.indexOf('wkhtmltopdf') === -1) {
+            $httpProvider.interceptors.push('authInterceptor');
+        }
+    });
+
     app.service('downloadService', function ($http) {
 
         function download(url, onSuccess, onError) {
@@ -102,20 +167,9 @@
     });
 
     app.run(['$rootScope', '$state', '$stateParams', '$http', '$location',
-        function ($rootScope, $state, $stateParams, $http, $location) {
+        function ($rootScope, $state, $stateParams) {
             $rootScope.$state = $state;
             $rootScope.$stateParams = $stateParams;
-            $rootScope.logout = function () {
-                $http.post('auth/logout', {}).finally(function() {
-                    $rootScope.authenticated = false;
-                    $location.path("/");
-                });
-            };
-            $http({method: 'GET', url: 'auth/refresh'}).then(function(response) {
-                if (response.data.access_token !== null) {
-                    $rootScope.authenticated = true;
-                }
-            });
     }]);
 
     app.run(function($transitions, $rootScope) {
@@ -127,9 +181,12 @@
         });
     });
 
-    app.run(function($mdSidenav, $rootScope, $state, $http, $mdDialog) {
+    app.run(function($mdSidenav, $rootScope, $state, $http, $mdDialog, authService) {
         $rootScope.toggleSidebar = function () {
             $mdSidenav('left').toggle();
+        };
+        $rootScope.logout = function () {
+            authService.logout();
         };
         $rootScope.fabOpen = true;
         $rootScope.exportToCloud = function() {
