@@ -1,5 +1,7 @@
 <md-card class="main-card" ng-controller="studentApplicationCtrl as ctrl">
     <img id="application-logo" ng-src="{{ctrl.form.logo}}" class="md-card-image">
+    <div id="reg-warning" ng-if="!ctrl.isLoading && !ctrl.isRegistrationOpen"
+         class="md-display-1 error center">Реєстрацію закрито</div>
     <md-card-content layout="row" layout-align="space-between">
         <form name="applicationForm" ng-submit="applicationForm.$valid && ctrl.submit()">
             <section id="heading">
@@ -808,8 +810,8 @@
                 </md-input-container>
             </section>
             <section id="submit">
-                <md-button ng-disabled="applicationForm.$invalid || ctrl.submitLock" class="md-raised md-primary"
-                           type="submit">
+                <md-button ng-disabled="!ctrl.isRegistrationOpen || applicationForm.$invalid || ctrl.submitLock"
+                           class="md-raised md-primary" type="submit">
                     Зареєструватися
                 </md-button>
                 <div id="form-progressbar" ng-show="ctrl.form.progressBar.isVisible">

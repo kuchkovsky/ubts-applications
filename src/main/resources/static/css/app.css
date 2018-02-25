@@ -153,3 +153,11 @@ md-list-item + .no-items {
 #export-spinner {
     padding: 50px;
 }
+
+.switch-block {
+    margin-left: 15px;
+}
+
+#reg-warning {
+    margin-top: 15px;
+}
