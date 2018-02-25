@@ -3,14 +3,14 @@
         <md-dialog-content>
             <div class="md-dialog-content">
                 <div ng-if="exportState.inProgress">
-                    <div><h3>Триває експорт в хмару...</h3></div>
+                    <div><h3>Триває експорт у хмару...</h3></div>
                     <div id="export-spinner">
                         <md-progress-circular class="center-screen" md-mode="indeterminate"></md-progress-circular>
                     </div>
                 </div>
                 <div ng-if="!exportState.inProgress">
-                    <div ng-if="exportState.success"><h3>Дані успішно експортовані в хмару</h3></div>
-                    <div ng-if="!exportState.success"><h3>Помилка експорту в хмару</h3></div>
+                    <div ng-if="exportState.success"><h3>Дані успішно експортовані у хмару</h3></div>
+                    <div ng-if="!exportState.success"><h3>Помилка експорту у хмару</h3></div>
                 </div>
             </div>
         </md-dialog-content>
