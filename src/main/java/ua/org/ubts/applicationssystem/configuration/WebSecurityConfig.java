@@ -33,12 +33,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.cors().and().csrf().disable().authorizeRequests()
 				.antMatchers(HttpMethod.GET,
-						"/", "/favicon.ico", "/templates/**", "/css/**", "/js/**", "/img/**").permitAll()
-				.antMatchers(HttpMethod.GET,
 						"/api/students/{id}").access("hasRole('USER') or hasIpAddress('::1')")
 				.antMatchers(HttpMethod.POST, "/api/students", "/api/students/files").permitAll()
-				.antMatchers(HttpMethod.HEAD, "/api/students/files/exist").permitAll()
-				.anyRequest().authenticated()
+				.antMatchers(HttpMethod.HEAD,
+						"/api/students/files/exist", "/api/registration/open").permitAll()
+				.antMatchers("/api/**").authenticated()
+				.anyRequest().permitAll()
 				.and()
 				.addFilter(new JWTAuthenticationFilter(authenticationManager()))
 				.addFilter(new JWTAuthorizationFilter(authenticationManager()))
@@ -61,4 +61,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
 		return source;
 	}
+
 }
