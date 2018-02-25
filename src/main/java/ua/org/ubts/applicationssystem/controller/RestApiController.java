@@ -12,6 +12,7 @@ import ua.org.ubts.applicationssystem.dto.StudentListItem;
 import ua.org.ubts.applicationssystem.entity.*;
 import ua.org.ubts.applicationssystem.model.StudentFilesUploadModel;
 import ua.org.ubts.applicationssystem.service.ProgramService;
+import ua.org.ubts.applicationssystem.service.PropertyService;
 import ua.org.ubts.applicationssystem.service.StudentService;
 import ua.org.ubts.applicationssystem.util.*;
 
@@ -36,6 +37,9 @@ public class RestApiController {
 
     @Autowired
     private ProgramService programService;
+
+    @Autowired
+    private PropertyService propertyService;
 
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/students")
@@ -236,6 +240,29 @@ public class RestApiController {
             return new ResponseEntity<>(new ResponseMessage("Failed to export users"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(new ResponseMessage("OK"), HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/registration/open")
+    public ResponseEntity openRegistration() {
+        propertyService.save(new Property("is_registration_open", true));
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/registration/open")
+    public ResponseEntity closeRegistration() {
+        propertyService.save(new Property("is_registration_open", false));
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/registration/open", method = RequestMethod.HEAD)
+    public ResponseEntity checkRegistrationStatus() {
+        Property registrationProperty = propertyService.findByKey("is_registration_open");
+        if (registrationProperty != null && Boolean.TRUE.equals(registrationProperty.getBooleanValue())) {
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
 
 }
