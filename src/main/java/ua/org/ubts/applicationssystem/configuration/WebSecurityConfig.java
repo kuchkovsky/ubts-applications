@@ -32,15 +32,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.cors().and().csrf().disable().authorizeRequests()
-				.antMatchers("/api/**").permitAll()
 				.antMatchers(HttpMethod.GET,
 						"/", "/favicon.ico", "/templates/**", "/css/**", "/js/**", "/img/**").permitAll()
-				.antMatchers("/api/students/{id}").access("hasRole('USER') or hasIpAddress('::1')")
+				.antMatchers(HttpMethod.GET,
+						"/api/students/{id}").access("hasRole('USER') or hasIpAddress('::1')")
+				.antMatchers(HttpMethod.POST, "/api/students", "/api/students/files").permitAll()
+				.antMatchers(HttpMethod.HEAD, "/api/students/files/exist").permitAll()
 				.anyRequest().authenticated()
 				.and()
 				.addFilter(new JWTAuthenticationFilter(authenticationManager()))
 				.addFilter(new JWTAuthorizationFilter(authenticationManager()))
-				// this disables session creation on Spring Security
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
 
