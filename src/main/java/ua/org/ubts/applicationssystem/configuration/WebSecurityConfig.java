@@ -1,83 +1,63 @@
 package ua.org.ubts.applicationssystem.configuration;
 
+import ua.org.ubts.applicationssystem.security.JWTAuthenticationFilter;
+import ua.org.ubts.applicationssystem.security.JWTAuthorizationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import ua.org.ubts.applicationssystem.security.auth.*;
-import ua.org.ubts.applicationssystem.service.impl.CustomUserDetailsService;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.context.annotation.Bean;
 
 @Configuration
+@EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Value("${jwt.cookie}")
-    private String TOKEN_COOKIE;
+	@Autowired
+	private UserDetailsService userDetailsService;
 
-    @Bean
-    public TokenAuthenticationFilter jwtAuthenticationTokenFilter() throws Exception {
-        return new TokenAuthenticationFilter();
-    }
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.cors().and().csrf().disable().authorizeRequests()
+				.antMatchers("/api/**").permitAll()
+				.antMatchers(HttpMethod.GET,
+						"/", "/favicon.ico", "/templates/**", "/css/**", "/js/**", "/img/**").permitAll()
+				.antMatchers("/api/students/{id}").access("hasRole('USER') or hasIpAddress('::1')")
+				.anyRequest().authenticated()
+				.and()
+				.addFilter(new JWTAuthenticationFilter(authenticationManager()))
+				.addFilter(new JWTAuthorizationFilter(authenticationManager()))
+				// this disables session creation on Spring Security
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+	}
 
-    @Autowired
-    private CustomUserDetailsService jwtUserDetailsService;
+	@Override
+	public void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
+	}
 
-    @Autowired
-    private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
+	@Bean
+	public BCryptPasswordEncoder bCryptPasswordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
-    @Autowired
-    private LogoutSuccess logoutSuccess;
-
-    @Autowired
-    public void configureGlobal( AuthenticationManagerBuilder auth ) throws Exception {
-        auth.userDetailsService( jwtUserDetailsService )
-                .passwordEncoder( passwordEncoder() );
-    }
-
-    @Autowired
-    private AuthenticationSuccessHandler authenticationSuccessHandler;
-
-    @Autowired
-    private AuthenticationFailureHandler authenticationFailureHandler;
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .csrf()
-                .ignoringAntMatchers("/auth/login")
-                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
-                .sessionManagement().sessionCreationPolicy( SessionCreationPolicy.STATELESS ).and()
-                .exceptionHandling().authenticationEntryPoint( restAuthenticationEntryPoint ).and()
-                .addFilterBefore(jwtAuthenticationTokenFilter(), BasicAuthenticationFilter.class)
-                .authorizeRequests()
-                .antMatchers("/api/students/{id}")
-                .access("hasRole('USER') or hasIpAddress('::1')")
-                .anyRequest()
-                .authenticated().and()
-                .formLogin()
-                .loginPage("/auth/login")
-                .successHandler(authenticationSuccessHandler)
-                .failureHandler(authenticationFailureHandler).and()
-                .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout"))
-                .logoutSuccessHandler(logoutSuccess)
-                .deleteCookies(TOKEN_COOKIE);
-
-    }
-
+	@Bean
+	CorsConfigurationSource corsConfigurationSource() {
+		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+		return source;
+	}
 }
