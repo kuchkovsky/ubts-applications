@@ -75,8 +75,16 @@
             });
         }
 
-        this.getStudentList = function (onSuccess, onError) {
-            download('/api/students/list/current', onSuccess, onError);
+        this.getStudentList = function (years, onSuccess, onError) {
+            $http.get('/api/students/list', {
+                params: {
+                    year: years
+                }
+            }).then(function (response) {
+                onSuccess(response.data);
+            }, function () {
+                onError();
+            });
         };
 
         this.getStudent = function (id, onSuccess, onError) {
@@ -85,6 +93,10 @@
 
         this.getPrograms = function (onSuccess, onError) {
             download('/api/programs', onSuccess, onError);
+        };
+
+        this.getYears = function (onSuccess, onError) {
+            download('/api/years', onSuccess, onError);
         };
 
     });

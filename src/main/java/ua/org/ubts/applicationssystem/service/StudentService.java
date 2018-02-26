@@ -1,5 +1,6 @@
 package ua.org.ubts.applicationssystem.service;
 
+import org.springframework.data.repository.query.Param;
 import ua.org.ubts.applicationssystem.entity.Student;
 import ua.org.ubts.applicationssystem.service.template.BasicService;
 import ua.org.ubts.applicationssystem.service.template.ExtendedElementOperationsService;
@@ -13,6 +14,6 @@ public interface StudentService extends BasicService<Student, Integer>, Extended
 
     Student findByName(String firstName, String middleName, String lastName);
 
-    List<Student> findCurrent();
+    List<Student> findByEntryYears(Integer[] entryYears);
 
 }

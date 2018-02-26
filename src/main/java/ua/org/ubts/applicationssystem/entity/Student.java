@@ -21,8 +21,9 @@ public class Student extends Person implements Serializable {
     @JoinColumn(name = "program_id")
     private Program program;
 
-    @Column(name = "entry_year", nullable = false)
-    private Integer entryYear;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "entry_year_id")
+    private Year entryYear;
 
     @NotEmpty
     @Column(name = "donation_amount", nullable = false, length = 16)
@@ -57,11 +58,11 @@ public class Student extends Person implements Serializable {
         this.program = program;
     }
 
-    public Integer getEntryYear() {
+    public Year getEntryYear() {
         return entryYear;
     }
 
-    public void setEntryYear(Integer entryYear) {
+    public void setEntryYear(Year entryYear) {
         this.entryYear = entryYear;
     }
 
@@ -117,13 +118,14 @@ public class Student extends Person implements Serializable {
     public String toString() {
         return "Student{" +
                 "program=" + program +
+                ", entryYear=" + entryYear +
                 ", donationAmount='" + donationAmount + '\'' +
                 ", financeComments='" + financeComments + '\'' +
                 ", healthData=" + healthData +
                 ", reasonsToStudy='" + reasonsToStudy + '\'' +
                 ", howCameToGod='" + howCameToGod + '\'' +
                 ", filesUploaded=" + filesUploaded +
-                "} extends " + super.toString();
+                '}';
     }
 
 }

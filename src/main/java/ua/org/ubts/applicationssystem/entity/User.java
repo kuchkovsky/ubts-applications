@@ -1,5 +1,7 @@
 package ua.org.ubts.applicationssystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
@@ -8,6 +10,7 @@ import java.util.Collection;
 @Table(name = "user")
 public class User implements Serializable {
 
+	@JsonIgnore
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;

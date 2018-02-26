@@ -6,13 +6,14 @@ import org.springframework.stereotype.Service;
 import ua.org.ubts.applicationssystem.entity.Education;
 import ua.org.ubts.applicationssystem.entity.Program;
 import ua.org.ubts.applicationssystem.entity.Student;
+import ua.org.ubts.applicationssystem.entity.Year;
 import ua.org.ubts.applicationssystem.repository.StudentRepository;
+import ua.org.ubts.applicationssystem.repository.YearRepository;
 import ua.org.ubts.applicationssystem.service.*;
 import ua.org.ubts.applicationssystem.util.UserFilesManager;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
-import java.time.Year;
 import java.util.List;
 
 /**
@@ -49,6 +50,9 @@ public class StudentServiceImpl implements StudentService {
     @Autowired
     private HealthDataService healthDataService;
 
+    @Autowired
+    private YearRepository yearRepository;
+
     @Override
     public Student findById(Integer id) {
         return studentRepository.findOne(id);
@@ -74,6 +78,10 @@ public class StudentServiceImpl implements StudentService {
         Education education = educationService.findByData(student.getEducation());
         if (education != null) {
             student.setEducation(education);
+        }
+        Year year = yearRepository.findByValue(student.getEntryYear().getValue());
+        if (year != null) {
+            student.setEntryYear(year);
         }
         maritalDataService.save(student.getMaritalData());
         if (student.getChurchData() != null && student.getChurchMinistry() != null) {
@@ -104,8 +112,8 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public List<Student> findCurrent() {
-        return studentRepository.findByEntryYear(Year.now().getValue());
+    public List<Student> findByEntryYears(Integer[] entryYears) {
+        return studentRepository.findByEntryYears(entryYears);
     }
 
     @Override

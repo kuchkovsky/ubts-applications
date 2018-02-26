@@ -86,11 +86,29 @@ md-sidenav .md-button {
     animation: 0.5s bounceInDown ease;
 }
 
-.main-content-block.ng-hide-add, .spinner.ng-hide-add, #form-progressbar.ng-hide-add {
+.zoom.ng-hide-add {
+    animation: 0.5s zoomOut ease;
+}
+
+.zoom.ng-hide-remove {
+    animation: 0.5s zoomIn ease;
+}
+
+.fade.ng-hide-add {
+    animation: 0.5s fadeOut ease;
+}
+
+.fade.ng-hide-remove {
+    animation: 0.5s fadeIn ease;
+}
+
+.main-content-block.ng-hide-add, .spinner.ng-hide-add, #form-progressbar.ng-hide-add, .student-list-item,
+.no-animation {
     animation: none;
 }
 
-.main-content-block.ng-hide-remove, .spinner.ng-hide-remove, #form-progressbar.ng-hide-remove {
+.main-content-block.ng-hide-remove, .spinner.ng-hide-remove, #form-progressbar.ng-hide-remove, .student-list-item,
+.no-animation {
     animation: none;
 }
 
@@ -160,4 +178,23 @@ md-list-item + .no-items {
 
 #reg-warning {
     margin-top: 15px;
+}
+
+.year-card {
+    max-width: 120px;
+}
+
+#sidebar {
+    padding: 15px;
+    position: absolute;
+}
+
+@media screen and (max-width: 850px) {
+    #sidebar {
+        display: none !important;
+    }
+}
+
+.year-list-item {
+    width: 80px;
 }

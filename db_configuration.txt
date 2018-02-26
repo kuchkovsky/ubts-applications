@@ -32,3 +32,8 @@ DROP database ubts_appl_system;
 DROP user 'appluser'@'localhost';
 DROP user 'appluser'@'%';
 FLUSH PRIVILEGES;
+
+INSERT INTO year (id, value) VALUES (1, 2017);
+INSERT INTO year (id, value) VALUES (2, 2018);
+ALTER TABLE student DROP COLUMN entry_year;
+UPDATE student SET entry_year_id=2;

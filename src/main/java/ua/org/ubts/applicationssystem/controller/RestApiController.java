@@ -11,6 +11,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import ua.org.ubts.applicationssystem.dto.StudentListItem;
 import ua.org.ubts.applicationssystem.entity.*;
 import ua.org.ubts.applicationssystem.model.StudentFilesUploadModel;
+import ua.org.ubts.applicationssystem.repository.YearRepository;
 import ua.org.ubts.applicationssystem.service.ProgramService;
 import ua.org.ubts.applicationssystem.service.PropertyService;
 import ua.org.ubts.applicationssystem.service.StudentService;
@@ -41,10 +42,14 @@ public class RestApiController {
     @Autowired
     private PropertyService propertyService;
 
+    @Autowired
+    private YearRepository yearRepository;
+
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/students")
-    public ResponseEntity<List<Student>> getAllStudents() {
-        List<Student> students = studentService.findAll();
+    public ResponseEntity<List<Student>> getStudents(@RequestParam(value = "year", required = false) Integer[] years) {
+        List<Student> students = (years == null || years.length == 0)
+                ? studentService.findAll() : studentService.findByEntryYears(years);
         if (students.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -52,19 +57,11 @@ public class RestApiController {
     }
 
     @PreAuthorize("hasRole('USER')")
-    @GetMapping("/students/current")
-    public ResponseEntity<List<Student>> getCurrentStudents() {
-        List<Student> students = studentService.findCurrent();
-        if (students.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(students, HttpStatus.OK);
-    }
-
-    @PreAuthorize("hasRole('USER')")
-    @GetMapping("/students/list/current")
-    public ResponseEntity<List<StudentListItem>> getStudentList() {
-        List<Student> students = studentService.findCurrent();
+    @GetMapping("/students/list")
+    public ResponseEntity<List<StudentListItem>> getStudentListByYears(@RequestParam(value = "year", required = false)
+                                                                                   Integer[] years) {
+        List<Student> students = (years == null || years.length == 0)
+                ? studentService.findAll() : studentService.findByEntryYears(years);
         if (students.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -241,6 +238,17 @@ public class RestApiController {
         }
         return new ResponseEntity<>(new ResponseMessage("OK"), HttpStatus.OK);
     }
+
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/years")
+    public ResponseEntity<List<Year>> getYearList() {
+        List<Year> years = yearRepository.findAll();
+        if (years.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(years, HttpStatus.OK);
+    }
+
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/registration/open")

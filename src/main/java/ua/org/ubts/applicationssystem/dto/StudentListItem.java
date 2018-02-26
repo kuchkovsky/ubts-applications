@@ -39,4 +39,14 @@ public class StudentListItem {
     public void setProgram(Program program) {
         this.program = program;
     }
+
+    @Override
+    public String toString() {
+        return "StudentListItem{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", program=" + program +
+                '}';
+    }
+
 }
