@@ -6,6 +6,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.springframework.web.util.UriUtils;
 import ua.org.ubts.applicationssystem.entity.Student;
+
 import java.io.*;
 
 /**
@@ -61,7 +62,7 @@ public class DavManager {
         InputStream bis = new BufferedInputStream(p.getInputStream());
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         int reads = bis.read();
-        while(reads != -1) {
+        while (reads != -1) {
             baos.write(reads);
             reads = bis.read();
         }

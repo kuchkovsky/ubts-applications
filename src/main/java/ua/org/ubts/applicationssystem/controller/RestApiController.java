@@ -210,7 +210,7 @@ public class RestApiController {
             }
             ConfigManager.DavProperties davProperties = ConfigManager.getDavProperties();
             DavManager davManager = new DavManager(davProperties.getLogin(), davProperties.getPassword(),
-                    "https://cloud.ubts.org.ua/remote.php/webdav");
+                    davProperties.getUrl());
             davManager.exportStudent(student);
         } catch (IOException | InterruptedException e) {
             logger.error(e);
@@ -225,7 +225,7 @@ public class RestApiController {
         try {
             ConfigManager.DavProperties davProperties = ConfigManager.getDavProperties();
             DavManager davManager = new DavManager(davProperties.getLogin(), davProperties.getPassword(),
-                    "https://cloud.ubts.org.ua/remote.php/webdav");
+                    davProperties.getUrl());
             List<Student> studentList = studentService.findAll();
             if (studentList.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -286,7 +286,7 @@ public class RestApiController {
         try {
             ConfigManager.DavProperties davProperties = ConfigManager.getDavProperties();
             DavManager davManager = new DavManager(davProperties.getLogin(), davProperties.getPassword(),
-                    "https://cloud.ubts.org.ua/remote.php/webdav");
+                    davProperties.getUrl());
             String folder = "/ApplicationSystem/Excel/";
             if (!davManager.exists(folder)) {
                 davManager.createDirectoryRecursive(folder);
