@@ -80,8 +80,8 @@ public class DavManager {
     }
 
     public void exportStudent(Student student) throws IOException, InterruptedException {
-        String folder = "/ApplicationSystem/" + student.getEntryYear() + "/" + student.getProgram().getName() + "/"
-                + student.getFullSlavicName() + "/";
+        String folder = "/ApplicationSystem/" + student.getEntryYear().getValue() + "/" + student.getProgram().getName()
+                + "/" + student.getFullSlavicName() + "/";
         if (!exists(folder)) {
             logger.info("Exporting student to cloud: " + student.getFullSlavicName());
             createDirectoryRecursive(folder);
