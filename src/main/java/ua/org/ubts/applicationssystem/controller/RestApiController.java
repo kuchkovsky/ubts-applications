@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -59,7 +60,7 @@ public class RestApiController {
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/students/list")
     public ResponseEntity<List<StudentListItem>> getStudentListByYears(@RequestParam(value = "year", required = false)
-                                                                                   Integer[] years) {
+                                                                               Integer[] years) {
         List<Student> students = (years == null || years.length == 0)
                 ? studentService.findAll() : studentService.findByEntryYears(years);
         if (students.isEmpty()) {
@@ -182,8 +183,8 @@ public class RestApiController {
         try {
             ByteArrayOutputStream outputStream = UserFilesManager.getStudentFiles(student);
             String filename = UserFilesManager.getStudentDirectory(student) + ".zip";
-            filename = URLEncoder.encode(filename,"UTF-8");
-            response.setHeader("Content-Disposition","attachment; filename=\"" + filename + "\"");
+            filename = URLEncoder.encode(filename, "UTF-8");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"");
             response.setContentType("application/zip");
             response.getOutputStream().write(outputStream.toByteArray());
             response.flushBuffer();
@@ -273,4 +274,29 @@ public class RestApiController {
         return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/student/export/cloud/excel")
+    public ResponseEntity<ResponseMessage> exportAllToExcel() {
+        Integer currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        List<Student> studentList = studentService.findByEntryYears(new Integer[]{currentYear});
+        if (studentList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        XlsxExporter xlsxExporter = new XlsxExporter();
+        try {
+            ConfigManager.DavProperties davProperties = ConfigManager.getDavProperties();
+            DavManager davManager = new DavManager(davProperties.getLogin(), davProperties.getPassword(),
+                    "https://cloud.ubts.org.ua/remote.php/webdav");
+            String folder = "/ApplicationSystem/Excel/";
+            if (!davManager.exists(folder)) {
+                davManager.createDirectoryRecursive(folder);
+            }
+            logger.info("Putting xlsx file to cloud.");
+            davManager.put(xlsxExporter.generateXlsx(studentList), folder + currentYear.toString() + ".xlsx");
+        } catch (IOException e) {
+            logger.error(e);
+            return new ResponseEntity<>(new ResponseMessage("Failed to export users"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(new ResponseMessage("OK"), HttpStatus.OK);
+    }
 }

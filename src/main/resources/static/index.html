@@ -58,7 +58,13 @@
             </md-button>
         </md-fab-trigger>
         <md-fab-actions>
-            <md-button class="md-fab md-mini" aria-label="Export to cloud"
+            <md-button ng-show="fabOpen && $state.current.name === 'studentList'"
+                       class="md-fab md-mini" aria-label="Export to excel"
+                       ng-click="exportToExcel()">
+                <md-icon md-svg-src="img/icons/ic_file_excel.svg"></md-icon>
+            </md-button>
+            <md-button ng-show="fabOpen && $state.current.name === 'studentList'"
+                       class="md-fab md-mini" aria-label="Export to cloud"
                        ng-click="exportToCloud()">
                 <md-icon md-svg-src="img/icons/ic_publish_white_24px.svg"></md-icon>
             </md-button>

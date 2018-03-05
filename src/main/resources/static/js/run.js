@@ -66,6 +66,40 @@
                 $rootScope.exportState.success = false;
             });
         };
+
+
+        $rootScope.exportToExcel = function() {
+            var url = '/api/student/export/cloud/excel';
+            $rootScope.exportState = {
+                inProgress: true,
+                success: false
+            };
+            function DialogController($scope, $mdDialog, exportState) {
+                $scope.exportState = exportState;
+                $scope.hide = function() {
+                    $mdDialog.hide();
+                };
+            }
+            $mdDialog.show({
+                controller: DialogController,
+                templateUrl: 'templates/export-alert.html',
+                parent: angular.element(document.body),
+                clickOutsideToClose: true,
+                locals: {
+                    exportState: $rootScope.exportState
+                }
+            });
+            $http.post(url).then(function (response) {
+                $rootScope.exportState.inProgress = false;
+                $rootScope.exportState.success = true;
+            }, function () {
+                $rootScope.exportState.inProgress = false;
+                $rootScope.exportState.success = false;
+            });
+        };
+
+
+
     });
 
 })();
