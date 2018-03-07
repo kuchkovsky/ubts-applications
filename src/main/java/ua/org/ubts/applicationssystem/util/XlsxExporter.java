@@ -5,8 +5,11 @@ import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import ua.org.ubts.applicationssystem.entity.Student;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -46,7 +49,6 @@ public class XlsxExporter {
     }
 
     private Sheet createNewSheet(String name) {
-        System.out.println("creating sheet for: " + name);
         Sheet sheet = book.cloneSheet(book.getSheetIndex("template"));
         book.setSheetName(book.getSheetIndex(sheet), abbreviationMap.get(name));
         Row firstRow = sheet.createRow(0);
@@ -61,8 +63,16 @@ public class XlsxExporter {
         row.createCell(3).setCellValue(student.getEmail());
         row.createCell(4).setCellValue(student.getPhone1()
                 + (!StringUtils.isEmpty(student.getPhone2()) ? ", " + student.getPhone2() : ""));
-        Cell birthdate = row.createCell(5);
-        birthdate.setCellValue(parseDate(student.getBirthDate()));
+        try {
+            Cell birthdate = row.createCell(5);
+            CreationHelper createHelper = book.getCreationHelper();
+            CellStyle cellStyle = book.createCellStyle();
+            cellStyle.setDataFormat(createHelper.createDataFormat().getFormat("dd.mm.yyyy"));
+            birthdate.setCellValue(parseDate(student.getBirthDate()));
+            birthdate.setCellStyle(cellStyle);
+        } catch (ParseException e) {
+            logger.error(e);
+        }
         row.createCell(6).setCellValue(student.getResidence().getCountry().getName());
         row.createCell(7).setCellValue(student.getResidence().getRegion());
         row.createCell(8).setCellValue(student.getResidence().getCityVillage());
@@ -73,16 +83,9 @@ public class XlsxExporter {
         row.createCell(13).setCellValue(student.getResidence().getIndex());
     }
 
-    private String parseDate(String date) {
-        Matcher matcher = Pattern.compile("^(\\d+)-(\\d+)-(\\d+)$").matcher(date);
-        matcher.find();
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(matcher.group(3));
-        stringBuilder.append(".");
-        stringBuilder.append(matcher.group(2));
-        stringBuilder.append(".");
-        stringBuilder.append(matcher.group(1));
-        return  stringBuilder.toString();
+    private Date parseDate(String dateString) throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        return formatter.parse(dateString);
     }
 
     private String getAbbreviation(String name) {
