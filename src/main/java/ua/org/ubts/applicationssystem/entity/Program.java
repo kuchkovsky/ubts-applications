@@ -27,6 +27,9 @@ public class Program implements Serializable {
     @Column(name = "info", length = 64)
     private String info;
 
+    @Column(name = "abbreviation", length = 64)
+    private String abbreviation;
+
     @JsonIgnore
     @OneToMany(mappedBy = "program")
     private List<Student> students;
@@ -68,6 +71,14 @@ public class Program implements Serializable {
 
     public void setStudents(List<Student> students) {
         this.students = students;
+    }
+
+    public String getAbbreviation() {
+        return abbreviation;
+    }
+
+    public void setAbbreviation(String abbreviation) {
+        this.abbreviation = abbreviation;
     }
 
     @Override
