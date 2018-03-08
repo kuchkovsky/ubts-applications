@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import ua.org.ubts.applicationssystem.entity.Program;
 import ua.org.ubts.applicationssystem.entity.Student;
 
 import java.io.ByteArrayOutputStream;
@@ -11,30 +12,21 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class XlsxExporter {
 
     private static final Logger logger = Logger.getLogger(XlsxExporter.class);
 
     private Workbook book;
-    private Map<String, String> abbreviationMap;
-
-    public XlsxExporter() {
-        abbreviationMap = new HashMap<>();
-    }
 
     public byte[] generateXlsx(List<Student> students) throws IOException {
         book = new XSSFWorkbook(getClass().getResourceAsStream("/static/template.xlsx"));
         for (Student student : students) {
-            String programName = student.getProgram().getName();
-            programName += student.getProgram().getInfo() != null ? " " + student.getProgram().getInfo() : "";
-            String sheetName = getAbbreviation(programName);
+            String sheetName = getAbbreviation(student);
             Sheet currentSheet = book.getSheet(sheetName);
             if (currentSheet == null) {
-                logger.info("Creating new sheet for: " + programName);
-                currentSheet = createNewSheet(programName);
+                logger.info("Creating new sheet for: " + student.getProgram().toString());
+                currentSheet = createNewSheet(student.getProgram(), sheetName);
             }
             logger.info("Writing student to row: " + student.getFullSlavicName() + " in sheet "
                     + currentSheet.getSheetName());
@@ -48,11 +40,11 @@ public class XlsxExporter {
         return baos.toByteArray();
     }
 
-    private Sheet createNewSheet(String name) {
+    private Sheet createNewSheet(Program program, String name) {
         Sheet sheet = book.cloneSheet(book.getSheetIndex("template"));
-        book.setSheetName(book.getSheetIndex(sheet), abbreviationMap.get(name));
+        book.setSheetName(book.getSheetIndex(sheet), name);
         Row firstRow = sheet.createRow(0);
-        firstRow.createCell(5).setCellValue("Група: " + name + ";");
+        firstRow.createCell(5).setCellValue("Група: " + program.getName() + " " + program.getInfo());
         return sheet;
     }
 
@@ -88,17 +80,7 @@ public class XlsxExporter {
         return formatter.parse(dateString);
     }
 
-    private String getAbbreviation(String name) {
-        String abbreviation = new String();
-        if (abbreviationMap.containsKey(name)) {
-            abbreviation = abbreviationMap.get(name);
-        } else {
-            Matcher matcher = Pattern.compile("\\b(?:\\w)", Pattern.UNICODE_CHARACTER_CLASS).matcher(name);
-            while (matcher.find()) {
-                abbreviation += matcher.group().toUpperCase();
-            }
-            abbreviationMap.put(name, abbreviation);
-        }
-        return abbreviation;
+    private String getAbbreviation(Student student) {
+        return student.getProgram().getAbbreviation() + (student.getEntryYear().getValue() % 100);
     }
 }
