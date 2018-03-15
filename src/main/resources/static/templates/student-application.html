@@ -29,7 +29,7 @@
             <section id="program">
                 <h3 class="md-title">За якою програмою бажаєте навчатися?</h3>
                 <md-radio-group ng-model="ctrl.student.program.name">
-                    <div ng-show="ctrl.student.program.name !== ctrl.radios.program.prml" class="prml-hide">
+                    <div ng-click="ctrl.defaultApplication($state)">
                         <md-radio-button class="md-primary" ng-value="ctrl.radios.program.bps">
                             {{ctrl.radios.program.bps}}
                         </md-radio-button>
@@ -39,6 +39,17 @@
                         <md-radio-button class="md-primary" ng-value="ctrl.radios.program.bcsOrcs">
                             {{ctrl.radios.program.bcsOrcs}}
                         </md-radio-button>
+                        <div class="inner-radio"
+                             ng-show="ctrl.student.program.name === ctrl.radios.program.bcsOrcs">
+                            <md-radio-group ng-model="ctrl.radios.programInfo.bcsOrcsRegion">
+                                <md-radio-button ng-value="ctrl.radios.programInfo.bcsOrcs.lviv">
+                                    {{ctrl.radios.programInfo.bcsOrcs.lviv}}
+                                </md-radio-button>
+                                <md-radio-button ng-value="ctrl.radios.programInfo.bcsOrcs.irpin">
+                                    {{ctrl.radios.programInfo.bcsOrcs.irpin}}
+                                </md-radio-button>
+                            </md-radio-group>
+                        </div>
                         <md-radio-button class="md-primary" ng-value="ctrl.radios.program.bcsJs">
                             {{ctrl.radios.program.bcsJs}}
                         </md-radio-button>
@@ -86,20 +97,23 @@
                             </md-radio-group>
                         </div>
                     </div>
-                        <md-radio-button ng-click="ctrl.prmlApplication($state)" class="md-primary"
-                                         ng-value="ctrl.radios.program.prml">
-                            {{ctrl.radios.program.prml}}
-                        </md-radio-button>
+                    <md-radio-button ng-click="ctrl.prmlApplication($state)" class="md-primary"
+                                     ng-value="ctrl.radios.program.prml">
+                        {{ctrl.radios.program.prml}}
+                    </md-radio-button>
                     <div class="inner-radio" ng-show="ctrl.student.program.name === ctrl.radios.program.prml">
                         <md-radio-group ng-model="ctrl.radios.programInfo.prmlRegion">
                             <md-radio-button ng-value="ctrl.radios.programInfo.prml.lviv">
                                 {{ctrl.radios.programInfo.prml.lviv}}
                             </md-radio-button>
-                            <md-radio-button ng-value="ctrl.radios.programInfo.prml.rivne">
-                                {{ctrl.radios.programInfo.prml.rivne}}
+                            <md-radio-button ng-value="ctrl.radios.programInfo.prml.volyn">
+                                {{ctrl.radios.programInfo.prml.volyn}}
                             </md-radio-button>
-                            <md-radio-button ng-value="ctrl.radios.programInfo.prml.khmel">
-                                {{ctrl.radios.programInfo.prml.khmel}}
+                            <md-radio-button ng-value="ctrl.radios.programInfo.prml.zhytomyr">
+                                {{ctrl.radios.programInfo.prml.zhytomyr}}
+                            </md-radio-button>
+                            <md-radio-button ng-value="ctrl.radios.programInfo.prml.ivanofrankivsk">
+                                {{ctrl.radios.programInfo.prml.ivanofrankivsk}}
                             </md-radio-button>
                         </md-radio-group>
                     </div>
@@ -587,22 +601,27 @@
                     <md-radio-group class="md-primary" ng-model="ctrl.student.donationAmount">
                         <md-radio-button ng-if="ctrl.student.program.name === ctrl.radios.program.prml"
                                          ng-init="ctrl.student.donationAmount = ctrl.radios.donationAmount.uah500"
-                                         ng-value="ctrl.radios.donationAmount.uah500">
-                            {{ctrl.radios.donationAmount.uah500}}
-                        </md-radio-button>
-                        <md-radio-button ng-value="ctrl.radios.donationAmount.uah600">
+                                         ng-value="ctrl.radios.donationAmount.uah600">
                             {{ctrl.radios.donationAmount.uah600}}
                         </md-radio-button>
                         <md-radio-button ng-value="ctrl.radios.donationAmount.uah700">
                             {{ctrl.radios.donationAmount.uah700}}
                         </md-radio-button>
-                        <md-radio-button ng-if="ctrl.student.program.name !== ctrl.radios.program.prml"
-                                         ng-value="ctrl.radios.donationAmount.uah800">
+                        <md-radio-button ng-value="ctrl.radios.donationAmount.uah800">
                             {{ctrl.radios.donationAmount.uah800}}
                         </md-radio-button>
+                        <md-radio-button ng-if="ctrl.student.program.name !== ctrl.radios.program.prml"
+                                         ng-value="ctrl.radios.donationAmount.uah900">
+                            {{ctrl.radios.donationAmount.uah900}}
+                        </md-radio-button>
                     </md-radio-group>
-                    <p class="md-body-1">
-                        *Вартість однієї сесії складає 600 грн. Кожного навчального року вартість сесії переглядається.
+                    <p class="md-body-1" ng-if="ctrl.student.program.name !== ctrl.radios.program.prml">
+                        *Добровільна пожертва за одну тижневу сесію складає 700 грн. Кожного навчального року вартість
+                        сесії переглядається.
+                    </p>
+                    <p class="md-body-1" ng-if="ctrl.student.program.name === ctrl.radios.program.prml">
+                        *Добровільна пожертва за одну тижневу сесію складає 600 грн. Кожного навчального року вартість
+                        сесії переглядається.
                     </p>
                     <md-input-container class="md-block">
                         <label>Коментарі</label>

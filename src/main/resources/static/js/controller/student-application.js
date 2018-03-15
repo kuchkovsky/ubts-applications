@@ -4,51 +4,61 @@
 
     var app = angular.module('ubtsApplSystem');
 
-    app.controller('studentApplicationCtrl', function($http, $mdDialog, postService, registrationService) {
+    app.controller('studentApplicationCtrl', function ($http, $mdDialog, postService, registrationService) {
         var self = this;
         self.isRegistrationOpen = false;
         self.isLoading = true;
         registrationService.checkRegistrationStatus(function () {
             self.isLoading = false;
             self.isRegistrationOpen = true;
-        }, function(){
+        }, function () {
             self.isLoading = false;
         });
-        this.prmlApplication = function(state)  {
+        this.prmlApplication = function (state) {
             var application = angular.element(document.getElementById('main-content-top'));
             application.scrollTop(0, 800);
             state.current.data.pageTitle = 'Анкета абітурієнта ПРМЛ';
             self.form.logo = "img/prml.png";
         };
+        this.defaultApplication = function (state) {
+            var application = angular.element(document.getElementById('main-content-top'));
+            state.current.data.pageTitle = 'Анкета абітурієнта УБТС';
+            self.form.logo = "img/ubts.png";
+        };
         this.radios = {
             program: {
-                bps: 'Бакалавр пасторського служіння',
-                bcsOnc: 'Бакалавр церковного служіння. Спеціалізація - організація нових церков',
-                bcsOrcs: 'Бакалавр церковного служіння. Спеціалізація - організація та розвиток церковних служінь',
-                bcsJs: 'Бакалавр церковного служіння. Спеціалізація - жіноче служіння',
-                bmMm: 'Бакалавр місіології. Міжнародне місіонерство',
-                bms: 'Бакалавр музичного служіння',
-                prml: 'Програма розвитку молодих лідерів'
+                bps: 'Пасторське служіння. Бакалавр. 4 роки',
+                bcsOnc: 'Організація нових церков. Бакалавр. 4 роки',
+                bcsOrcs: 'Розвиток церковних служінь. Бакалавр. 4 роки',
+                bcsJs: 'Жіноче служіння',
+                bmMm: 'Міжнародна місія',
+                bms: 'Музичне служіння. Бакалавр. 4 роки',
+                prml: 'Програма розвитку молодих лідерів. Сертифікат. 2 роки'
             },
             programInfo: {
                 bcsJs: {
-                    lviv2y: '2 роки - Львів',
-                    lviv4y: '4 роки - Львів',
-                    irpin2y: '2 роки - Ірпінь',
-                    irpin4y: '4 роки - Ірпінь'
+                    lviv2y: 'Львів. Сертифікат. 2 роки',
+                    lviv4y: 'Львів. Бакалавр. 4 роки',
+                    irpin2y: 'Ірпінь. Сертифікат. 2 роки',
+                    irpin4y: 'Ірпінь. Бакалавр. 4 роки'
                 },
                 bm: {
-                    twoYears: '2 роки',
-                    fourYears: '4 роки'
+                    twoYears: 'Сертифікат. 2 роки',
+                    fourYears: 'Бакалавр. 4 роки'
                 },
                 prml: {
-                    lviv: 'Львівська область',
-                    rivne: 'Рівненська область',
-                    khmel: 'Хмельницька область'
+                    lviv: 'Львів',
+                    volyn: 'Волинь',
+                    zhytomyr: 'Житомир',
+                    ivanofrankivsk: 'Івано-Франківськ'
                 },
                 bms: {
                     choir: 'Хоровий напрямок',
                     stage: 'Естрадний напрямок'
+                },
+                bcsOrcs: {
+                    lviv: 'Львів',
+                    irpin: 'Ірпінь'
                 }
             },
             education: {
@@ -88,10 +98,10 @@
                 other: "Інше"
             },
             donationAmount: {
-                uah500: "500 грн.",
                 uah600: "600 грн.",
                 uah700: "700 грн.",
-                uah800: "800 грн."
+                uah800: "800 грн.",
+                uah900: "900 грн."
             },
             healthStatus: {
                 excellent: "Відмінний",
@@ -135,10 +145,10 @@
             student: {
                 maritalData: {
                     isSpouseChurchMember: true,
-                    isSpouseApproveSeminary : true,
-                    childrenNumber : 0
+                    isSpouseApproveSeminary: true,
+                    childrenNumber: 0
                 },
-                isChurchMember : true,
+                isChurchMember: true,
                 churchData: {
                     membersNumber: this.radios.membersNumber.lessThen10
                 },
@@ -158,6 +168,7 @@
         this.radios.programInfo.bmTerm = this.radios.programInfo.bm.twoYears;
         this.radios.programInfo.bmsType = this.radios.programInfo.bms.choir;
         this.radios.programInfo.prmlRegion = this.radios.programInfo.prml.lviv;
+        this.radios.programInfo.bcsOrcsRegion = this.radios.programInfo.bcsOrcs.lviv;
         this.minDate = new Date('1900');
         this.maxDate = new Date();
         this.years = [];
@@ -174,6 +185,9 @@
             this.student.birthDate = moment(this.form.student.birthDate).format('YYYY-MM-DD');
             this.student.entryYear = moment().year();
             switch (this.student.program.name) {
+                case this.radios.program.bcsOrcs:
+                    this.student.program.info = this.radios.programInfo.bcsOrcsRegion;
+                    break;
                 case this.radios.program.bcsJs:
                     this.student.program.info = this.radios.programInfo.bcsJsTerm;
                     break;
@@ -202,7 +216,7 @@
                     delete this.student.maritalData.spouseChurchMinistry;
                 }
             } else {
-                this.student.maritalData = { status: this.student.maritalData.status };
+                this.student.maritalData = {status: this.student.maritalData.status};
             }
             if (this.form.student.isChurchMember) {
                 if (!this.form.student.isOrdained) {
@@ -216,15 +230,17 @@
             } else {
                 delete this.student.churchData;
                 delete this.student.churchMinistry;
-                this.form.student.churchData = { membersNumber: this.radios.membersNumber.lessThen10 };
-                this.form.student.churchMinistry = { type: this.radios.ministryType.pastor };
+                this.form.student.churchData = {membersNumber: this.radios.membersNumber.lessThen10};
+                this.form.student.churchMinistry = {type: this.radios.ministryType.pastor};
             }
+
             function DialogController($scope, $mdDialog, links) {
                 $scope.links = links;
-                $scope.hide = function() {
+                $scope.hide = function () {
                     $mdDialog.hide();
                 };
             }
+
             function showSuccess() {
                 $mdDialog.show({
                     controller: DialogController,
@@ -237,10 +253,12 @@
                     }
                 });
             }
+
             function showError(text) {
                 var alert = $mdDialog.alert().title('Помилка реєстрації').textContent(text).ok('Закрити');
                 $mdDialog.show(alert);
             }
+
             postService.sendStudentData(this.student, this.files, self.form.progressBar, function (status) {
                 switch (status) {
                     case 200:
