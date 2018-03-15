@@ -1,13 +1,14 @@
 <md-card class="main-card" ng-controller="studentApplicationCtrl as ctrl">
     <img id="application-logo" ng-src="{{ctrl.form.logo}}" class="md-card-image">
     <div id="reg-warning" ng-if="!ctrl.isLoading && !ctrl.isRegistrationOpen"
-         class="md-display-1 error center">Реєстрацію закрито</div>
+         class="md-display-1 error center">Реєстрацію закрито
+    </div>
     <md-card-content layout="row" layout-align="space-between">
         <form name="applicationForm" ng-submit="applicationForm.$valid && ctrl.submit()">
             <section id="heading">
                 <p class="md-subhead">
                     Для того, щоб заповнити цю анкету, будь ласка, спочатку підготуйте скан-копії або фото в
-                    добрій якості таких документів: паспорт (перша,  друга сторінки та сторінка з пропискою),
+                    добрій якості таких документів: паспорт (перша, друга сторінки та сторінка з пропискою),
                     ідентифікаційний номер, ваше портретне фото, диплом (в разі відсутності - атестат про повну
                     загальну середню освіту) та додаток до нього, а також медичну довідку форми 086-у.
                 </p>
@@ -83,11 +84,12 @@
                                     {{ctrl.radios.programInfo.bms.stage}}
                                 </md-radio-button>
                             </md-radio-group>
-                         </div>
-                    <md-radio-button ng-click="ctrl.prmlApplication($state)" class="md-primary"
-                                     ng-value="ctrl.radios.program.prml">
-                        {{ctrl.radios.program.prml}}
-                    </md-radio-button>
+                        </div>
+                    </div>
+                        <md-radio-button ng-click="ctrl.prmlApplication($state)" class="md-primary"
+                                         ng-value="ctrl.radios.program.prml">
+                            {{ctrl.radios.program.prml}}
+                        </md-radio-button>
                     <div class="inner-radio" ng-show="ctrl.student.program.name === ctrl.radios.program.prml">
                         <md-radio-group ng-model="ctrl.radios.programInfo.prmlRegion">
                             <md-radio-button ng-value="ctrl.radios.programInfo.prml.lviv">
@@ -272,7 +274,8 @@
                     </md-input-container>
                     <section>
                         <h5 class="md-subhead">Чи є ваша дружина/чоловік членом церкви?</h5>
-                        <md-radio-group class="md-primary" ng-model="ctrl.form.student.maritalData.isSpouseChurchMember">
+                        <md-radio-group class="md-primary"
+                                        ng-model="ctrl.form.student.maritalData.isSpouseChurchMember">
                             <md-radio-button ng-value="true">
                                 {{ctrl.radios.answers.yes}}
                             </md-radio-button>
@@ -299,12 +302,14 @@
                     <section layout="row" layout-align="space-between center">
                         <span>Скільки у вас дітей?</span>
                         <md-select ng-model="ctrl.form.student.maritalData.childrenNumber">
-                            <md-option ng-repeat="i in ctrl.optionsArray" ng-value="i"">{{i}}</md-option>
+                            <md-option ng-repeat="i in ctrl.optionsArray" ng-value="i"
+                            ">{{i}}</md-option>
                         </md-select>
                     </section>
                     <section>
                         <h5 class="md-subhead">Чи підтримує дружина/чоловік ваше бажання навчатися в семінарії?</h5>
-                        <md-radio-group class="md-primary" ng-model="ctrl.form.student.maritalData.isSpouseApproveSeminary">
+                        <md-radio-group class="md-primary"
+                                        ng-model="ctrl.form.student.maritalData.isSpouseApproveSeminary">
                             <md-radio-button ng-value="true">
                                 {{ctrl.radios.answers.yes}}
                             </md-radio-button>
@@ -418,7 +423,8 @@
                             <md-input-container class="md-block">
                                 <label>Вулиця, номер будинку</label>
                                 <input ng-required="ctrl.form.student.isChurchMember"
-                                       name="churchStreetAndHouseNumber" ng-model="ctrl.form.student.churchData.streetAndHouseNumber">
+                                       name="churchStreetAndHouseNumber"
+                                       ng-model="ctrl.form.student.churchData.streetAndHouseNumber">
                                 <div ng-messages="applicationForm.churchStreetAndHouseNumber.$error">
                                     <div ng-message="required">Обов'язкове поле.</div>
                                 </div>
@@ -497,8 +503,9 @@
                                 {{ctrl.radios.ministryType.other}}
                             </md-radio-button>
                         </md-radio-group>
-                        <md-input-container ng-show="ctrl.form.student.churchMinistry.type === ctrl.radios.ministryType.other"
-                                            class="md-block" id="other-input">
+                        <md-input-container
+                                ng-show="ctrl.form.student.churchMinistry.type === ctrl.radios.ministryType.other"
+                                class="md-block" id="other-input">
                             <label>Назва служіння</label>
                             <input ng-required="ctrl.form.student.churchMinistry.type === ctrl.radios.ministryType.other"
                                    name="ministryType" ng-model="ctrl.form.student.otherMinistryType">
