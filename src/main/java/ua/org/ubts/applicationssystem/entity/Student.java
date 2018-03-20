@@ -44,6 +44,10 @@ public class Student extends Person implements Serializable {
     @Column(name = "how_came_to_god", nullable = false, columnDefinition="TEXT")
     private String howCameToGod;
 
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "how_find_out_id")
+    private HowFindOut howFindOut;
+
     @JsonIgnore
     @Column(name = "has_files_uploaded")
     private Boolean filesUploaded;
@@ -106,6 +110,14 @@ public class Student extends Person implements Serializable {
         this.howCameToGod = howCameToGod;
     }
 
+    public HowFindOut getHowFindOut() {
+        return howFindOut;
+    }
+
+    public void setHowFindOut(HowFindOut howFindOut) {
+        this.howFindOut = howFindOut;
+    }
+
     public Boolean hasFilesUploaded() {
         return filesUploaded;
     }
@@ -124,6 +136,7 @@ public class Student extends Person implements Serializable {
                 ", healthData=" + healthData +
                 ", reasonsToStudy='" + reasonsToStudy + '\'' +
                 ", howCameToGod='" + howCameToGod + '\'' +
+                ", howFindOut=" + howFindOut +
                 ", filesUploaded=" + filesUploaded +
                 '}';
     }

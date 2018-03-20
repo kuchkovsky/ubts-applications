@@ -50,7 +50,7 @@ md-sidenav .md-button {
     margin-top: 40px;
 }
 
-#other-input, #church-participation-input, #job-input {
+.other-input, #church-participation-input, #job-input {
     margin-top: 30px;
 }
 
@@ -177,7 +177,7 @@ md-list-item + .no-items {
 }
 
 #reg-warning {
-    margin-top: 15px;
+    margin-bottom: -30px;
 }
 
 .year-card {

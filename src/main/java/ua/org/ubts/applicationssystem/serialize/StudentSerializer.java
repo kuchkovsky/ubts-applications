@@ -55,6 +55,11 @@ public class StudentSerializer extends StdSerializer<Student> {
         jsonGenerator.writeObjectField("healthData", student.getHealthData());
         jsonGenerator.writeStringField("reasonsToStudy", student.getReasonsToStudy());
         jsonGenerator.writeStringField("howCameToGod", student.getHowCameToGod());
+        if (student.getHowFindOut() != null) {
+            jsonGenerator.writeStringField("howFindOut", student.getHowFindOut().getName());
+        } else {
+            jsonGenerator.writeStringField("howFindOut", "Від Бога");
+        }
         jsonGenerator.writeEndObject();
     }
 

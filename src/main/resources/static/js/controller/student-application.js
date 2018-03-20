@@ -4,7 +4,8 @@
 
     var app = angular.module('ubtsApplSystem');
 
-    app.controller('studentApplicationCtrl', function ($http, $mdDialog, postService, registrationService) {
+    app.controller('studentApplicationCtrl', function ($scope, $state, $http, $mdDialog, postService,
+                                                       registrationService) {
         var self = this;
         self.isRegistrationOpen = false;
         self.isLoading = true;
@@ -14,17 +15,6 @@
         }, function () {
             self.isLoading = false;
         });
-        this.prmlApplication = function (state) {
-            var application = angular.element(document.getElementById('main-content-top'));
-            application.scrollTop(0, 800);
-            state.current.data.pageTitle = 'Анкета абітурієнта ПРМЛ';
-            self.form.logo = "img/prml.png";
-        };
-        this.defaultApplication = function (state) {
-            var application = angular.element(document.getElementById('main-content-top'));
-            state.current.data.pageTitle = 'Анкета абітурієнта УБТС';
-            self.form.logo = "img/ubts.png";
-        };
         this.radios = {
             program: {
                 bps: 'Пасторське служіння. Бакалавр. 4 роки',
@@ -108,6 +98,16 @@
                 good: "Добрий",
                 satisfactory: "Задовільний",
                 unsatisfactory: "Незадовільний"
+            },
+            howFindOut: {
+                leader: "Від керівника програми",
+                pastor: "Від пастора",
+                student: "Від студента",
+                social: "Соціальні мережі",
+                site: "Сайт УБТС",
+                employee: "Від працівника семінарії",
+                conference: "На конференції",
+                other: "Інше"
             }
         };
         this.links = {
@@ -125,7 +125,7 @@
         this.optionsArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         this.student = {
             education: this.radios.education.secondaryEducation,
-            donationAmount: this.radios.donationAmount.uah600,
+            donationAmount: this.radios.donationAmount.uah700,
             healthData: {
                 isDrugAddicted: true,
                 healthStatus: this.radios.healthStatus.excellent,
@@ -155,6 +155,7 @@
                 churchMinistry: {
                     type: this.radios.ministryType.pastor
                 },
+                howFindOut: this.radios.howFindOut.leader,
                 isOrdained: true,
                 otherMinistryType: null,
                 isWorking: true
@@ -177,6 +178,19 @@
         }
         this.files = {};
         self.submitLock = false;
+
+        $scope.$watch('ctrl.student.program.name', function (newValue) {
+            if (newValue !== self.radios.program.prml) {
+                $state.current.data.pageTitle = 'Анкета абітурієнта УБТС';
+                self.form.logo = "img/ubts.png";
+                self.student.donationAmount = self.radios.donationAmount.uah700;
+            } else {
+                $state.current.data.pageTitle = 'Анкета абітурієнта ПРМЛ';
+                self.form.logo = "img/prml.png";
+                self.student.donationAmount = self.radios.donationAmount.uah600;
+            }
+        });
+
         this.submit = function () {
             if (self.submitLock) {
                 return;
@@ -232,6 +246,10 @@
                 delete this.student.churchMinistry;
                 this.form.student.churchData = {membersNumber: this.radios.membersNumber.lessThen10};
                 this.form.student.churchMinistry = {type: this.radios.ministryType.pastor};
+            }
+            this.student.howFindOut = this.form.student.howFindOut;
+            if (this.form.student.howFindOut === this.radios.howFindOut.other) {
+                this.student.howFindOut = this.form.student.otherHowFindOutName;
             }
 
             function DialogController($scope, $mdDialog, links) {

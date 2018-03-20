@@ -13,6 +13,8 @@
             </md-card-content>
         </md-card>
     </div>
+    <md-progress-circular class="center-screen spinner" md-mode="indeterminate"
+                          ng-show="ctrl.isSpinnerVisible"></md-progress-circular>
     <md-card class="wide-card zoom" ng-show="!ctrl.isSpinnerVisible">
         <md-card-header>
             <div layout="row" flex id="search">
@@ -32,8 +34,6 @@
                 </md-nav-item>
             </md-nav-bar>
             <md-list ng-show="ctrl.groupList" class="no-animation">
-                <md-progress-circular class="center-screen spinner" md-mode="indeterminate"
-                                      ng-show="ctrl.isSpinnerVisible"></md-progress-circular>
                 <md-list-item class="md-2-line student-list-item"
                               ng-repeat="p in ctrl.programs" ng-show="!ctrl.isSpinnerVisible">
                     <div layout="column" flex>
@@ -57,8 +57,6 @@
                 </md-list-item>
             </md-list>
             <md-list ng-show="!ctrl.groupList" class="no-animation">
-                <md-progress-circular class="center-screen spinner" md-mode="indeterminate"
-                                      ng-show="ctrl.isSpinnerVisible"></md-progress-circular>
                 <md-list-item class="md-2-line student-list-item" ng-show="!ctrl.isSpinnerVisible"
                               ng-repeat="s in ctrl.form.students" ui-sref="studentView({studentId: s.id})">
                     <img ng-src="img/icons/ic_account_circle_black_48px.svg" class="md-avatar" alt="Avatar">

@@ -1,7 +1,12 @@
 <md-card class="main-card" ng-controller="studentApplicationCtrl as ctrl">
     <img id="application-logo" ng-src="{{ctrl.form.logo}}" class="md-card-image">
-    <div id="reg-warning" ng-if="!ctrl.isLoading && !ctrl.isRegistrationOpen"
-         class="md-display-1 error center">Реєстрацію закрито
+    <div id="reg-warning" ng-if="!ctrl.isLoading && !ctrl.isRegistrationOpen" class="error center">
+        <p class="md-subhead">
+            Шановний абітурієнте!
+            Подачу документів на вступ до УБТС завершено.
+            Ви матимете можливість вступити до нашої семінарії наступного року.
+            Божих Вам благословінь!
+        </p>
     </div>
     <md-card-content layout="row" layout-align="space-between">
         <form name="applicationForm" ng-submit="applicationForm.$valid && ctrl.submit()">
@@ -29,7 +34,7 @@
             <section id="program">
                 <h3 class="md-title">За якою програмою бажаєте навчатися?</h3>
                 <md-radio-group ng-model="ctrl.student.program.name">
-                    <div ng-click="ctrl.defaultApplication($state)">
+                    <div >
                         <md-radio-button class="md-primary" ng-value="ctrl.radios.program.bps">
                             {{ctrl.radios.program.bps}}
                         </md-radio-button>
@@ -96,26 +101,25 @@
                                 </md-radio-button>
                             </md-radio-group>
                         </div>
-                    </div>
-                    <md-radio-button ng-click="ctrl.prmlApplication($state)" class="md-primary"
-                                     ng-value="ctrl.radios.program.prml">
-                        {{ctrl.radios.program.prml}}
-                    </md-radio-button>
-                    <div class="inner-radio" ng-show="ctrl.student.program.name === ctrl.radios.program.prml">
-                        <md-radio-group ng-model="ctrl.radios.programInfo.prmlRegion">
-                            <md-radio-button ng-value="ctrl.radios.programInfo.prml.lviv">
-                                {{ctrl.radios.programInfo.prml.lviv}}
-                            </md-radio-button>
-                            <md-radio-button ng-value="ctrl.radios.programInfo.prml.volyn">
-                                {{ctrl.radios.programInfo.prml.volyn}}
-                            </md-radio-button>
-                            <md-radio-button ng-value="ctrl.radios.programInfo.prml.zhytomyr">
-                                {{ctrl.radios.programInfo.prml.zhytomyr}}
-                            </md-radio-button>
-                            <md-radio-button ng-value="ctrl.radios.programInfo.prml.ivanofrankivsk">
-                                {{ctrl.radios.programInfo.prml.ivanofrankivsk}}
-                            </md-radio-button>
-                        </md-radio-group>
+                        <md-radio-button class="md-primary" ng-value="ctrl.radios.program.prml">
+                            {{ctrl.radios.program.prml}}
+                        </md-radio-button>
+                        <div class="inner-radio" ng-show="ctrl.student.program.name === ctrl.radios.program.prml">
+                            <md-radio-group ng-model="ctrl.radios.programInfo.prmlRegion">
+                                <md-radio-button ng-value="ctrl.radios.programInfo.prml.lviv">
+                                    {{ctrl.radios.programInfo.prml.lviv}}
+                                </md-radio-button>
+                                <md-radio-button ng-value="ctrl.radios.programInfo.prml.volyn">
+                                    {{ctrl.radios.programInfo.prml.volyn}}
+                                </md-radio-button>
+                                <md-radio-button ng-value="ctrl.radios.programInfo.prml.zhytomyr">
+                                    {{ctrl.radios.programInfo.prml.zhytomyr}}
+                                </md-radio-button>
+                                <md-radio-button ng-value="ctrl.radios.programInfo.prml.ivanofrankivsk">
+                                    {{ctrl.radios.programInfo.prml.ivanofrankivsk}}
+                                </md-radio-button>
+                            </md-radio-group>
+                        </div>
                     </div>
                 </md-radio-group>
             </section>
@@ -519,7 +523,7 @@
                         </md-radio-group>
                         <md-input-container
                                 ng-show="ctrl.form.student.churchMinistry.type === ctrl.radios.ministryType.other"
-                                class="md-block" id="other-input">
+                                class="md-block other-input">
                             <label>Назва служіння</label>
                             <input ng-required="ctrl.form.student.churchMinistry.type === ctrl.radios.ministryType.other"
                                    name="ministryType" ng-model="ctrl.form.student.otherMinistryType">
@@ -600,7 +604,6 @@
                     <h3 class="md-subhead">Яку суму Ви плануєте жертвувати за сесію (один тиждень)?</h3>
                     <md-radio-group class="md-primary" ng-model="ctrl.student.donationAmount">
                         <md-radio-button ng-if="ctrl.student.program.name === ctrl.radios.program.prml"
-                                         ng-init="ctrl.student.donationAmount = ctrl.radios.donationAmount.uah500"
                                          ng-value="ctrl.radios.donationAmount.uah600">
                             {{ctrl.radios.donationAmount.uah600}}
                         </md-radio-button>
@@ -722,6 +725,45 @@
                         </div>
                     </md-input-container>
                 </section>
+            </section>
+            <section id="how_find_out">
+                <h3 class="md-headline center">Як ви дізнались про нашу семінарію?</h3>
+                <md-radio-group class="md-primary" ng-model="ctrl.form.student.howFindOut">
+                    <md-radio-button ng-value="ctrl.radios.howFindOut.leader">
+                        {{ctrl.radios.howFindOut.leader}}
+                    </md-radio-button>
+                    <md-radio-button ng-value="ctrl.radios.howFindOut.pastor">
+                        {{ctrl.radios.howFindOut.pastor}}
+                    </md-radio-button>
+                    <md-radio-button ng-value="ctrl.radios.howFindOut.student">
+                        {{ctrl.radios.howFindOut.student}}
+                    </md-radio-button>
+                    <md-radio-button ng-value="ctrl.radios.howFindOut.social">
+                        {{ctrl.radios.howFindOut.social}}
+                    </md-radio-button>
+                    <md-radio-button ng-value="ctrl.radios.howFindOut.site">
+                        {{ctrl.radios.howFindOut.site}}
+                    </md-radio-button>
+                    <md-radio-button ng-value="ctrl.radios.howFindOut.employee">
+                        {{ctrl.radios.howFindOut.employee}}
+                    </md-radio-button>
+                    <md-radio-button ng-value="ctrl.radios.howFindOut.conference">
+                        {{ctrl.radios.howFindOut.conference}}
+                    </md-radio-button>
+                    <md-radio-button ng-value="ctrl.radios.howFindOut.other">
+                        {{ctrl.radios.howFindOut.other}}
+                    </md-radio-button>
+                </md-radio-group>
+                <md-input-container
+                        ng-show="ctrl.form.student.howFindOut === ctrl.radios.howFindOut.other"
+                        class="md-block other-input">
+                    <label>Де саме?</label>
+                    <input ng-required="ctrl.form.student.howFindOut === ctrl.radios.howFindOut.other"
+                           name="howFindOutType" ng-model="ctrl.form.student.otherHowFindOutName">
+                    <div ng-messages="applicationForm.howFindOutType.$error">
+                        <div ng-message="required">Обов'язкове поле.</div>
+                    </div>
+                </md-input-container>
             </section>
             <section id="files">
                 <h3 class="md-headline center">Файли</h3>
