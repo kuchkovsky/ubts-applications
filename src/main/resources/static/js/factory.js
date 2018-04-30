@@ -2,7 +2,7 @@
 
     'use strict';
 
-    var app = angular.module('ubtsApplSystem');
+    const app = angular.module('ubtsApplSystem');
 
     app.factory('authInterceptor', function ($rootScope, $q, $window, $location) {
         return {
@@ -15,8 +15,12 @@
             },
             responseError: function (rejection) {
                 if (rejection.status === 401 || rejection.status === 403) {
-                    delete $window.localStorage.token;
-                    $rootScope.isAuthenticated = false;
+                    if ($window.localStorage.token) {
+                        delete $window.localStorage.token;
+                        $rootScope.isAuthenticated = false;
+                        $rootScope.isAdmin = false;
+                        location.reload();
+                    }
                     $location.path("/login");
                 }
                 return $q.reject(rejection);

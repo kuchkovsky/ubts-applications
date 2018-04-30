@@ -2,19 +2,18 @@
 
     'use strict';
 
-    var app = angular.module('ubtsApplSystem');
+    const app = angular.module('ubtsApplSystem');
 
-    app.controller('studentApplicationCtrl', function ($scope, $state, $http, $mdDialog, postService,
+    app.controller('studentApplicationCtrl', function ($scope, $state, $http, $mdDialog, uploadService,
                                                        registrationService) {
-        var self = this;
-        self.isRegistrationOpen = false;
-        self.isLoading = true;
-        registrationService.checkRegistrationStatus(function () {
-            self.isLoading = false;
-            self.isRegistrationOpen = true;
-        }, function () {
-            self.isLoading = false;
-        });
+        this.isRegistrationOpen = false;
+        this.isLoading = true;
+
+        registrationService.checkRegistrationStatus(() => {
+            this.isLoading = false;
+            this.isRegistrationOpen = true;
+        }, () => this.isLoading = false);
+
         this.radios = {
             program: {
                 bps: 'Пасторське служіння. Бакалавр. 4 роки',
@@ -173,29 +172,29 @@
         this.minDate = new Date('1900');
         this.maxDate = new Date();
         this.years = [];
-        for (var i = this.maxDate.getFullYear(); i >= 1920; i--) {
+        for (let i = this.maxDate.getFullYear(); i >= 1920; i--) {
             this.years.push(i);
         }
         this.files = {};
-        self.submitLock = false;
+        this.submitLock = false;
 
-        $scope.$watch('ctrl.student.program.name', function (newValue) {
-            if (newValue !== self.radios.program.prml) {
+        $scope.$watch('ctrl.student.program.name', newValue => {
+            if (newValue !== this.radios.program.prml) {
                 $state.current.data.pageTitle = 'Анкета абітурієнта УБТС';
-                self.form.logo = "img/ubts.png";
-                self.student.donationAmount = self.radios.donationAmount.uah700;
+                this.form.logo = "img/ubts.png";
+                this.student.donationAmount = this.radios.donationAmount.uah700;
             } else {
                 $state.current.data.pageTitle = 'Анкета абітурієнта ПРМЛ';
-                self.form.logo = "img/prml.png";
-                self.student.donationAmount = self.radios.donationAmount.uah600;
+                this.form.logo = "img/prml.png";
+                this.student.donationAmount = this.radios.donationAmount.uah600;
             }
         });
 
-        this.submit = function () {
-            if (self.submitLock) {
+        this.submit = () => {
+            if (this.submitLock) {
                 return;
             }
-            self.submitLock = true;
+            this.submitLock = true;
             this.student.birthDate = moment(this.form.student.birthDate).format('YYYY-MM-DD');
             this.student.entryYear = moment().year();
             switch (this.student.program.name) {
@@ -254,33 +253,27 @@
 
             function DialogController($scope, $mdDialog, links) {
                 $scope.links = links;
-                $scope.hide = function () {
-                    $mdDialog.hide();
-                };
-            }
-
-            function showSuccess() {
-                $mdDialog.show({
-                    controller: DialogController,
-                    templateUrl: 'templates/success.html',
-                    parent: angular.element(document.body),
-                    clickOutsideToClose: true,
-                    locals: {
-                        links: self.student.program.name !== self.radios.program.prml ?
-                            self.links.default : self.links.prml
-                    }
-                });
+                $scope.hide = () => $mdDialog.hide();
             }
 
             function showError(text) {
-                var alert = $mdDialog.alert().title('Помилка реєстрації').textContent(text).ok('Закрити');
+                const alert = $mdDialog.alert().title('Помилка реєстрації').textContent(text).ok('Закрити');
                 $mdDialog.show(alert);
             }
 
-            postService.sendStudentData(this.student, this.files, self.form.progressBar, function (status) {
+            uploadService.sendStudentData(this.student, this.files, this.form.progressBar, status => {
                 switch (status) {
-                    case 200:
-                        showSuccess();
+                    case 201:
+                        $mdDialog.show({
+                            controller: DialogController,
+                            templateUrl: 'templates/success-alert.html',
+                            parent: angular.element(document.body),
+                            clickOutsideToClose: true,
+                            locals: {
+                                links: this.student.program.name !== this.radios.program.prml ?
+                                    this.links.default : this.links.prml
+                            }
+                        });
                         break;
                     case 409:
                         showError('Користувач з даним іменем вже зареєстрований в системі.');
@@ -289,9 +282,10 @@
                         showError('Не вдалося надіслати дані.');
                         break;
                 }
-                self.submitLock = false;
+                this.submitLock = false;
             });
         }
+
     });
 
 })();

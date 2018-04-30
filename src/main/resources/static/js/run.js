@@ -2,7 +2,7 @@
 
     'use strict';
 
-    var app = angular.module('ubtsApplSystem');
+    const app = angular.module('ubtsApplSystem');
 
     app.run(function (authService) {
         if (window.navigator.appVersion.indexOf('wkhtmltopdf') === -1) {
@@ -10,34 +10,30 @@
         }
     });
 
-    app.run(['$rootScope', '$state', '$stateParams', '$http', '$location',
-        function ($rootScope, $state, $stateParams) {
-            $rootScope.$state = $state;
-            $rootScope.$stateParams = $stateParams;
-        }]);
+    app.run(function ($rootScope, $state, $stateParams) {
+        $rootScope.$state = $state;
+        $rootScope.$stateParams = $stateParams;
+    });
 
     app.run(function($transitions, $rootScope) {
-        $transitions.onStart({ }, function(trans) {
+        $transitions.onStart({}, function() {
             $rootScope.isMainSpinnerVisible = true;
         });
-        $transitions.onFinish({ }, function(trans) {
+        $transitions.onFinish({}, function() {
             $rootScope.isMainSpinnerVisible = false;
         });
     });
 
-    app.run(function($mdSidenav, $rootScope, $state, $http, $mdDialog, authService) {
-        $rootScope.toggleSidebar = function () {
-            $mdSidenav('left').toggle();
-        };
-        $rootScope.logout = function () {
-            authService.logout();
-        };
+    app.run(function($mdSidenav, $rootScope, $state, $http, $mdDialog, authService, downloadService) {
+        $rootScope.toggleSidebar = () => $mdSidenav('left').toggle();
+        $rootScope.logout = () => authService.logout();
         $rootScope.fabOpen = true;
-        $rootScope.exportToCloud = function() {
+        $rootScope.exportToCloud = () => {
+            let url;
             if ($state.current.name === 'studentView') {
-                var url = '/api/student/' + $rootScope.studentId + '/export/cloud';
+                url = '/api/export/students/' + $rootScope.studentId + '/cloud';
             } else {
-                var url = '/api/student/export/cloud';
+                url = '/api/export/students/cloud';
             }
             $rootScope.exportState = {
                 inProgress: true,
@@ -45,9 +41,7 @@
             };
             function DialogController($scope, $mdDialog, exportState) {
                 $scope.exportState = exportState;
-                $scope.hide = function() {
-                    $mdDialog.hide();
-                };
+                $scope.hide = () => $mdDialog.hide();
             }
             $mdDialog.show({
                 controller: DialogController,
@@ -58,27 +52,25 @@
                     exportState: $rootScope.exportState
                 }
             });
-            $http.post(url).then(function (response) {
+            $http.post(url).then(() => {
                 $rootScope.exportState.inProgress = false;
                 $rootScope.exportState.success = true;
-            }, function () {
+            }, () => {
                 $rootScope.exportState.inProgress = false;
                 $rootScope.exportState.success = false;
             });
         };
 
 
-        $rootScope.exportToExcel = function() {
-            var url = '/api/student/export/cloud/excel';
+        $rootScope.exportToExcel = () => {
+            const url = '/api/export/students/cloud/excel';
             $rootScope.exportState = {
                 inProgress: true,
                 success: false
             };
             function DialogController($scope, $mdDialog, exportState) {
                 $scope.exportState = exportState;
-                $scope.hide = function() {
-                    $mdDialog.hide();
-                };
+                $scope.hide = () => $mdDialog.hide();
             }
             $mdDialog.show({
                 controller: DialogController,
@@ -89,16 +81,21 @@
                     exportState: $rootScope.exportState
                 }
             });
-            $http.post(url).then(function (response) {
+            $http.post(url).then(() => {
                 $rootScope.exportState.inProgress = false;
                 $rootScope.exportState.success = true;
-            }, function () {
+            }, () => {
                 $rootScope.exportState.inProgress = false;
                 $rootScope.exportState.success = false;
             });
         };
 
-
+        $rootScope.getStudentFiles = studentId => {
+            downloadService.getStudentFiles(studentId, () => {
+                const alert = $mdDialog.alert().title('Помилка').textContent('Не вдалося завантажити файл').ok('Закрити');
+                $mdDialog.show(alert);
+            });
+        }
 
     });
 

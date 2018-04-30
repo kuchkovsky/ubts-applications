@@ -2,39 +2,32 @@
 
     'use strict';
 
-    var app = angular.module('ubtsApplSystem');
+    const app = angular.module('ubtsApplSystem');
 
     app.controller('mainViewCtrl', function ($timeout, registrationService) {
 
-        var self = this;
-        self.isRegistrationOpen = false;
-        self.isLoading = true;
+        this.isRegistrationOpen = false;
+        this.isLoading = true;
 
-        registrationService.checkRegistrationStatus(function () {
-            self.isRegistrationOpen = true;
-            self.isLoading = false;
-        }, function(){
-            self.isLoading = false;
-        });
+        registrationService.checkRegistrationStatus(() => {
+            this.isRegistrationOpen = true;
+            this.isLoading = false;
+        }, () => this.isLoading = false);
 
-        this.onChange = function () {
-            self.isLoading = true;
-            if (self.isRegistrationOpen) {
-                registrationService.openRegistration(function () {
-                    self.isLoading = false;
-                }, function(){
-                    $timeout(function () {
-                        self.isLoading = false;
-                        self.isRegistrationOpen = false;
+        this.onChange = () => {
+            this.isLoading = true;
+            if (this.isRegistrationOpen) {
+                registrationService.openRegistration(() => this.isLoading = false, () => {
+                    $timeout(() => {
+                        this.isLoading = false;
+                        this.isRegistrationOpen = false;
                     }, 1000);
                 });
             } else {
-                registrationService.closeRegistration(function () {
-                    self.isLoading = false;
-                }, function(){
-                    $timeout(function () {
-                        self.isLoading = false;
-                        self.isRegistrationOpen = true;
+                registrationService.closeRegistration(() => this.isLoading = false, () => {
+                    $timeout(() => {
+                        this.isLoading = false;
+                        this.isRegistrationOpen = true;
                     }, 1000);
                 });
             }

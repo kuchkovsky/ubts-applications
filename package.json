@@ -1,0 +1,27 @@
+{
+  "name": "ubts-musicstore",
+  "version": "1.0.0",
+  "main": "Gruntfile.js",
+  "dependencies": {
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.6.1",
+    "grunt": "^1.0.2",
+    "grunt-babel": "^7.0.0",
+    "load-grunt-tasks": "^3.5.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kuchkovsky/UBTS-ApplSystem.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kuchkovsky/UBTS-ApplSystem/issues"
+  },
+  "homepage": "https://github.com/kuchkovsky/UBTS-ApplSystem#readme",
+  "description": ""
+}

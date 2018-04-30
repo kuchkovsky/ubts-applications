@@ -2,27 +2,26 @@
 
     'use strict';
 
-    var app = angular.module('ubtsApplSystem');
+    const app = angular.module('ubtsApplSystem');
 
-    app.controller('studentListCtrl', function ($mdDialog, downloadService, $timeout) {
-        var self = this;
+    app.controller('studentListCtrl', function ($mdDialog, $timeout, downloadService, studentService) {
 
         this.students = [];
         this.form = {};
         this.programMap = {};
 
-        this.search = function () {
-            if (!self.form.query) {
-                self.form.students = self.students.slice();
+        this.search = () => {
+            if (!this.form.query) {
+                this.form.students = this.students.slice();
                 return;
             }
-            self.form.students = [];
-            var query = self.form.query.toLowerCase();
-            self.students.forEach(function (student) {
+            this.form.students = [];
+            const query = this.form.query.toLowerCase();
+            this.students.forEach(student => {
                 if (student.name.toLowerCase().indexOf(query) !== -1
                     || student.program.name.toLowerCase().indexOf(query) !== -1
-                    || self.programMap[query] === student.program.name) {
-                    self.form.students.push(student);
+                    || this.programMap[query] === student.program.name) {
+                    this.form.students.push(student);
                 }
             });
         };
@@ -31,66 +30,75 @@
         this.groupList = true;
         this.currentNavItem = 'groupList';
 
-        downloadService.getYears(function (years) {
-            self.years = years;
-            var currentYear = moment().year();
-            self.years.forEach(function (year) {
-                if (year.value === currentYear) {
-                    year.enabled = true;
-                } else {
-                    year.enabled = false;
-                }
-            });
-            self.onYearsChange();
-        }, function () {
-            var alert = $mdDialog.alert().title('Помилка').textContent('Не вдалося завантажити список').ok('Закрити');
+        downloadService.getYears(years => {
+            this.years = years;
+            const currentYear = moment().year();
+            this.years.forEach(year => year.enabled = year.value === currentYear);
+            this.onYearsChange();
+        }, () => {
+            const alert = $mdDialog.alert().title('Помилка').textContent('Не вдалося завантажити список').ok('Закрити');
             $mdDialog.show(alert);
         });
 
-        downloadService.getPrograms(function (programs) {
-            self.programs = programs;
-            self.programs.forEach(function (program) {
-                var words = program.name.split(' ');
-                var key = '';
-                words.forEach(function (word) {
-                    key += word.substring(0, 1).toLowerCase();
-                });
-                self.programMap[key] = program.name;
+        downloadService.getPrograms(programs => {
+            this.programs = programs;
+            this.programs.forEach(program => {
+                const words = program.name.split(' ');
+                let key = '';
+                words.forEach(word => key += word.substring(0, 1).toLowerCase());
+                this.programMap[key] = program.name;
             });
-        }, function () {
-            var alert = $mdDialog.alert().title('Помилка')
+        }, () => {
+            const alert = $mdDialog.alert().title('Помилка')
                 .textContent('Не вдалося завантажити список груп').ok('Закрити');
             $mdDialog.show(alert);
         });
 
-        this.onYearsChange = function () {
-            self.isSpinnerVisible = true;
-            var years = [];
-            self.years.forEach(function (year) {
-                if (year.enabled) {
-                    years.push(year.value);
-                }
-            });
+        this.onYearsChange = () => {
+            this.isSpinnerVisible = true;
+            const years = [];
+            this.years.forEach(year => year.enabled && years.push(year.value));
             if (years.length === 0) {
-                $timeout(function () {
-                    self.students = [];
-                    self.form.students = [];
-                    self.search();
-                    self.isSpinnerVisible = false;
+                $timeout(() => {
+                    this.students = [];
+                    this.form.students = [];
+                    this.search();
+                    this.isSpinnerVisible = false;
                 }, 300);
                 return;
             }
-            downloadService.getStudentList(years, function (studentList) {
-                self.students = studentList;
-                self.form.students = self.students.slice();
-                self.search();
-                self.isSpinnerVisible = false;
-            }, function () {
-                var alert = $mdDialog.alert().title('Помилка').textContent('Не вдалося завантажити список').ok('Закрити');
+            downloadService.getStudentList(years, studentList => {
+                this.students = studentList;
+                this.form.students = this.students.slice();
+                this.search();
+                this.isSpinnerVisible = false;
+            }, () => {
+                const alert = $mdDialog.alert().title('Помилка')
+                    .textContent('Не вдалося завантажити список').ok('Закрити');
                 $mdDialog.show(alert);
-                self.isSpinnerVisible = false;
+                this.isSpinnerVisible = false;
             });
-        }
+        };
+
+        this.deleteStudent = student => {
+            const confirm = $mdDialog.confirm()
+                .title('Підтвердження операції')
+                .textContent('Ви дійсно бажаєте видалити анкету абітурієнта?')
+                .ok('Так')
+                .cancel('Ні');
+            $mdDialog.show(confirm).then(() => {
+                studentService.deleteStudent(student, () => {
+                    const studentIndex = this.students.findIndex(s => s.id === student.id);
+                    this.students.splice(studentIndex, 1);
+                    const studentFormIndex = this.form.students.findIndex(s => s.id === student.id);
+                    this.form.students.splice(studentFormIndex, 1);
+                }, () => {
+                    const alert = $mdDialog.alert().title('Помилка')
+                        .textContent('Не вдалося видалити анкету абітурієнта').ok('Закрити');
+                    $mdDialog.show(alert);
+                });
+            });
+        };
 
     });
 

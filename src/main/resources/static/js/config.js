@@ -2,7 +2,7 @@
 
     'use strict';
 
-    var app = angular.module('ubtsApplSystem');
+    const app = angular.module('ubtsApplSystem');
 
     app.config(function ($httpProvider) {
         if (window.navigator.appVersion.indexOf('wkhtmltopdf') === -1) {
@@ -34,10 +34,10 @@
     });
 
     app.config(function($stateProvider, $urlRouterProvider) {
-        var resolveDelay = {
+        const resolveDelay = {
             delay: function($state, $timeout) {
                 if ($state.current.name) {
-                    return $timeout(function(){}, 300);
+                    return $timeout(() => {}, 300);
                 }
             }
         };
@@ -56,19 +56,19 @@
                 resolve: resolveDelay
             })
             .state('studentList', {
-                url: '/list/students',
+                url: '/students',
                 templateUrl : 'templates/student-list.html',
                 data : { pageTitle: 'Список абітурієнтів УБТС' },
                 resolve: resolveDelay
             })
             .state('studentView', {
-                url: "/view/student/{studentId}",
+                url: "/students/{studentId}",
                 templateUrl: 'templates/student-view.html',
                 data: {pageTitle: 'Інформація про абітурієнта УБТС'},
                 resolve: resolveDelay
             })
             .state('studentPrintView', {
-                url: "/view/student/{studentId}/print",
+                url: "/students/{studentId}/print",
                 templateUrl: 'templates/student-view.html',
                 data: {pageTitle: 'Інформація про абітурієнта УБТС'}
             })

@@ -5,7 +5,7 @@
 
     'use strict';
 
-    var app = angular.module('ubtsApplSystem',
+    const app = angular.module('ubtsApplSystem',
         ['ngMaterial', 'ngMessages', 'ngAnimate', 'lfNgMdFileInput', 'duScroll', 'ui.router']);
 
 })();

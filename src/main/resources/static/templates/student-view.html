@@ -55,8 +55,8 @@
         </section>
         <section id="church-info">
             <h3 class="md-headline center">Інформація про церкву та служіння</h3>
-            <p><b>Статус: </b>{{ctrl.student.isChurchMember ? 'Є членом церкви' : 'Не є членом церкви'}}</p>
-            <div ng-if="ctrl.student.isChurchMember">
+            <p><b>Статус: </b>{{ctrl.student.churchData ? 'Є членом церкви' : 'Не є членом церкви'}}</p>
+            <div ng-if="ctrl.student.churchData">
                 <section id="church-data">
                     <h3 class="md-subhead center">Дані про церкву, членом якої є абітурієнт</h3>
                     <p><b>Повна назва церкви: </b>{{ctrl.student.churchData.name}}</p>

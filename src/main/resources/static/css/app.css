@@ -33,6 +33,13 @@ md-sidenav .md-button {
     margin-left: 5px;
 }
 
+md-dialog md-dialog-actions {
+    display: block;
+}
+
+md-dialog md-dialog-actions button {
+    float: right;
+}
 
 .md-datepicker-input-container {
     width: 200px !important;
@@ -197,4 +204,12 @@ md-list-item + .no-items {
 
 .year-list-item {
     width: 80px;
+}
+
+.program-header {
+    width: 85%;
+}
+
+.student-list-item-text {
+    width: 100%;
 }

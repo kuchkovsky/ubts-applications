@@ -1,0 +1,3 @@
+npm install -g grunt-cli
+npm install babel-core grunt grunt-babel load-grunt-tasks babel-preset-env
+npm init

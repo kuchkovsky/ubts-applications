@@ -70,7 +70,7 @@
             </md-button>
             <md-button ng-show="fabOpen && $state.current.name === 'studentView'"
                        class="md-fab md-mini" aria-label="Download files"
-                       ng-href="/api/students/files/{{studentId}}">
+                       ng-click="getStudentFiles(studentId)">
                 <md-icon md-svg-src="img/icons/ic_file_download_white_24px.svg"></md-icon>
             </md-button>
         </md-fab-actions>
@@ -85,7 +85,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.3/angular-ui-router.min.js"></script>
 <script src="js/lib/lf-ng-md-file-input.js"></script>
 <script src="js/app.js"></script>
-<script src="js/service.js"></script>
+<script src="js/service/auth-service.js"></script>
+<script src="js/service/download-service.js"></script>
+<script src="js/service/upload-service.js"></script>
+<script src="js/service/registration-service.js"></script>
+<script src="js/service/student-service.js"></script>
 <script src="js/factory.js"></script>
 <script src="js/config.js"></script>
 <script src="js/run.js"></script>
