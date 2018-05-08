@@ -88,10 +88,8 @@
                 .cancel('Ні');
             $mdDialog.show(confirm).then(() => {
                 studentService.deleteStudent(student, () => {
-                    const studentIndex = this.students.findIndex(s => s.id === student.id);
-                    this.students.splice(studentIndex, 1);
-                    const studentFormIndex = this.form.students.findIndex(s => s.id === student.id);
-                    this.form.students.splice(studentFormIndex, 1);
+                    this.students = this.students.filter(s => s.id !== student.id);
+                    this.form.students = this.form.students.filter(s => s.id !== student.id);
                 }, () => {
                     const alert = $mdDialog.alert().title('Помилка')
                         .textContent('Не вдалося видалити анкету абітурієнта').ok('Закрити');

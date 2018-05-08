@@ -13,7 +13,8 @@ public class ApiExceptionHandlerController {
     @ExceptionHandler(ServiceException.class)
     public ResponseEntity<MessageDto> handleExceptions(ServiceException e) {
         HttpStatus httpStatus;
-        if (e instanceof DatabaseItemNotFoundException || e instanceof ClosedRegistrationException) {
+        if (e instanceof DatabaseItemNotFoundException || e instanceof FilesNotFoundException
+                || e instanceof ClosedRegistrationException) {
             httpStatus = HttpStatus.NOT_FOUND;
         } else if (e instanceof ConflictException) {
             httpStatus = HttpStatus.CONFLICT;

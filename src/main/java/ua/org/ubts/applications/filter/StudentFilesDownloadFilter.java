@@ -20,13 +20,17 @@ public class StudentFilesDownloadFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
-        String token = request.getParameter("token");
-        if (token == null) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        } else if (!studentFilesTokenService.verifyToken(token)) {
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-        } else {
+        if (request.getMethod().equals("HEAD") || request.getMethod().equals("POST")) {
             chain.doFilter(request, response);
+        } else {
+            String token = request.getParameter("token");
+            if (token == null) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            } else if (!studentFilesTokenService.verifyToken(token)) {
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            } else {
+                chain.doFilter(request, response);
+            }
         }
     }
 
