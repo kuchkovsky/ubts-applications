@@ -164,14 +164,18 @@
                 </md-input-container>
                 <md-input-container class="md-block">
                     <label>Телефон 1</label>
-                    <input required name="phone1" ng-model="ctrl.student.phone1">
+                    <input required name="phone1" ng-model="ctrl.student.phone1" md-maxlength="32">
                     <div ng-messages="applicationForm.phone1.$error">
                         <div ng-message="required">Обов'язкове поле.</div>
+                        <div ng-message="md-maxlength">Довжина поля перевищує максимально допустиму!</div>
                     </div>
                 </md-input-container>
                 <md-input-container class="md-block">
                     <label>Телефон 2</label>
-                    <input name="phone2" ng-model="ctrl.student.phone2">
+                    <input name="phone2" ng-model="ctrl.student.phone2" md-maxlength="32">
+                    <div ng-messages="applicationForm.phone2.$error">
+                        <div ng-message="md-maxlength">Довжина поля перевищує максимально допустиму!</div>
+                    </div>
                 </md-input-container>
                 <md-input-container class="md-block">
                     <label>Електронна пошта</label>
@@ -449,7 +453,10 @@
                             </md-input-container>
                             <md-input-container class="md-block">
                                 <label>Телефон</label>
-                                <input name="churchPhone" ng-model="ctrl.form.student.churchData.phone">
+                                <input name="churchPhone" ng-model="ctrl.form.student.churchData.phone" md-maxlength="32">
+                                <div ng-messages="applicationForm.churchPhone.$error">
+                                    <div ng-message="md-maxlength">Довжина поля перевищує максимально допустиму!</div>
+                                </div>
                             </md-input-container>
                         </section>
                     </section>

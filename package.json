@@ -1,27 +1,32 @@
 {
-  "name": "ubts-musicstore",
+  "name": "ubts-applsystem",
   "version": "1.0.0",
-  "main": "Gruntfile.js",
-  "dependencies": {
-    "babel-core": "^6.26.3",
-    "babel-preset-env": "^1.6.1",
-    "grunt": "^1.0.2",
-    "grunt-babel": "^7.0.0",
-    "load-grunt-tasks": "^3.5.2"
-  },
-  "devDependencies": {},
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "gulp dev",
+    "build": "gulp prod",
+    "start": "http-server ./target/classes/static -a localhost -p 8088 -c-1"
   },
-  "author": "",
-  "license": "ISC",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kuchkovsky/UBTS-ApplSystem.git"
   },
+  "author": "",
+  "license": "ISC",
   "bugs": {
     "url": "https://github.com/kuchkovsky/UBTS-ApplSystem/issues"
   },
   "homepage": "https://github.com/kuchkovsky/UBTS-ApplSystem#readme",
-  "description": ""
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^7.0.1",
+    "gulp-bytediff": "^1.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-ng-annotate": "^2.1.0",
+    "gulp-plumber": "^1.2.0",
+    "gulp-uglify": "^3.0.0"
+  }
 }
