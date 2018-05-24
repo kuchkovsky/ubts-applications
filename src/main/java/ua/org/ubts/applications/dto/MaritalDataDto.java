@@ -11,28 +11,12 @@ public class MaritalDataDto extends BaseDto {
 
     private String marriageDate;
 
-    private Boolean spouseChurchMember;
+    private Boolean isSpouseChurchMember;
 
     private String spouseChurchMinistry;
 
     private Integer childrenNumber;
 
-    private Boolean spouseApproveSeminary;
-
-    public Boolean isSpouseChurchMember() {
-        return spouseChurchMember;
-    }
-
-    public void setIsSpouseChurchMember(Boolean spouseChurchMember) {
-        this.spouseChurchMember = spouseChurchMember;
-    }
-
-    public Boolean isSpouseApproveSeminary() {
-        return spouseApproveSeminary;
-    }
-
-    public void setIsSpouseApproveSeminary(Boolean spouseApproveSeminary) {
-        this.spouseApproveSeminary = spouseApproveSeminary;
-    }
+    private Boolean isSpouseApproveSeminary;
 
 }
