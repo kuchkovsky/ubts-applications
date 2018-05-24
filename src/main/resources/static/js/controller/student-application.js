@@ -111,14 +111,14 @@
         };
         this.links = {
             default: {
-                link1: "goo.gl/ifXbBG",
-                link2: "goo.gl/FyL9qv",
+                link1: "goo.gl/rSfhdc",
+                link2: "goo.gl/hmhh1L",
                 link3: "goo.gl/quHa4b"
             },
             prml: {
-                link1: "goo.gl/vfDfJH",
-                link2: "goo.gl/Eh3WKQ",
-                link3: "goo.gl/7UxO2l"
+                link1: "goo.gl/rSfhdc",
+                link2: "goo.gl/hmhh1L",
+                link3: "goo.gl/quHa4b"
             }
         };
         this.optionsArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
