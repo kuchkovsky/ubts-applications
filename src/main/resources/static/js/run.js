@@ -28,6 +28,7 @@
         $rootScope.toggleSidebar = () => $mdSidenav('left').toggle();
         $rootScope.logout = () => authService.logout();
         $rootScope.fabOpen = true;
+
         $rootScope.exportToCloud = () => {
             let url;
             if ($state.current.name === 'studentView') {
@@ -52,7 +53,8 @@
                     exportState: $rootScope.exportState
                 }
             });
-            $http.post(url).then(() => {
+
+            $http.post(url, $rootScope.years).then(() => {
                 $rootScope.exportState.inProgress = false;
                 $rootScope.exportState.success = true;
             }, () => {
@@ -60,7 +62,6 @@
                 $rootScope.exportState.success = false;
             });
         };
-
 
         $rootScope.exportToExcel = () => {
             const url = '/api/export/students/cloud/excel';
@@ -81,7 +82,7 @@
                     exportState: $rootScope.exportState
                 }
             });
-            $http.post(url).then(() => {
+            $http.post(url, $rootScope.years).then(() => {
                 $rootScope.exportState.inProgress = false;
                 $rootScope.exportState.success = true;
             }, () => {

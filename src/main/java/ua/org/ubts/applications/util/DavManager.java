@@ -72,10 +72,12 @@ public class DavManager {
     public void exportFolder(File folder, String nextcloudPath) throws IOException {
         log.info("Exporting files from folder: " + folder.getAbsolutePath());
         File[] listOfFiles = folder.listFiles();
-        for (File file : listOfFiles) {
-            log.info("Pushing file: " + file.getAbsolutePath());
-            byte[] data = FileUtils.readFileToByteArray(file);
-            put(data, nextcloudPath + file.getName());
+        if (listOfFiles != null) {
+            for (File file : listOfFiles) {
+                log.info("Pushing file: " + file.getAbsolutePath());
+                byte[] data = FileUtils.readFileToByteArray(file);
+                put(data, nextcloudPath + file.getName());
+            }
         }
     }
 

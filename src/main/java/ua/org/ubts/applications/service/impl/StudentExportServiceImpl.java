@@ -13,7 +13,7 @@ import ua.org.ubts.applications.util.XlsxExporter;
 
 import java.io.IOException;
 import java.time.Year;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,8 +41,8 @@ public class StudentExportServiceImpl implements StudentExportService {
     }
 
     @Override
-    public void exportAllStudentsToCloud() {
-        List<StudentEntity> students = studentService.getStudents();
+    public void exportStudentsToCloud(Optional<List<Integer>> years) {
+        List<StudentEntity> students = studentService.getStudents(years);
         try {
             ConfigManager.DavProperties davProperties = ConfigManager.getDavProperties();
             DavManager davManager = new DavManager(davProperties.getLogin(), davProperties.getPassword(),
@@ -57,12 +57,15 @@ public class StudentExportServiceImpl implements StudentExportService {
     }
 
     @Override
-    public void exportAllStudentsToExcel() {
-        Integer currentYear = Year.now().getValue();
-        List<Integer> years = new ArrayList<>();
-        years.add(currentYear);
-        List<StudentEntity> studentList = studentService.getStudents(Optional.of(years));
+    public void exportStudentsToExcel(Optional<List<Integer>> years) {
+        List<Integer> yearsList;
         XlsxExporter xlsxExporter = new XlsxExporter();
+        if (years.isPresent()) {
+            yearsList = years.get();
+        } else {
+            yearsList = new LinkedList<>();
+            yearsList.add(Year.now().getValue());
+        }
         try {
             ConfigManager.DavProperties davProperties = ConfigManager.getDavProperties();
             DavManager davManager = new DavManager(davProperties.getLogin(), davProperties.getPassword(),
@@ -71,12 +74,17 @@ public class StudentExportServiceImpl implements StudentExportService {
             if (!davManager.exists(folder)) {
                 davManager.createDirectoryRecursive(folder);
             }
-            log.info("Putting xlsx file to cloud...");
-            davManager.put(xlsxExporter.generateXlsx(studentList), folder + currentYear.toString() + ".xlsx");
+            List<StudentEntity> studentList;
+            for (Integer year : yearsList) {
+                List<Integer> currentYear = new LinkedList<>();
+                currentYear.add(year);
+                studentList = studentService.getStudents(Optional.of(currentYear));
+                log.info("Putting xlsx file to cloud...");
+                davManager.put(xlsxExporter.generateXlsx(studentList), folder + year.toString() + ".xlsx");
+            }
         } catch (IOException e) {
             log.error(STUDENT_EXPORT_TO_CLOUD_ERROR_MESSAGE, e);
             throw new ExportException(STUDENT_EXPORT_TO_CLOUD_ERROR_MESSAGE);
         }
     }
-
 }

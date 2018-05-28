@@ -2,11 +2,12 @@ package ua.org.ubts.applications.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ua.org.ubts.applications.dto.YearDto;
 import ua.org.ubts.applications.service.StudentExportService;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/export/students")
@@ -23,14 +24,14 @@ public class StudentExportApiController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/cloud")
-    public void exportAllStudentsToCloud() {
-        studentExportService.exportAllStudentsToCloud();
+    public void exportStudentsToCloud(@RequestBody Optional<List<Integer>> years) {
+        studentExportService.exportStudentsToCloud(years);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/cloud/excel")
-    public void exportAllStudentsToExcel() {
-        studentExportService.exportAllStudentsToExcel();
+    public void exportStudentsToExcel(@RequestBody Optional<List<Integer>> years) { System.out.println(years);
+        studentExportService.exportStudentsToExcel(years);
     }
 
 }

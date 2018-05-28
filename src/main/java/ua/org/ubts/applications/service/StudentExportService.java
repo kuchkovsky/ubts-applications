@@ -1,11 +1,14 @@
 package ua.org.ubts.applications.service;
 
+import java.util.List;
+import java.util.Optional;
+
 public interface StudentExportService {
 
     void exportStudentToCloud(Long id);
 
-    void exportAllStudentsToCloud();
+    void exportStudentsToCloud(Optional<List<Integer>> years);
 
-    void exportAllStudentsToExcel();
+    void exportStudentsToExcel(Optional<List<Integer>> years);
 
 }

@@ -4,7 +4,7 @@
 
     const app = angular.module('ubtsApplSystem');
 
-    app.controller('studentListCtrl', function ($mdDialog, $timeout, downloadService, studentService) {
+    app.controller('studentListCtrl', function ($mdDialog, $timeout, downloadService, studentService, $rootScope) {
 
         this.students = [];
         this.form = {};
@@ -69,6 +69,7 @@
             }
             downloadService.getStudentList(years, studentList => {
                 this.students = studentList;
+                $rootScope.years = years;
                 this.form.students = this.students.slice();
                 this.search();
                 this.isSpinnerVisible = false;
