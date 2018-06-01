@@ -35,7 +35,7 @@
             </md-nav-bar>
             <md-list ng-if="ctrl.groupList" class="no-animation">
                 <md-list-item class="md-2-line student-list-item"
-                              ng-repeat="p in ctrl.programs" ng-show="!ctrl.isSpinnerVisible">
+                              ng-repeat="p in ctrl.programs | orderBy: 'name'" ng-show="!ctrl.isSpinnerVisible">
                     <div layout="column" flex>
                         <div layout="row">
                             <h2 class="md-subhead program-header">{{p.name + (p.info ? ' - ' + p.info : '')}}</h2>
