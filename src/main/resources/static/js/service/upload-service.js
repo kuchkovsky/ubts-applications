@@ -53,7 +53,7 @@
                         callback(response.status);
                     }, response => {
                         progressBar.isVisible = false;
-                        callback(response.status === 409 && postJsonStatus === 409 ? response.status : postJsonStatus);
+                        callback(response.status);
                     });
                 });
             }

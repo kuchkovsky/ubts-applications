@@ -18,13 +18,13 @@ public class StudentFilesApiController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void uploadStudentFiles(@ModelAttribute StudentFilesUploadModel model) {
-       studentFilesService.saveStudentFiles(model);
+        studentFilesService.saveStudentFiles(model);
     }
 
     @RequestMapping(method = RequestMethod.HEAD)
     public void checkIfStudentFilesExists(@RequestParam("first_name") String firstName,
-                                         @RequestParam("middle_name") String middleName,
-                                         @RequestParam("last_name") String lastName) {
+                                          @RequestParam("middle_name") String middleName,
+                                          @RequestParam("last_name") String lastName) {
         studentFilesService.checkIfStudentFilesExists(firstName, middleName, lastName);
     }
 
