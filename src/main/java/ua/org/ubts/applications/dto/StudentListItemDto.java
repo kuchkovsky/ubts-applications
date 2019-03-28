@@ -8,7 +8,11 @@ import lombok.NoArgsConstructor;
 public class StudentListItemDto extends BaseDto {
 
     private Integer id;
+
     private String name;
+
     private ProgramDto program;
+
+    private YearDto entryYear;
 
 }

@@ -3,18 +3,23 @@ package ua.org.ubts.applications.service.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ua.org.ubts.applications.converter.StudentConverter;
+import ua.org.ubts.applications.dto.StudentDto;
+import ua.org.ubts.applications.dto.StudentFullNameDto;
+import ua.org.ubts.applications.dto.UuidDto;
+import ua.org.ubts.applications.entity.FriendFeedbackEntity;
+import ua.org.ubts.applications.entity.PastorFeedbackEntity;
 import ua.org.ubts.applications.entity.StudentEntity;
-import ua.org.ubts.applications.exception.FileDeleteException;
 import ua.org.ubts.applications.exception.StudentAlreadyExistsException;
+import ua.org.ubts.applications.exception.StudentFeedbackAlreadyExistsException;
 import ua.org.ubts.applications.exception.StudentNotFoundException;
 import ua.org.ubts.applications.repository.*;
 import ua.org.ubts.applications.service.*;
-import ua.org.ubts.applications.util.UserFilesManager;
 
 import javax.transaction.Transactional;
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -22,9 +27,9 @@ import java.util.Optional;
 public class StudentServiceImpl implements StudentService {
 
     private static final String STUDENT_ID_NOT_FOUND_MESSAGE = "Could not find student with id=";
-    private static final String STUDENT_NOT_FOUND_MESSAGE = "Could not find student with name='%s %s %s'";
     private static final String STUDENT_ALREADY_EXISTS_MESSAGE = "Student with name='%s %s %s' already exists";
-    private static final String STUDENT_FILES_DELETE_ERROR_MESSAGE = "Could not delete files for student with id=";
+    private static final String PASTOR_FEEDBACK_ALREADY_EXISTS_MESSAGE = "Pastor feedback already exists for this student";
+    private static final String FRIEND_FEEDBACK_ALREADY_EXISTS_MESSAGE = "Friend feedback already exists for this student";
 
     @Autowired
     private StudentRepository studentRepository;
@@ -50,7 +55,13 @@ public class StudentServiceImpl implements StudentService {
     @Autowired
     private HowFindOutRepository howFindOutRepository;
 
-    private void saveToDb(StudentEntity studentEntity) {
+    @Autowired
+    private StudentConverter studentConverter;
+
+    @Autowired
+    private StudentFilesService studentFilesService;
+
+    private Long saveToDb(StudentEntity studentEntity) {
         programRepository.findByNameAndInfo(studentEntity.getProgram().getName(), studentEntity.getProgram().getInfo())
                 .ifPresent(studentEntity::setProgram);
         countryRepository.findByName(studentEntity.getResidence().getCountry().getName())
@@ -67,7 +78,7 @@ public class StudentServiceImpl implements StudentService {
         }
         howFindOutRepository.findByName(studentEntity.getHowFindOut().getName())
                 .ifPresent(studentEntity::setHowFindOut);
-        studentRepository.save(studentEntity);
+        return studentRepository.saveAndFlush(studentEntity).getId();
     }
 
     @Override
@@ -77,10 +88,17 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public StudentEntity getStudent(String firstName, String middleName, String lastName) {
-        return studentRepository.findByFullName(firstName, middleName, lastName)
-                .orElseThrow(() -> new StudentNotFoundException(String.format(STUDENT_NOT_FOUND_MESSAGE,
-                        firstName, middleName, lastName)));
+    public StudentEntity getStudent(String uuid) {
+        return studentRepository.findByUuid(uuid).orElseThrow(() ->
+                new StudentNotFoundException(STUDENT_ID_NOT_FOUND_MESSAGE + uuid));
+    }
+
+    @Override
+    public StudentFullNameDto getStudentFullName(String uuid) {
+        StudentEntity studentEntity = getStudent(uuid);
+        String fullName = studentEntity.getLastName()
+                + " " + studentEntity.getFirstName() + " " + studentEntity.getMiddleName();
+        return new StudentFullNameDto(fullName);
     }
 
     @Override
@@ -94,37 +112,52 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public void createStudent(StudentEntity studentEntity) {
+    public UuidDto createStudent(StudentDto studentDto) {
+        StudentEntity studentEntity = studentConverter.convertToEntity(studentDto);
         studentRepository.findByFullName(studentEntity.getFirstName(), studentEntity.getMiddleName(),
                 studentEntity.getLastName()).ifPresent(student -> {
             throw new StudentAlreadyExistsException(String.format(STUDENT_ALREADY_EXISTS_MESSAGE,
                     student.getFirstName(), student.getMiddleName(), student.getLastName()));
         });
-        saveToDb(studentEntity);
+        String uuid = UUID.randomUUID().toString();
+        studentEntity.setUuid(uuid);
+        Long id = saveToDb(studentEntity);
+        studentFilesService.saveStudentFiles(id, studentDto.getFiles());
+        return new UuidDto(uuid);
     }
 
     @Override
-    public void updateStudent(StudentEntity studentEntity) {
+    public void createStudentPastorFeedback(String studentId, PastorFeedbackEntity pastorFeedbackEntity) {
+        StudentEntity studentEntity = getStudent(studentId);
+        if (Boolean.TRUE.equals(studentEntity.getPastorFeedbackUploaded())) {
+            throw new StudentFeedbackAlreadyExistsException(PASTOR_FEEDBACK_ALREADY_EXISTS_MESSAGE);
+        }
+        studentEntity.setPastorFeedback(pastorFeedbackEntity);
+        studentEntity.setPastorFeedbackUploaded(true);
+        studentRepository.save(studentEntity);
+    }
+
+    @Override
+    public void createStudentFriendFeedback(String studentId, FriendFeedbackEntity friendFeedbackEntity) {
+        StudentEntity studentEntity = getStudent(studentId);
+        if (Boolean.TRUE.equals(studentEntity.getFriendFeedbackUploaded())) {
+            throw new StudentFeedbackAlreadyExistsException(FRIEND_FEEDBACK_ALREADY_EXISTS_MESSAGE);
+        }
+        if (studentEntity.getFriendFeedback1() == null) {
+            studentEntity.setFriendFeedback1(friendFeedbackEntity);
+        } else if (studentEntity.getFriendFeedback2() == null) {
+            studentEntity.setFriendFeedback2(friendFeedbackEntity);
+            studentEntity.setFriendFeedbackUploaded(true);
+        }
         studentRepository.save(studentEntity);
     }
 
     @Override
     public void deleteStudent(Long id) {
         StudentEntity student = getStudent(id);
-        deleteStudentFiles(student);
+        studentFilesService.deleteStudentFiles(id);
         studentRepository.deleteById(id);
         log.info("Student deleted: {}", student.getFullSlavicName());
-    }
-
-    private void deleteStudentFiles(StudentEntity studentEntity) {
-        if (Boolean.TRUE.equals(studentEntity.getFilesUploaded())) {
-            try {
-                UserFilesManager.deleteStudentFiles(studentEntity);
-            } catch (IOException e) {
-                log.error(STUDENT_FILES_DELETE_ERROR_MESSAGE + studentEntity.getId(), e);
-                throw new FileDeleteException(STUDENT_FILES_DELETE_ERROR_MESSAGE + studentEntity.getId());
-            }
-        }
     }
 
     @Override

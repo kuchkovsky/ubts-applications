@@ -10,26 +10,18 @@ buildNumber.properties
 .mvn/timing.properties
 .mvn/wrapper/maven-wrapper.jar
 
-# STS
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-
 # IntelliJ IDEA
 .idea
 *.iws
 *.iml
 *.ipr
 
+# Config
+db_config.txt
+.env
+
 # jEnv
 .java-version
 
 # OS X
 .DS_Store
-
-# npm
-node_modules/

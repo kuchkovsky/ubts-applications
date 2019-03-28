@@ -4,12 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import ua.org.ubts.applications.dto.TokenDto;
 import ua.org.ubts.applications.dto.UserCredentialsDto;
 
 import javax.crypto.SecretKey;
@@ -22,12 +24,13 @@ import java.util.Date;
 import java.util.stream.Collectors;
 
 import static ua.org.ubts.applications.constants.JwtConstants.EXPIRATION_TIME;
-import static ua.org.ubts.applications.constants.JwtConstants.HEADER_STRING;
-import static ua.org.ubts.applications.constants.JwtConstants.TOKEN_PREFIX;
 
+@Slf4j
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
 	private static final String CREDENTIALS_READ_ERROR_MESSAGE = "Failed to read credentials";
+
+	private static final String TOKEN_WRITE_ERROR_MESSAGE = "Could not write token to response object";
 
 	private AuthenticationManager authenticationManager;
 
@@ -36,7 +39,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	public JwtAuthenticationFilter(AuthenticationManager authenticationManager, SecretKey secretKey) {
 		this.authenticationManager = authenticationManager;
 		this.secretKey = secretKey;
-		this.setFilterProcessesUrl("/api/auth/login");
+		this.setFilterProcessesUrl("/auth/login");
 	}
 
 	@Override
@@ -67,7 +70,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 				.setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
 				.signWith(SignatureAlgorithm.HS512, secretKey)
 				.compact();
-		res.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
+		res.setContentType("application/json");
+		try {
+			new ObjectMapper().writeValue(res.getWriter(), new TokenDto(token));
+		} catch (IOException e) {
+			log.error(TOKEN_WRITE_ERROR_MESSAGE, e);
+		}
 	}
 
 }

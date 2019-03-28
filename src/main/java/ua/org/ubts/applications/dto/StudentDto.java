@@ -5,6 +5,8 @@ import lombok.Data;
 @Data
 public class StudentDto extends BaptistDto {
 
+    private String id;
+
     private ProgramDto program;
 
     private YearDto entryYear;
@@ -17,8 +19,18 @@ public class StudentDto extends BaptistDto {
 
     private String reasonsToStudy;
 
+    private String studyExpectations;
+
     private String howCameToGod;
 
     private String howFindOut;
+
+    private StudentFilesDto files;
+
+    private PastorFeedbackDto pastorFeedback;
+
+    private FriendFeedbackDto friendFeedback1;
+
+    private FriendFeedbackDto friendFeedback2;
 
 }

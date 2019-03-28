@@ -1,6 +1,5 @@
 package ua.org.ubts.applications.configuration;
 
-
 import io.jsonwebtoken.impl.crypto.MacProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -41,12 +40,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.cors().and().csrf().disable().authorizeRequests()
 				.antMatchers(HttpMethod.GET,
-						"/api/students/{id}").access("hasRole('USER') or hasIpAddress('::1')")
-				.antMatchers(HttpMethod.POST, "/api/students", "/api/files/students").permitAll()
-				.antMatchers(HttpMethod.HEAD, "/api/registration/students", "/api/files/students").permitAll()
-				.antMatchers(HttpMethod.GET, "/api/files/students/*").permitAll()
-				.antMatchers("/api/**").authenticated()
-				.anyRequest().permitAll()
+						"/students/{id}").access("hasRole('USER') or hasIpAddress('::1')")
+				.antMatchers(HttpMethod.POST, "/students", "/files/students").permitAll()
+				.antMatchers(HttpMethod.POST, "/students/*/pastor-feedback", "/students/*/friend-feedback").permitAll()
+				.antMatchers(HttpMethod.DELETE, "/files/students").permitAll()
+				.antMatchers(HttpMethod.HEAD, "/registration/students", "/files/students").permitAll()
+				.antMatchers(HttpMethod.GET, "/students/*/full-name", "/files/students/**").permitAll()
+				.anyRequest().authenticated()
 				.and()
 				.addFilter(new JwtAuthenticationFilter(authenticationManager(), secretKey()))
 				.addFilter(new JwtAuthorizationFilter(authenticationManager(), secretKey(), userDetailsService))
@@ -57,7 +57,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	public FilterRegistrationBean someFilterRegistration() {
 		FilterRegistrationBean registration = new FilterRegistrationBean();
 		registration.setFilter(new StudentFilesDownloadFilter(studentFilesTokenService));
-		registration.addUrlPatterns("/api/files/students/*");
+		registration.addUrlPatterns("/files/students/*");
 		return registration;
 	}
 

@@ -14,6 +14,9 @@ import javax.validation.constraints.NotEmpty;
 @NoArgsConstructor
 public class StudentEntity extends PersonEntity {
 
+    @Column(name = "uuid")
+    private String uuid;
+
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "program_id")
     private ProgramEntity program;
@@ -22,8 +25,7 @@ public class StudentEntity extends PersonEntity {
     @JoinColumn(name = "entry_year_id")
     private YearEntity entryYear;
 
-    @NotEmpty
-    @Column(name = "donation_amount", nullable = false, length = 16)
+    @Column(name = "donation_amount", length = 16)
     private String donationAmount;
 
     @Column(name = "finance_comments", columnDefinition = "TEXT")
@@ -38,6 +40,10 @@ public class StudentEntity extends PersonEntity {
     private String reasonsToStudy;
 
     @NotEmpty
+    @Column(name = "study_expectations", nullable = false, columnDefinition = "TEXT")
+    private String studyExpectations;
+
+    @NotEmpty
     @Column(name = "how_came_to_god", nullable = false, columnDefinition = "TEXT")
     private String howCameToGod;
 
@@ -45,7 +51,22 @@ public class StudentEntity extends PersonEntity {
     @JoinColumn(name = "how_find_out_id")
     private HowFindOutEntity howFindOut;
 
-    @Column(name = "has_files_uploaded")
-    private Boolean filesUploaded;
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "pastor_feedback_id")
+    private PastorFeedbackEntity pastorFeedback;
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "friend_feedback1_id")
+    private FriendFeedbackEntity friendFeedback1;
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "friend_feedback2_id")
+    private FriendFeedbackEntity friendFeedback2;
+
+    @Column(name = "pastor_feedback_uploaded")
+    private Boolean pastorFeedbackUploaded;
+
+    @Column(name = "friend_feedback_uploaded")
+    private Boolean friendFeedbackUploaded;
 
 }

@@ -27,36 +27,6 @@ public class StudentExportServiceImpl implements StudentExportService {
     private StudentService studentService;
 
     @Override
-    public void exportStudentToCloud(Long id) {
-        StudentEntity studentEntity = studentService.getStudent(id);
-        try {
-            ConfigManager.DavProperties davProperties = ConfigManager.getDavProperties();
-            DavManager davManager = new DavManager(davProperties.getLogin(), davProperties.getPassword(),
-                    davProperties.getUrl());
-            davManager.exportStudent(studentEntity);
-        } catch (IOException | InterruptedException e) {
-            log.error(STUDENT_EXPORT_TO_CLOUD_ERROR_MESSAGE, e);
-            throw new ExportException(STUDENT_EXPORT_TO_CLOUD_ERROR_MESSAGE);
-        }
-    }
-
-    @Override
-    public void exportStudentsToCloud(Optional<List<Integer>> years) {
-        List<StudentEntity> students = studentService.getStudents(years);
-        try {
-            ConfigManager.DavProperties davProperties = ConfigManager.getDavProperties();
-            DavManager davManager = new DavManager(davProperties.getLogin(), davProperties.getPassword(),
-                    davProperties.getUrl());
-            for (StudentEntity student : students) {
-                davManager.exportStudent(student);
-            }
-        } catch (IOException | InterruptedException e) {
-            log.error(STUDENT_EXPORT_TO_CLOUD_ERROR_MESSAGE, e);
-            throw new ExportException(STUDENT_EXPORT_TO_CLOUD_ERROR_MESSAGE);
-        }
-    }
-
-    @Override
     public void exportStudentsToExcel(Optional<List<Integer>> years) {
         List<Integer> yearsList;
         XlsxExporter xlsxExporter = new XlsxExporter();
@@ -87,4 +57,5 @@ public class StudentExportServiceImpl implements StudentExportService {
             throw new ExportException(STUDENT_EXPORT_TO_CLOUD_ERROR_MESSAGE);
         }
     }
+
 }

@@ -14,8 +14,17 @@ import javax.validation.constraints.NotEmpty;
 @NoArgsConstructor
 public class HealthDataEntity extends BaseEntity<Long> {
 
-    @Column(name = "is_drug_addicted", nullable = false)
+    @Column(name = "is_drug_addicted")
     private Boolean drugAddicted;
+
+    @Column(name = "had_drug_or_alcohol_addiction", nullable = false)
+    private Boolean hadDrugOrAlcoholAddiction;
+
+    @Column(name = "had_gambling_or_computer_addiction", nullable = false)
+    private Boolean hadGamblingOrComputerAddiction;
+
+    @Column(name = "had_occult_addiction", nullable = false)
+    private Boolean hadOccultAddiction;
 
     @NotEmpty
     @Column(name = "health_status", nullable = false, length = 32)

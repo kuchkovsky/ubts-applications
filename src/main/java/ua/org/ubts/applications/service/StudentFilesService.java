@@ -2,14 +2,24 @@ package ua.org.ubts.applications.service;
 
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.ResponseEntity;
-import ua.org.ubts.applications.model.StudentFilesUploadModel;
+import org.springframework.web.multipart.MultipartFile;
+import ua.org.ubts.applications.dto.StudentFilesDto;
+import ua.org.ubts.applications.dto.UploadedFileDto;
+
+import javax.servlet.http.HttpServletRequest;
 
 public interface StudentFilesService {
 
-    void saveStudentFiles(StudentFilesUploadModel model);
+    UploadedFileDto saveTemporaryDocument(MultipartFile document);
 
-    void checkIfStudentFilesExists(String firstName, String middleName, String lastName);
+    void deleteTemporaryDocument(HttpServletRequest request);
+
+    void saveStudentFiles(Long studentId, StudentFilesDto studentFilesDto);
+
+    void deleteStudentFiles(Long id);
 
     ResponseEntity<ByteArrayResource> getStudentFiles(Long id);
+
+    ResponseEntity<ByteArrayResource> getStudentPhoto(Long id);
 
 }

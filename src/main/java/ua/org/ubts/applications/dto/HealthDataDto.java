@@ -7,6 +7,12 @@ public class HealthDataDto extends BaseDto {
 
     private Boolean isDrugAddicted;
 
+    private Boolean hadDrugOrAlcoholAddiction;
+
+    private Boolean hadGamblingOrComputerAddiction;
+
+    private Boolean hadOccultAddiction;
+
     private String healthStatus;
 
     private Boolean isTakingMedicine;

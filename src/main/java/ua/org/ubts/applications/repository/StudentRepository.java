@@ -18,4 +18,6 @@ public interface StudentRepository extends JpaRepository<StudentEntity, Long> {
     @Query("SELECT s FROM StudentEntity s WHERE s.entryYear.value IN :years")
     List<StudentEntity> findByEntryYears(@Param("years") List<Integer> entryYears);
 
+    Optional<StudentEntity> findByUuid(String uuid);
+
 }

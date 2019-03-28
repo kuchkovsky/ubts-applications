@@ -20,7 +20,8 @@ public class StudentFilesDownloadFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
-        if (request.getMethod().equals("HEAD") || request.getMethod().equals("POST")) {
+        if (request.getMethod().equals("HEAD") || request.getMethod().equals("POST")
+                || request.getMethod().equals("DELETE")) {
             chain.doFilter(request, response);
         } else {
             String token = request.getParameter("token");
