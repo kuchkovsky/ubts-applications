@@ -14,11 +14,11 @@ import javax.validation.constraints.NotEmpty;
 public class StudentFeedbackEntity extends BaseEntity<Long> {
 
     @NotEmpty
-    @Column(name = "how_long_know_each_other", nullable = false)
+    @Column(name = "how_long_know_each_other", nullable = false, columnDefinition = "TEXT")
     private String howLongKnowEachOther;
 
     @NotEmpty
-    @Column(name = "how_well_know_student", nullable = false)
+    @Column(name = "how_well_know_student", nullable = false, columnDefinition = "TEXT")
     private String howWellKnowStudent;
 
     @NotEmpty
