@@ -1,7 +1,7 @@
 package ua.org.ubts.applications.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,12 +30,18 @@ public class StudentFilesController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ByteArrayResource> downloadUserFiles(@PathVariable("id") Long id) {
+    public ResponseEntity<Resource> downloadUserFiles(@PathVariable("id") Long id) {
         return studentFilesService.getStudentFiles(id);
     }
 
+    @GetMapping("/{id}/{fileName}")
+    public ResponseEntity<Resource> downloadUserFile(@PathVariable("id") Long id,
+                                                              @PathVariable("fileName") String fileName) {
+        return studentFilesService.getStudentFile(id, fileName);
+    }
+
     @GetMapping("/photo/{id}")
-    public ResponseEntity<ByteArrayResource> downloadUserPhoto(@PathVariable("id") Long id) {
+    public ResponseEntity<Resource> downloadUserPhoto(@PathVariable("id") Long id) {
         return studentFilesService.getStudentPhoto(id);
     }
 

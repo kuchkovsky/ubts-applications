@@ -2,6 +2,8 @@ package ua.org.ubts.applications.dto;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class StudentDto extends BaptistDto {
 
@@ -32,5 +34,7 @@ public class StudentDto extends BaptistDto {
     private FriendFeedbackDto friendFeedback1;
 
     private FriendFeedbackDto friendFeedback2;
+
+    private List<String> fileNames;
 
 }

@@ -8,6 +8,7 @@ import ua.org.ubts.applications.converter.StudentConverter;
 import ua.org.ubts.applications.dto.StudentDto;
 import ua.org.ubts.applications.dto.StudentListItemDto;
 import ua.org.ubts.applications.entity.*;
+import ua.org.ubts.applications.service.StudentFilesService;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,6 +18,9 @@ public class StudentConverterImpl implements StudentConverter {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private StudentFilesService studentFilesService;
 
     @Override
     public StudentEntity convertToEntity(StudentDto dto) {
@@ -30,7 +34,10 @@ public class StudentConverterImpl implements StudentConverter {
             howFindOutEntity.setName("Від Бога");
             entity.setHowFindOut(howFindOutEntity);
         }
-        return modelMapper.map(entity, StudentDto.class);
+        StudentDto studentDto = modelMapper.map(entity, StudentDto.class);
+        List<String> files = studentFilesService.listStudentFiles(entity.getId());
+        studentDto.setFileNames(files);
+        return studentDto;
     }
 
     @Override

@@ -9,6 +9,8 @@ import org.apache.tika.mime.MimeTypeException;
 import org.apache.tika.mime.MimeTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +38,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -85,8 +88,12 @@ public class StudentFilesServiceImpl implements StudentFilesService {
         return Paths.get(tmpDirectory + File.separator + temporaryFileName);
     }
 
+    private Path getPath(Long id, String fileName) {
+        return Paths.get(getStudentDirectory(id) + File.separator + fileName);
+    }
+
     private Path getPath(Long id, String fileName, String extension) {
-        return Paths.get(getStudentDirectory(id) + File.separator + fileName + extension);
+        return getPath(id, fileName + extension);
     }
 
     private void saveFile(Long studentId, String tmpFileName, String fileName) {
@@ -202,7 +209,7 @@ public class StudentFilesServiceImpl implements StudentFilesService {
     }
 
     @Override
-    public ResponseEntity<ByteArrayResource> getStudentFiles(Long id) {
+    public ResponseEntity<Resource> getStudentFiles(Long id) {
         StudentEntity studentEntity = studentService.getStudent(id);
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -236,7 +243,24 @@ public class StudentFilesServiceImpl implements StudentFilesService {
     }
 
     @Override
-    public ResponseEntity<ByteArrayResource> getStudentPhoto(Long id) {
+    public ResponseEntity<Resource> getStudentFile(Long id, String fileName) {
+        Path path = getPath(id, fileName);
+        try {
+            String mimeType = getMimeTypeFromBytes(Files.readAllBytes(path));
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION,
+                            "inline;filename=" + UriUtils.encodePath(fileName.replace(",", "_"),"UTF-8"))
+                    .contentType(MediaType.parseMediaType(mimeType))
+                    .contentLength(Files.size(path))
+                    .body(new FileSystemResource(path));
+        } catch (IOException e) {
+            log.error(READ_STUDENT_FILES_ERROR_MESSAGE + id, e);
+            throw new FileReadException(READ_STUDENT_FILES_ERROR_MESSAGE + id);
+        }
+    }
+
+    @Override
+    public ResponseEntity<Resource> getStudentPhoto(Long id) {
         File dir = new File(getStudentDirectory(id));
         File[] photoFiles = dir.listFiles((dir1, name) -> name.startsWith("photo"));
         try {
@@ -265,6 +289,18 @@ public class StudentFilesServiceImpl implements StudentFilesService {
             log.error(STUDENT_FILES_DELETE_ERROR_MESSAGE + id, e);
             throw new FileDeleteException(STUDENT_FILES_DELETE_ERROR_MESSAGE + id);
         }
+    }
+
+    @Override
+    public List<String> listStudentFiles(Long id) {
+        File[] files = new File(getStudentDirectory(id)).listFiles();
+        if (files == null) {
+            throw new FileReadException(READ_STUDENT_FILES_ERROR_MESSAGE + id);
+        }
+        Arrays.sort(files);
+        return Arrays.stream(files)
+                .map(File::getName)
+                .collect(Collectors.toList());
     }
 
 }
