@@ -3,6 +3,9 @@ package ua.org.ubts.applications.configuration;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.core.task.TaskExecutor;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
@@ -34,6 +37,17 @@ public class AppConfig {
         } catch (IOException e) {
             log.error(INIT_DIRECTORIES_ERROR_MESSAGE, e);
         }
+    }
+
+    @Bean
+    @Primary
+    public TaskExecutor threadPoolTaskExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(4);
+        executor.setMaxPoolSize(4);
+        executor.setThreadNamePrefix("default_task_executor_thread");
+        executor.initialize();
+        return executor;
     }
 
 }

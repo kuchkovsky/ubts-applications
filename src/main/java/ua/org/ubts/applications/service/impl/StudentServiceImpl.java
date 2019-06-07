@@ -2,6 +2,10 @@ package ua.org.ubts.applications.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.task.TaskExecutor;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import ua.org.ubts.applications.converter.StudentConverter;
 import ua.org.ubts.applications.dto.StudentDto;
@@ -16,6 +20,8 @@ import ua.org.ubts.applications.exception.StudentNotFoundException;
 import ua.org.ubts.applications.repository.*;
 import ua.org.ubts.applications.service.*;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +36,7 @@ public class StudentServiceImpl implements StudentService {
     private static final String STUDENT_ALREADY_EXISTS_MESSAGE = "Student with name='%s %s %s' already exists";
     private static final String PASTOR_FEEDBACK_ALREADY_EXISTS_MESSAGE = "Pastor feedback already exists for this student";
     private static final String FRIEND_FEEDBACK_ALREADY_EXISTS_MESSAGE = "Friend feedback already exists for this student";
+    private static final String SEND_MAIL_ERROR_MESSAGE = "Could not send email";
 
     @Autowired
     private StudentRepository studentRepository;
@@ -61,6 +68,19 @@ public class StudentServiceImpl implements StudentService {
     @Autowired
     private StudentFilesService studentFilesService;
 
+    @Value("${UBTS_APPLICATIONS_SERVER_URL}")
+    private String serverUrl;
+
+    @Value("${UBTS_APPLICATIONS_SERVER_GMAIL_USERNAME}")
+    private String serverGmailUsername;
+
+    @Autowired
+    private TaskExecutor taskExecutor;
+
+    @Autowired
+    public JavaMailSender emailSender;
+
+
     private Long saveToDb(StudentEntity studentEntity) {
         programRepository.findByNameAndInfo(studentEntity.getProgram().getName(), studentEntity.getProgram().getInfo())
                 .ifPresent(studentEntity::setProgram);
@@ -79,6 +99,26 @@ public class StudentServiceImpl implements StudentService {
         howFindOutRepository.findByName(studentEntity.getHowFindOut().getName())
                 .ifPresent(studentEntity::setHowFindOut);
         return studentRepository.saveAndFlush(studentEntity).getId();
+    }
+
+    private void sendEmailToUser(String userEmail, String uuid) {
+        taskExecutor.execute(() -> {
+            try {
+                MimeMessage mimeMessage = emailSender.createMimeMessage();
+                MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, false, "utf-8");
+                String htmlMessage =
+                        "<a href=\"" + serverUrl + "/pastor/" + uuid + "\">Анкета пастора</a>"
+                        + "<br>"
+                        + "<a href=\"" + serverUrl + "/friend/" + uuid + "\">Анкета друга</a>";
+                mimeMessage.setContent(htmlMessage, "text/html; charset=UTF-8");
+                helper.setTo(userEmail);
+                helper.setSubject("Посилання для реєстрації");
+                helper.setFrom(serverGmailUsername + "@gmail.com");
+                emailSender.send(mimeMessage);
+            } catch (MessagingException e) {
+                log.error(SEND_MAIL_ERROR_MESSAGE, e);
+            }
+        });
     }
 
     @Override
@@ -123,6 +163,7 @@ public class StudentServiceImpl implements StudentService {
         studentEntity.setUuid(uuid);
         Long id = saveToDb(studentEntity);
         studentFilesService.saveStudentFiles(id, studentDto.getFiles());
+        sendEmailToUser(studentEntity.getEmail(), uuid);
         return new UuidDto(uuid);
     }
 

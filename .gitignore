@@ -20,8 +20,5 @@ buildNumber.properties
 db_config.txt
 .env
 
-# jEnv
-.java-version
-
 # OS X
 .DS_Store
