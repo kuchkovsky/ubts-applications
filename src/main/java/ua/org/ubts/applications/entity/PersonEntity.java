@@ -25,6 +25,12 @@ public class PersonEntity extends BaseEntity<Long> {
     @Column(name = "last_name", nullable = false, length = 64)
     private String lastName;
 
+    @Column(name = "international_first_name", length = 64)
+    private String internationalFirstName;
+
+    @Column(name = "international_last_name", length = 64)
+    private String internationalLastName;
+
     @NotEmpty
     @Column(name = "birthdate", nullable = false, length = 12)
     private String birthDate;

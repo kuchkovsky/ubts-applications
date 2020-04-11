@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 @Entity
 @Table(name = "student")
@@ -69,4 +70,12 @@ public class StudentEntity extends PersonEntity {
     @Column(name = "friend_feedback_uploaded")
     private Boolean friendFeedbackUploaded;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "student_question",
+            joinColumns = @JoinColumn(
+                    name = "student_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "question_id", referencedColumnName = "id"))
+    private List<QuestionEntity> questions;
 }

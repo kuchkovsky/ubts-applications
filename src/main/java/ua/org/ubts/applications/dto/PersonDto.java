@@ -11,6 +11,10 @@ public class PersonDto extends BaseDto {
 
     private String lastName;
 
+    private String internationalFirstName;
+
+    private String internationalLastName;
+
     private String birthDate;
 
     private String phone1;
