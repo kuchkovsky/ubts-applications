@@ -97,7 +97,7 @@ public class StudentEntity extends PersonEntity {
     private String mainInfluencer;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "howFindOut")
+    @JoinColumn(name = "how_find_out_id")
     private HowFindOutEntity howFindOut;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
