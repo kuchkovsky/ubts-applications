@@ -8,6 +8,7 @@ import ua.org.ubts.applications.converter.FriendFeedbackConverter;
 import ua.org.ubts.applications.converter.PastorFeedbackConverter;
 import ua.org.ubts.applications.converter.StudentConverter;
 import ua.org.ubts.applications.dto.*;
+import ua.org.ubts.applications.service.QuestionService;
 import ua.org.ubts.applications.service.StudentService;
 
 import java.util.List;
@@ -18,6 +19,9 @@ public class StudentController {
 
     @Autowired
     private StudentService studentService;
+
+    @Autowired
+    private QuestionService questionService;
 
     @Autowired
     private StudentConverter studentConverter;
@@ -69,5 +73,4 @@ public class StudentController {
     public StudentFullNameDto getStudentFullName(@PathVariable("uuid") String studentId) {
         return studentService.getStudentFullName(studentId);
     }
-
 }

@@ -48,8 +48,56 @@ public class StudentEntity extends PersonEntity {
     @Column(name = "how_came_to_god", nullable = false, columnDefinition = "TEXT")
     private String howCameToGod;
 
+    @NotEmpty
+    @Column(name = "mostDifficultBibleTheme", nullable = false, columnDefinition = "TEXT")
+    private String mostDifficultBibleTheme;
+
+    @NotEmpty
+    @Column(name = "answers", nullable = false, columnDefinition = "TEXT")
+    private String answers;
+
+    @NotEmpty
+    @Column(name = "lastVerseFromBible", nullable = false, columnDefinition = "TEXT")
+    private String lastVerseFromBible;
+
+    @NotEmpty
+    @Column(name = "lastInterestingPreaching", nullable = false, columnDefinition = "TEXT")
+    private String lastInterestingPreaching;
+
+    @NotEmpty
+    @Column(name = "didYouReadBible", nullable = false, columnDefinition = "TEXT")
+    private String didYouReadBible;
+
+    @NotEmpty
+    @Column(name = "prayForSomeone", nullable = false, columnDefinition = "TEXT")
+    private String prayForSomeone;
+
+    @NotEmpty
+    @Column(name = "missions", nullable = false, columnDefinition = "TEXT")
+    private String missions;
+
+    @NotEmpty
+    @Column(name = "whenYouToldAboutChrist", nullable = false, columnDefinition = "TEXT")
+    private String whenYouToldAboutChrist;
+
+    @NotEmpty
+    @Column(name = "spiritGifts", nullable = false, columnDefinition = "TEXT")
+    private String spiritGifts;
+
+    @NotEmpty
+    @Column(name = "bestInChurch", nullable = false, columnDefinition = "TEXT")
+    private String bestInChurch;
+
+    @NotEmpty
+    @Column(name = "mentor", nullable = false, columnDefinition = "TEXT")
+    private String mentor;
+
+    @NotEmpty
+    @Column(name = "mainInfluencer", nullable = false, columnDefinition = "TEXT")
+    private String mainInfluencer;
+
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "how_find_out_id")
+    @JoinColumn(name = "howFindOut")
     private HowFindOutEntity howFindOut;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
