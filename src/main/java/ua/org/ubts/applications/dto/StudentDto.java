@@ -25,6 +25,30 @@ public class StudentDto extends BaptistDto {
 
     private String howCameToGod;
 
+    private String mostDifficultBibleTheme;
+
+    private String answers;
+
+    private String lastVerseFromBible;
+
+    private String lastInterestingPreaching;
+
+    private String didYouReadBible;
+
+    private String prayForSomeone;
+
+    private String missions;
+
+    private String whenYouToldAboutChrist;
+
+    private String spiritGifts;
+
+    private String bestInChurch;
+
+    private String mentor;
+
+    private String mainInfluencer;
+
     private String howFindOut;
 
     private StudentFilesDto files;
@@ -36,5 +60,4 @@ public class StudentDto extends BaptistDto {
     private FriendFeedbackDto friendFeedback2;
 
     private List<String> fileNames;
-
 }
