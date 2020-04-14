@@ -49,6 +49,10 @@ public class StudentDto extends BaptistDto {
 
     private String mainInfluencer;
 
+    private String testScore;
+
+    private String testTime;
+
     private String howFindOut;
 
     private StudentFilesDto files;

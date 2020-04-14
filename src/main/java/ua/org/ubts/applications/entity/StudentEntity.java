@@ -96,6 +96,14 @@ public class StudentEntity extends PersonEntity {
     @Column(name = "mainInfluencer", nullable = false, columnDefinition = "TEXT")
     private String mainInfluencer;
 
+    @NotEmpty
+    @Column(name = "testScore", nullable = false, columnDefinition = "TEXT")
+    private String testScore;
+
+    @NotEmpty
+    @Column(name = "testTime", nullable = false, columnDefinition = "TEXT")
+    private String testTime;
+
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "how_find_out_id")
     private HowFindOutEntity howFindOut;
