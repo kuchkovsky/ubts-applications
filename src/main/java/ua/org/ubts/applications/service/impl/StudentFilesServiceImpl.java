@@ -97,6 +97,9 @@ public class StudentFilesServiceImpl implements StudentFilesService {
     }
 
     private void saveFile(Long studentId, String tmpFileName, String fileName) {
+        if(tmpFileName == "" || tmpFileName == null)
+            return;
+
         String extension = getFileExtensionFromName(tmpFileName);
         Path pathFrom = getPath(tmpFileName);
         Path pathTo = getPath(studentId, fileName, extension);
